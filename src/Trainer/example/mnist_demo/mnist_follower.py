@@ -21,17 +21,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import argparse
 import json
 import os
 import sys
 import time
-import socket
+import logging
 
+sys.path.insert(0, './')
 sys.path.insert(0, '../')
+sys.path.insert(0, './fl_comm_libs/')
+sys.path.insert(0, '../fl_comm_libs/')
 
-import grpc
-import numpy as np
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.platform import flags
@@ -43,6 +43,13 @@ import fl_comm_libs.util as util
 import fl_comm_libs.flflags as fl_flags
 import fl_comm_libs.flenv as flenv
 
+
+logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S')
+
+SEED = 1
 
 def input_fn(fl_bridge, role):
     """
@@ -84,7 +91,7 @@ def serving_input_receiver_fn():
 
 def fl_model_fn(fl_bridge, features, labels, mode):
     """
-    estimator的model_fn
+    mode_fn for fl_estimator
     """
     x = features['x']
 
@@ -108,7 +115,7 @@ def fl_model_fn(fl_bridge, features, labels, mode):
                 predictions=predictions)
 
     ids = features['example_id']
-    ids_chk_op = verify_example_ids(fl_bridge, ids, debug_mode=True)
+    ids_chk_op = flenv.verify_example_ids(fl_bridge, ids, debug_mode=True)
 
     if mode == tf.estimator.ModeKeys.TRAIN:
         with ops.control_dependencies([act1_f, ids_chk_op]):
@@ -118,7 +125,7 @@ def fl_model_fn(fl_bridge, features, labels, mode):
         # train
         optimizer = tf.train.AdamOptimizer(learning_rate=0.1)
 
-        train_op=optimizer.minimize(xf_emb, 
+        train_op=optimizer.minimize(act1_f, 
                 global_step=tf.train.get_or_create_global_step(),
                 grad_loss=recv_grad)
         
@@ -177,16 +184,16 @@ def fl_run(is_chief, run_config, cluster=None, job_name=None, task_index=None):
 
 
 def main(unused_argv):
-    flenv = FLEnv(flags.FLAGS)
-    flenv.set_role('follower')
-    flenv.run_cluster(fl_run)
+    env = flenv.FLEnv(flags.FLAGS)
+    env.set_role('follower')
+    env.run_cluster(fl_run)
 
 
 if __name__ == '__main__':
    
     os.environ["_FL_DEBUG"] = "50"
  
-    tf.logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
     logging.info(__file__)
     logging.info(str(sys.argv))
 

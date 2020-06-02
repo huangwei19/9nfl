@@ -20,10 +20,10 @@ import math
 import logging
 import sys
 import subprocess
+import argparse
+import os
 
-sys.path.insert(0, '../fl_pkgs/')
 sys.path.insert(0, '../')
-sys.path.insert(0, './fl_pkgs/')
 sys.path.insert(0, './')
 
 try:
@@ -55,20 +55,28 @@ def run(cmd):
 
 class DcLeaderServer(dc_agent_pb2_grpc.DataBlockQueryServiceServicer):
 
-    def __init__(self, hdfs_dir):
-        self.hdfs_dir = hdfs_dir
+    def __init__(self, data_dir, data_mode='hdfs'):
+        self.data_dir = data_dir
+        self.data_mode = data_mode
         self._load_data()
 
     def _load_data(self):
         """
         follower用dict
         """
-        file_list = run("hadoop fs -ls %s 2>/dev/null|awk '{print $NF}'|grep -E -v 'items'" 
-           % self.hdfs_dir).split('\n')
+        if self.data_mode == 'hdfs':
+            file_list = run("hadoop fs -ls %s 2>/dev/null|awk '{print $NF}'|grep -E -v 'items'" 
+               % self.data_dir).split('\n')
+        else:
+            self.data_dir = os.path.abspath(self.data_dir)
+            file_list = sorted([os.path.join(self.data_dir, fname)
+                for fname in os.listdir(self.data_dir)])
         self._db_dict = {}
         for fpath in file_list:
             request_id = fpath.split('/')[-1]
-            self._db_dict[request_id] = (request_id, fpath)
+            if "tfrecord" in request_id:
+                self._db_dict[request_id] = (request_id, fpath)
+                logging.info("id: %s, path: %s" % (request_id, fpath))
     
     def QueryDataBlock(self, request, context):
         """
@@ -87,20 +95,22 @@ class DcLeaderServer(dc_agent_pb2_grpc.DataBlockQueryServiceServicer):
         return datablock
 
 
-def serve(hdfs_path):
+def serve(path, data_mode):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     dc_agent_pb2_grpc.add_DataBlockQueryServiceServicer_to_server(
-        DcLeaderServer(hdfs_path), server)
+        DcLeaderServer(path, data_mode=data_mode), server)
     server.add_insecure_port('[::]:40005')
     server.start()
     server.wait_for_termination()
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: python %s hdfs_path" % sys.argv[0])
-        sys.exit(-1)
-    #hdfs_path = '/user/jd_ad/ads_conv/fl_jingtiao/demo/mnist/leader_train'
-    hdfs_path = sys.argv[1]
-    print("Server start loadding %s" % hdfs_path)
-    serve(hdfs_path)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--path", dest="path",
+        help="data dir")
+    parser.add_argument("-m", "--data_mode", dest="data_mode",
+        default='hdfs', help="hdfs or local")
+    args = parser.parse_args()
+
+    print("Server start loadding %s" % args.path)
+    serve(args.path, args.data_mode)

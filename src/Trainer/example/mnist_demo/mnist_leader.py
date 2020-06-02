@@ -27,7 +27,10 @@ import sys
 import time
 import logging
 
+sys.path.insert(0, './')
 sys.path.insert(0, '../')
+sys.path.insert(0, './fl_comm_libs/')
+sys.path.insert(0, '../fl_comm_libs/')
 
 import tensorflow as tf
 from tensorflow.python.framework import ops
@@ -45,6 +48,8 @@ logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S')
+
+SEED = 1
 
 
 def input_fn(fl_bridge, role):
@@ -75,7 +80,7 @@ def input_fn(fl_bridge, role):
 
 def serving_input_receiver_fn():
     """
-    导模型
+    export model
     """
     feature_map = { 
         "x": tf.FixedLenFeature([28 * 28 // 2], tf.float32),
@@ -93,6 +98,9 @@ def serving_input_receiver_fn():
 
 
 def fl_model_fn(fl_bridge, features, labels, mode):
+    """
+    mode_fn for fl_estimator
+    """
 
     x = features['x']
 
