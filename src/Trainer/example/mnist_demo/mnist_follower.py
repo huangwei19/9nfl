@@ -79,11 +79,11 @@ def serving_input_receiver_fn():
     """
     用于导模型
     """
-    data_processor = pino_ops.VwHashSparse("data_processor", sparse_conf, False)
-
+    feature_map = { 
+        "x": tf.FixedLenFeature([28 * 28 // 2], tf.float32),
+    }
     records = tf.placeholder(dtype=tf.string, name='records')
 
-    features = {"f_features": data_processor(records)}
     receiver_tensors = {'records': records}
 
     return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)

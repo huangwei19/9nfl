@@ -119,6 +119,8 @@ class FLEnv(object):
         """
         获取运行时配置，优先从环境变量拿
         """
+        self.local_debug = FLAGS.local_debug == 1
+
         mconfig = {}
         mconfig['role'] = FLAGS.role
         # App ID
@@ -160,17 +162,24 @@ class FLEnv(object):
             mconfig['bind_addr'] = '[::]:' + str(port)
 
         # unused
-        mconfig['peer_addr'] = ''
+        mconfig['peer_addr'] = FLAGS.peer_addr
 
         # coordinator
+        if self.local_debug and FLAGS.coordinator_addr is None:
+            FLAGS.coordinator_addr = FLAGS.peer_addr
         mconfig['coordinator_addr'] = FLAGS.coordinator_addr
+
         env_coo_ip = os.environ.get('coordinator_ip')
         env_coo_port= os.environ.get('coordinator_port')
         if env_coo_ip is not None and env_coo_port is not None:
             mconfig['coordinator_addr'] = str(env_coo_ip) + ':' + str(env_coo_port)
 
         # proxy
+        if self.local_debug and FLAGS.proxy_addr is None:
+            # local debug mode doesn't need proxy_addr
+            FLAGS.proxy_addr = FLAGS.peer_addr
         mconfig['proxy_addr'] = FLAGS.proxy_addr
+
         env_proxy_ip = os.environ.get('proxy_ip')
         env_proxy_port = os.environ.get('proxy_port')
         if env_proxy_ip is not None and env_proxy_port is not None:
@@ -192,7 +201,6 @@ class FLEnv(object):
         mconfig['eval'] = FLAGS.eval
         mconfig['checkpoint_hdfs_path'] = FLAGS.checkpoint_hdfs_path
 
-        self.local_debug = FLAGS.local_debug == 1
         self.mconfig = mconfig 
 
     def run_cluster(self, fl_run):

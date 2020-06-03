@@ -1,4 +1,3 @@
-set -x
 WORK_DIR=$(cd `dirname $0`;pwd)
 MNIST_DIR=`readlink -f "${WORK_DIR}"`
 
@@ -27,13 +26,6 @@ F_DC_ADDR="${LOCAL_IP}:40005"
 L_TRAIN_ADDR="${LOCAL_IP}:40001"
 F_TRAIN_ADDR="${LOCAL_IP}:40002"
 
-L_PROXY_ADDR=${F_TRAIN_ADDR}
-F_PROXY_ADDR=${L_TRAIN_ADDR}
-
-L_COORDINATOR_ADDR="${LOCAL_IP}:40004"
-F_COORDINATOR_ADDR="${LOCAL_IP}:40004"
-
-
 if [ ! -d ${MNIST_DIR}/logs ];then
     mkdir ${MNIST_DIR}/logs
 fi
@@ -41,13 +33,12 @@ fi
 export  _FL_HDFS_GET_SCRIPT_PATH="./local_get.sh"
 
 train(){
-$PYTHON ${MNIST_DIR}/co_proxy_server.py > ${MNIST_DIR}/logs/proxy.log 2>&1 &
+set -x
 $PYTHON ${MNIST_DIR}/dc_leader.py -p ${L_TRAIN} -m ${DATA_MODE}> ${MNIST_DIR}/logs/dc_leader.log 2>&1 &
 $PYTHON ${MNIST_DIR}/dc_follower.py -p ${F_TRAIN} -m ${DATA_MODE}> ${MNIST_DIR}/logs/dc_follower.log 2>&1 &
 
 $PYTHON  ${MNIST_DIR}/mnist_leader.py --local_addr="${L_TRAIN_ADDR}" \
 --peer_addr="${F_TRAIN_ADDR}" --dc_addr="${L_DC_ADDR}" \
---coordinator_addr="${L_COORDINATOR_ADDR}" --proxy_addr="${L_PROXY_ADDR}" \
 --rpc_service_type=1 \
 --local_debug=1 \
 --check_exampleid=$CHECK_EXAMPLEID \
@@ -57,7 +48,6 @@ $PYTHON  ${MNIST_DIR}/mnist_leader.py --local_addr="${L_TRAIN_ADDR}" \
 
 $PYTHON  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
 --peer_addr="${L_TRAIN_ADDR}" --dc_addr="${F_DC_ADDR}" \
---coordinator_addr="${F_COORDINATOR_ADDR}" --proxy_addr="${F_PROXY_ADDR}" \
 --rpc_service_type=1 \
 --local_debug=1 \
 --check_exampleid=$CHECK_EXAMPLEID \
