@@ -5,6 +5,17 @@ import random
 import uuid
 import subprocess
 import os
+import argparse
+import logging
+import sys
+
+
+logging.basicConfig(level = logging.INFO, \
+    format = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', \
+    stream = sys.stdout, \
+    datefmt = '%a, %d %b %Y %H:%M:%S', \
+    filemode = 'a')
+
 
 FLOAT_TYPE = "float"
 INT64_TYPE = "int64"
@@ -131,7 +142,8 @@ def repartition_and_sort(dataset, n_partition=10):
     return output
 
 
-def save_local(ori_data, save_dir, n_partition=10):
+def save_local(ori_data, save_dir, n_partition=10,
+    drop_rate=-1):
     """
     partition and sort by example id
     save as tfrecord
@@ -143,14 +155,23 @@ def save_local(ori_data, save_dir, n_partition=10):
 
     data = repartition_and_sort(ori_data, n_partition)
     for i in range(n_partition):
+        count = 0
         fpath = os.path.join(save_dir, '%05d.tfrecord' % i)
         writer = tf.python_io.TFRecordWriter(fpath)
         for _, record in data[i]:
-            writer.write(record)
+            if drop_rate > 0:
+                r = random.random()
+                if r < drop_rate:
+                    writer.write(record)
+                    count += 1
+            else:
+                count += 1
+                writer.write(record)
         writer.close()
+        logging.info("Write %s done. %d records" % (fpath, count))
 
 
-def main(data_dir):
+def main(args):
     """
     generate train data and test data for fl
     """
@@ -172,22 +193,39 @@ def main(data_dir):
     test_y = y[len_train:]
     test_eids = e_ids[len_train:]
 
+    data_dir = args.output_dir
+
     l_train_path = data_dir + "/leader_train"
     f_train_path = data_dir + "/follower_train"
     l_test_path = data_dir + "/leader_test"
     f_test_path = data_dir + "/follower_test"
+
+    n_partition = args.partition_num
+    drop_rate = args.drop_rate
     
     save_local(get_pb_dataset(train_eids, train_xl, train_y),
-        l_train_path) 
+        l_train_path, n_partition, drop_rate) 
     save_local(get_pb_dataset(train_eids, train_xf),
-        f_train_path) 
+        f_train_path, n_partition, drop_rate) 
     save_local(get_pb_dataset(test_eids, test_xl, test_y),
-        l_test_path) 
+        l_test_path, n_partition, drop_rate) 
     save_local(get_pb_dataset(test_eids, test_xf),
-        f_test_path) 
+        f_test_path, n_partition, drop_rate) 
 
 
 if __name__ == "__main__":
-    data_dir = '.'
-    download_mnist()
-    main(data_dir)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-o", "--output_dir", dest="output_dir",
+        help="output dir")
+    parser.add_argument("-d", "--download", type=int, default=1,
+        help="whether to download mnist data")
+    parser.add_argument("-p", "--partition_num", type=int, default=10,
+        help="partition num")
+    parser.add_argument("-r", "--drop_rate", type=float, default=0.0,
+        help="probability of dropping a record")
+    args = parser.parse_args()
+
+    if args.download == 1: 
+        download_mnist()
+
+    main(args)
