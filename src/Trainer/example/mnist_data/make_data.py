@@ -157,17 +157,22 @@ def save_local(ori_data, save_dir, n_partition=10,
     for i in range(n_partition):
         count = 0
         fpath = os.path.join(save_dir, '%05d.tfrecord' % i)
+        meta_fpath = os.path.join(save_dir, '%05d.meta' % i)
         writer = tf.python_io.TFRecordWriter(fpath)
-        for _, record in data[i]:
+        meta_writer = open(meta_fpath, 'w')
+        for eid, record in data[i]:
             if drop_rate > 0:
                 r = random.random()
-                if r < drop_rate:
+                if r > drop_rate:
                     writer.write(record)
+                    meta_writer.write('%s\n' % eid)
                     count += 1
             else:
-                count += 1
                 writer.write(record)
+                meta_writer.write('%s\n' % eid)
+                count += 1
         writer.close()
+        meta_writer.close()
         logging.info("Write %s done. %d records" % (fpath, count))
 
 
