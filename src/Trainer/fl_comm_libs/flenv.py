@@ -66,7 +66,7 @@ class FLEnv(object):
 
     def fl_run_generator(self, fl_func):
         """
-        如果是本地模式(无coordinator和proxy)则不需要注册和配对
+        wrapper for your main fl_func
         """
         if not fl_func.__call__:
             raise TypeError("fl_run should be a function")
@@ -75,7 +75,8 @@ class FLEnv(object):
             logging.info("local debug mode: %s" % self.local_debug)
             run_config = self.mconfig
 
-            # 注册和配对
+            # registration and making pairs
+            # local mode does not need registration or making pairs
             if self.local_debug: 
                 channel_comm_uuid = 'jdfl_TrainerWorkerService_%s' % \
                     run_config["worker_id"]
@@ -85,39 +86,35 @@ class FLEnv(object):
                    run_config['local_addr'])
             self.mconfig["channel_comm_uuid"] = channel_comm_uuid
             
-            # 目录清理
+            # clean dirs
             is_chief = kwargs['is_chief']
             run_config = kwargs['run_config']
             logging.info("is_chief: %s" % is_chief)
             logging.info("run_config: %s" % run_config)
 
             util.rm_dir('_tmp/')
-            if is_chief:
-                util.mk_dir(run_config['model_dir'])
-                util.rm_dir(run_config['export_dir'])
-                util.run("cp %s %s" % (sys.argv[0], 'logs'))
+            util.mk_dir(run_config['model_dir'])
+            util.rm_dir(run_config['export_dir'])
 
-            # checkpoint恢复，chief 首次启动时下载checkpoint
+            # download checkpoint when needed
             if run_config["checkpoint_hdfs_path"]:
-                # 首次启动时SUCCESS_FILE应不存在
+                # it is possible that the process is restarted
+                # the `SUCCESS_FILE` should not exists when first started
                 SUCCESS_FILE = os.path.join(run_config["model_dir"],
                     'DOWNLOAD_SUCCESS')
-                if is_chief and not os.path.exists(SUCCESS_FILE):
+                if not os.path.exists(SUCCESS_FILE):
                     util.download_from_hdfs(run_config["checkpoint_hdfs_path"], 
                         run_config["model_dir"])
                     util.run('touch %s' % SUCCESS_FILE)
-                else:
-                    while not os.path.exists(SUCCESS_FILE):
-                        logging.info("checkpoint not restored, sleep 30s")
-                        time.sleep(30)
-            # 主函数
+
+            # your main func
             fl_func(*args, **kwargs)
 
         return func
 
     def _parse_mconfig(self, FLAGS):
         """
-        获取运行时配置，优先从环境变量拿
+        get runtime config, env variable first
         """
         self.local_debug = FLAGS.local_debug == 1
 
@@ -125,7 +122,7 @@ class FLEnv(object):
         mconfig['role'] = FLAGS.role
         # App ID
         mconfig['appli_id'] = FLAGS.appli_id
-        env_appli_id = os.environ.get('AppID')
+        env_appli_id = os.environ.get('app_id')
         if env_appli_id is not None:
             mconfig['appli_id'] = env_appli_id
 
@@ -135,7 +132,8 @@ class FLEnv(object):
         if env_worker_id is not None:
             mconfig['worker_id'] = env_worker_id
         
-        # 和coordinator通信: 注册和配对
+        # channel for coordinator
+        # for registration and making pairs
         channel_appli_id = '%s_TrainerWorkerService_%s' % (
             mconfig['appli_id'], mconfig['worker_id'])
         mconfig["channel_appli_id"] = channel_appli_id
@@ -157,7 +155,6 @@ class FLEnv(object):
         if env_port is not None:
             port = env_port.split(',')[0]
             local_ip = socket.gethostbyname(socket.gethostname())
-            #local_ip = 'localhost'
             mconfig['local_addr'] = str(local_ip) + ':' + str(port)
             mconfig['bind_addr'] = '[::]:' + str(port)
 
