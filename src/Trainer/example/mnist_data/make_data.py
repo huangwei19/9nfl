@@ -30,6 +30,7 @@ def download_mnist():
     download mnist data use tf
     save as `mnist_x.npy` and `mnist_y.npy` 
     """
+    logging.info("Generate mnist_x.npy and mnist_y.npy")
     (x, y), _ = tf.keras.datasets.mnist.load_data()
     np.save('mnist_x', x)
     np.save('mnist_y', y)
@@ -44,6 +45,7 @@ def load_data():
     split each record into leader_part and follower_part
     and allocate example_id for each record
     """
+    logging.info("Load mnist_x.npy and mnist_y.npy")
     x = np.load('mnist_x.npy')
     y = np.load('mnist_y.npy')
     x = x.reshape(x.shape[0], -1).astype(np.float32) / 255.0
