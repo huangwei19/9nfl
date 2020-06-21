@@ -1,41 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/common_pb2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/common_pb2_grpc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/data_join_service_pb2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/data_join_service_pb2_grpc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/etcd_client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/metrics.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/mock_etcd.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/proxy_data_pb2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/common/proxy_data_pb2_grpc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/common.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_visitor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_join_worker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_id_dumper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_id_sync_follower.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_id_sync_leader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_id_visitor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_join_follower.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/example_join_leader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/example_joiner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/stream_joiner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_iter_impl/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_iter_impl/raw_data_iter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_iter_impl/tf_record_iter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_visitor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/routine_worker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/proxy/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/proxy/channel.py" beforeDir="false" />
-    </list>
+    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +23,8 @@
         <counts>
           <entry key="json" value="2" />
           <entry key="md" value="1" />
-          <entry key="proto" value="6" />
-          <entry key="py" value="193" />
+          <entry key="proto" value="8" />
+          <entry key="py" value="197" />
           <entry key="pylintrc" value="1" />
           <entry key="sh" value="7" />
         </counts>
@@ -67,8 +33,8 @@
         <counts>
           <entry key="JSON" value="2" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="193" />
+          <entry key="PLAIN_TEXT" value="16" />
+          <entry key="Python" value="197" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -89,10 +55,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-620">
+            <state relative-caret-position="-260">
               <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -101,11 +67,46 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/service.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="790">
-              <caret line="43" column="19" lean-forward="true" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+            <state relative-caret-position="200">
+              <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/common/metrics.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="500">
+              <caret line="25" column="19" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="19" />
+              <folding>
+                <element signature="e#647#658#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protocols/fedlearner/common/common.proto">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protocols/fedlearner/common/proxy_data.proto">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/db/db_models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -121,7 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CoordinatorManagers</find>
       <find>from fedlearner.</find>
       <find>data_intersection_leader_pb2</find>
       <find>data_intersection_leader_pb2_grpc</find>
@@ -151,6 +151,7 @@
       <find>data_center_ip</find>
       <find>get_url</find>
       <find>data_joiner_factory</find>
+      <find>MetricsClient</find>
     </findStrings>
     <replaceStrings>
       <replace>self._source_data</replace>
@@ -257,17 +258,6 @@
             <path>
               <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
               <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="conf" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="conf" type="462c0819:PsiDirectoryNode" />
-              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -289,11 +279,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols\fedlearner\common" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin" />
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols\data_join\common" />
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\common" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\data_join\joiner_impl" />
@@ -330,7 +320,7 @@
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24494745" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3039612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -366,30 +356,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/apps/coordinator_app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-206">
-          <caret line="6" column="42" lean-forward="true" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/apps/schedule_app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
-          <folding>
-            <element signature="e#2#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/common/etcd_client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/proto/build_py_proto.sh">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -637,13 +603,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/db/db_models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/route_server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="43">
@@ -678,27 +637,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-620">
-          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1982">
           <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2006">
-          <caret line="6" column="16" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -740,6 +682,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/example_joiner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/proxy/channel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1200">
@@ -750,17 +706,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/example_joiner.py">
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/common/metrics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="14" />
+        <state relative-caret-position="500">
+          <caret line="25" column="19" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="19" />
+          <folding>
+            <element signature="e#647#658#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/service.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="790">
-          <caret line="43" column="19" lean-forward="true" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+        <state relative-caret-position="200">
+          <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protocols/fedlearner/common/common.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protocols/fedlearner/common/proxy_data.proto">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/db/db_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-260">
+          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
