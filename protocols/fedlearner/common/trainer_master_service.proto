@@ -15,7 +15,7 @@
 
 syntax = "proto3";
 
-package fedlearner.common;
+package DataJoin.common;
 import "fedlearner/common/common.proto";
 
 message DataBlockRequest {

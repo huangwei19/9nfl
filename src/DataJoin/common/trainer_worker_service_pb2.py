@@ -19,10 +19,10 @@ from DataJoin.common import common_pb2 as fedlearner_dot_common_dot_common__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='fedlearner/common/trainer_worker_service.proto',
-  package='fedlearner.common',
+  package='DataJoin.common',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n.fedlearner/common/trainer_worker_service.proto\x12\x11\x66\x65\x64learner.common\x1a&tensorflow/core/framework/tensor.proto\x1a\x1e\x66\x65\x64learner/common/common.proto\"7\n\x0fPrefetchMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\x12\x13\n\x0b\x65xample_ids\x18\x02 \x03(\x04\"\x1f\n\x0cStartMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\" \n\rCommitMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\"U\n\x0b\x44\x61taMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\'\n\x06tensor\x18\x03 \x01(\x0b\x32\x17.tensorflow.TensorProto\"\xfc\x01\n\x14TrainerWorkerMessage\x12\x0f\n\x07seq_num\x18\x01 \x01(\x04\x12\x36\n\x08prefetch\x18\x02 \x01(\x0b\x32\".fedlearner.common.PrefetchMessageH\x00\x12\x30\n\x05start\x18\x03 \x01(\x0b\x32\x1f.fedlearner.common.StartMessageH\x00\x12\x32\n\x06\x63ommit\x18\x04 \x01(\x0b\x32 .fedlearner.common.CommitMessageH\x00\x12.\n\x04\x64\x61ta\x18\x05 \x01(\x0b\x32\x1e.fedlearner.common.DataMessageH\x00\x42\x05\n\x03msg\"X\n\x15TrainerWorkerResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.fedlearner.common.Status\x12\x14\n\x0cnext_seq_num\x18\x02 \x01(\x04\"7\n\x14LoadDataBlockRequest\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\x12\x10\n\x08\x62lock_id\x18\x02 \x01(\t\"5\n\x0e\x43onnectRequest\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\"6\n\x0f\x43onnectResponse\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\"\x12\n\x10HeartbeatRequest\"Q\n\x11HeartbeatResponse\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\x12\x17\n\x0f\x63urrent_iter_id\x18\x03 \x01(\x04\x32\xe7\x03\n\x14TrainerWorkerService\x12_\n\x08Transmit\x12\'.fedlearner.common.TrainerWorkerMessage\x1a(.fedlearner.common.TrainerWorkerResponse\"\x00\x12i\n\x0eStreamTransmit\x12\'.fedlearner.common.TrainerWorkerMessage\x1a(.fedlearner.common.TrainerWorkerResponse\"\x00(\x01\x30\x01\x12U\n\rLoadDataBlock\x12\'.fedlearner.common.LoadDataBlockRequest\x1a\x19.fedlearner.common.Status\"\x00\x12R\n\x07\x43onnect\x12!.fedlearner.common.ConnectRequest\x1a\".fedlearner.common.ConnectResponse\"\x00\x12X\n\tHeartbeat\x12#.fedlearner.common.HeartbeatRequest\x1a$.fedlearner.common.HeartbeatResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n.fedlearner/common/trainer_worker_service.proto\x12\x11\x66\x65\x64learner.common\x1a&tensorflow/core/framework/tensor.proto\x1a\x1e\x66\x65\x64learner/common/common.proto\"7\n\x0fPrefetchMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\x12\x13\n\x0b\x65xample_ids\x18\x02 \x03(\x04\"\x1f\n\x0cStartMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\" \n\rCommitMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\"U\n\x0b\x44\x61taMessage\x12\x0f\n\x07iter_id\x18\x01 \x01(\x04\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\'\n\x06tensor\x18\x03 \x01(\x0b\x32\x17.tensorflow.TensorProto\"\xfc\x01\n\x14TrainerWorkerMessage\x12\x0f\n\x07seq_num\x18\x01 \x01(\x04\x12\x36\n\x08prefetch\x18\x02 \x01(\x0b\x32\".DataJoin.common.PrefetchMessageH\x00\x12\x30\n\x05start\x18\x03 \x01(\x0b\x32\x1f.DataJoin.common.StartMessageH\x00\x12\x32\n\x06\x63ommit\x18\x04 \x01(\x0b\x32 .DataJoin.common.CommitMessageH\x00\x12.\n\x04\x64\x61ta\x18\x05 \x01(\x0b\x32\x1e.DataJoin.common.DataMessageH\x00\x42\x05\n\x03msg\"X\n\x15TrainerWorkerResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.DataJoin.common.Status\x12\x14\n\x0cnext_seq_num\x18\x02 \x01(\x04\"7\n\x14LoadDataBlockRequest\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\x12\x10\n\x08\x62lock_id\x18\x02 \x01(\t\"5\n\x0e\x43onnectRequest\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\"6\n\x0f\x43onnectResponse\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\"\x12\n\x10HeartbeatRequest\"Q\n\x11HeartbeatResponse\x12\x0e\n\x06\x61pp_id\x18\x01 \x01(\t\x12\x13\n\x0bworker_rank\x18\x02 \x01(\r\x12\x17\n\x0f\x63urrent_iter_id\x18\x03 \x01(\x04\x32\xe7\x03\n\x14TrainerWorkerService\x12_\n\x08Transmit\x12\'.DataJoin.common.TrainerWorkerMessage\x1a(.DataJoin.common.TrainerWorkerResponse\"\x00\x12i\n\x0eStreamTransmit\x12\'.DataJoin.common.TrainerWorkerMessage\x1a(.DataJoin.common.TrainerWorkerResponse\"\x00(\x01\x30\x01\x12U\n\rLoadDataBlock\x12\'.DataJoin.common.LoadDataBlockRequest\x1a\x19.DataJoin.common.Status\"\x00\x12R\n\x07\x43onnect\x12!.DataJoin.common.ConnectRequest\x1a\".DataJoin.common.ConnectResponse\"\x00\x12X\n\tHeartbeat\x12#.DataJoin.common.HeartbeatRequest\x1a$.DataJoin.common.HeartbeatResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[tensorflow_dot_core_dot_framework_dot_tensor__pb2.DESCRIPTOR,fedlearner_dot_common_dot_common__pb2.DESCRIPTOR,])
 
@@ -31,20 +31,20 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _PREFETCHMESSAGE = _descriptor.Descriptor(
   name='PrefetchMessage',
-  full_name='fedlearner.common.PrefetchMessage',
+  full_name='DataJoin.common.PrefetchMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='iter_id', full_name='fedlearner.common.PrefetchMessage.iter_id', index=0,
+      name='iter_id', full_name='DataJoin.common.PrefetchMessage.iter_id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_ids', full_name='fedlearner.common.PrefetchMessage.example_ids', index=1,
+      name='example_ids', full_name='DataJoin.common.PrefetchMessage.example_ids', index=1,
       number=2, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -69,13 +69,13 @@ _PREFETCHMESSAGE = _descriptor.Descriptor(
 
 _STARTMESSAGE = _descriptor.Descriptor(
   name='StartMessage',
-  full_name='fedlearner.common.StartMessage',
+  full_name='DataJoin.common.StartMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='iter_id', full_name='fedlearner.common.StartMessage.iter_id', index=0,
+      name='iter_id', full_name='DataJoin.common.StartMessage.iter_id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -100,13 +100,13 @@ _STARTMESSAGE = _descriptor.Descriptor(
 
 _COMMITMESSAGE = _descriptor.Descriptor(
   name='CommitMessage',
-  full_name='fedlearner.common.CommitMessage',
+  full_name='DataJoin.common.CommitMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='iter_id', full_name='fedlearner.common.CommitMessage.iter_id', index=0,
+      name='iter_id', full_name='DataJoin.common.CommitMessage.iter_id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -131,27 +131,27 @@ _COMMITMESSAGE = _descriptor.Descriptor(
 
 _DATAMESSAGE = _descriptor.Descriptor(
   name='DataMessage',
-  full_name='fedlearner.common.DataMessage',
+  full_name='DataJoin.common.DataMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='iter_id', full_name='fedlearner.common.DataMessage.iter_id', index=0,
+      name='iter_id', full_name='DataJoin.common.DataMessage.iter_id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='fedlearner.common.DataMessage.name', index=1,
+      name='name', full_name='DataJoin.common.DataMessage.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='fedlearner.common.DataMessage.tensor', index=2,
+      name='tensor', full_name='DataJoin.common.DataMessage.tensor', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -176,41 +176,41 @@ _DATAMESSAGE = _descriptor.Descriptor(
 
 _TRAINERWORKERMESSAGE = _descriptor.Descriptor(
   name='TrainerWorkerMessage',
-  full_name='fedlearner.common.TrainerWorkerMessage',
+  full_name='DataJoin.common.TrainerWorkerMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='seq_num', full_name='fedlearner.common.TrainerWorkerMessage.seq_num', index=0,
+      name='seq_num', full_name='DataJoin.common.TrainerWorkerMessage.seq_num', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='prefetch', full_name='fedlearner.common.TrainerWorkerMessage.prefetch', index=1,
+      name='prefetch', full_name='DataJoin.common.TrainerWorkerMessage.prefetch', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='start', full_name='fedlearner.common.TrainerWorkerMessage.start', index=2,
+      name='start', full_name='DataJoin.common.TrainerWorkerMessage.start', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='commit', full_name='fedlearner.common.TrainerWorkerMessage.commit', index=3,
+      name='commit', full_name='DataJoin.common.TrainerWorkerMessage.commit', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data', full_name='fedlearner.common.TrainerWorkerMessage.data', index=4,
+      name='data', full_name='DataJoin.common.TrainerWorkerMessage.data', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -228,7 +228,7 @@ _TRAINERWORKERMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='msg', full_name='fedlearner.common.TrainerWorkerMessage.msg',
+      name='msg', full_name='DataJoin.common.TrainerWorkerMessage.msg',
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=353,
@@ -238,20 +238,20 @@ _TRAINERWORKERMESSAGE = _descriptor.Descriptor(
 
 _TRAINERWORKERRESPONSE = _descriptor.Descriptor(
   name='TrainerWorkerResponse',
-  full_name='fedlearner.common.TrainerWorkerResponse',
+  full_name='DataJoin.common.TrainerWorkerResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='fedlearner.common.TrainerWorkerResponse.status', index=0,
+      name='status', full_name='DataJoin.common.TrainerWorkerResponse.status', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_seq_num', full_name='fedlearner.common.TrainerWorkerResponse.next_seq_num', index=1,
+      name='next_seq_num', full_name='DataJoin.common.TrainerWorkerResponse.next_seq_num', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -276,20 +276,20 @@ _TRAINERWORKERRESPONSE = _descriptor.Descriptor(
 
 _LOADDATABLOCKREQUEST = _descriptor.Descriptor(
   name='LoadDataBlockRequest',
-  full_name='fedlearner.common.LoadDataBlockRequest',
+  full_name='DataJoin.common.LoadDataBlockRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='count', full_name='fedlearner.common.LoadDataBlockRequest.count', index=0,
+      name='count', full_name='DataJoin.common.LoadDataBlockRequest.count', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='block_id', full_name='fedlearner.common.LoadDataBlockRequest.block_id', index=1,
+      name='block_id', full_name='DataJoin.common.LoadDataBlockRequest.block_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -314,20 +314,20 @@ _LOADDATABLOCKREQUEST = _descriptor.Descriptor(
 
 _CONNECTREQUEST = _descriptor.Descriptor(
   name='ConnectRequest',
-  full_name='fedlearner.common.ConnectRequest',
+  full_name='DataJoin.common.ConnectRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='app_id', full_name='fedlearner.common.ConnectRequest.app_id', index=0,
+      name='app_id', full_name='DataJoin.common.ConnectRequest.app_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='worker_rank', full_name='fedlearner.common.ConnectRequest.worker_rank', index=1,
+      name='worker_rank', full_name='DataJoin.common.ConnectRequest.worker_rank', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -352,20 +352,20 @@ _CONNECTREQUEST = _descriptor.Descriptor(
 
 _CONNECTRESPONSE = _descriptor.Descriptor(
   name='ConnectResponse',
-  full_name='fedlearner.common.ConnectResponse',
+  full_name='DataJoin.common.ConnectResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='app_id', full_name='fedlearner.common.ConnectResponse.app_id', index=0,
+      name='app_id', full_name='DataJoin.common.ConnectResponse.app_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='worker_rank', full_name='fedlearner.common.ConnectResponse.worker_rank', index=1,
+      name='worker_rank', full_name='DataJoin.common.ConnectResponse.worker_rank', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -390,7 +390,7 @@ _CONNECTRESPONSE = _descriptor.Descriptor(
 
 _HEARTBEATREQUEST = _descriptor.Descriptor(
   name='HeartbeatRequest',
-  full_name='fedlearner.common.HeartbeatRequest',
+  full_name='DataJoin.common.HeartbeatRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -414,27 +414,27 @@ _HEARTBEATREQUEST = _descriptor.Descriptor(
 
 _HEARTBEATRESPONSE = _descriptor.Descriptor(
   name='HeartbeatResponse',
-  full_name='fedlearner.common.HeartbeatResponse',
+  full_name='DataJoin.common.HeartbeatResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='app_id', full_name='fedlearner.common.HeartbeatResponse.app_id', index=0,
+      name='app_id', full_name='DataJoin.common.HeartbeatResponse.app_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='worker_rank', full_name='fedlearner.common.HeartbeatResponse.worker_rank', index=1,
+      name='worker_rank', full_name='DataJoin.common.HeartbeatResponse.worker_rank', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='current_iter_id', full_name='fedlearner.common.HeartbeatResponse.current_iter_id', index=2,
+      name='current_iter_id', full_name='DataJoin.common.HeartbeatResponse.current_iter_id', index=2,
       number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -489,78 +489,78 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 PrefetchMessage = _reflection.GeneratedProtocolMessageType('PrefetchMessage', (_message.Message,), {
   'DESCRIPTOR' : _PREFETCHMESSAGE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.PrefetchMessage)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.PrefetchMessage)
   })
 _sym_db.RegisterMessage(PrefetchMessage)
 
 StartMessage = _reflection.GeneratedProtocolMessageType('StartMessage', (_message.Message,), {
   'DESCRIPTOR' : _STARTMESSAGE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.StartMessage)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.StartMessage)
   })
 _sym_db.RegisterMessage(StartMessage)
 
 CommitMessage = _reflection.GeneratedProtocolMessageType('CommitMessage', (_message.Message,), {
   'DESCRIPTOR' : _COMMITMESSAGE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.CommitMessage)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.CommitMessage)
   })
 _sym_db.RegisterMessage(CommitMessage)
 
 DataMessage = _reflection.GeneratedProtocolMessageType('DataMessage', (_message.Message,), {
   'DESCRIPTOR' : _DATAMESSAGE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataMessage)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataMessage)
   })
 _sym_db.RegisterMessage(DataMessage)
 
 TrainerWorkerMessage = _reflection.GeneratedProtocolMessageType('TrainerWorkerMessage', (_message.Message,), {
   'DESCRIPTOR' : _TRAINERWORKERMESSAGE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.TrainerWorkerMessage)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.TrainerWorkerMessage)
   })
 _sym_db.RegisterMessage(TrainerWorkerMessage)
 
 TrainerWorkerResponse = _reflection.GeneratedProtocolMessageType('TrainerWorkerResponse', (_message.Message,), {
   'DESCRIPTOR' : _TRAINERWORKERRESPONSE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.TrainerWorkerResponse)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.TrainerWorkerResponse)
   })
 _sym_db.RegisterMessage(TrainerWorkerResponse)
 
 LoadDataBlockRequest = _reflection.GeneratedProtocolMessageType('LoadDataBlockRequest', (_message.Message,), {
   'DESCRIPTOR' : _LOADDATABLOCKREQUEST,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.LoadDataBlockRequest)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.LoadDataBlockRequest)
   })
 _sym_db.RegisterMessage(LoadDataBlockRequest)
 
 ConnectRequest = _reflection.GeneratedProtocolMessageType('ConnectRequest', (_message.Message,), {
   'DESCRIPTOR' : _CONNECTREQUEST,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.ConnectRequest)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.ConnectRequest)
   })
 _sym_db.RegisterMessage(ConnectRequest)
 
 ConnectResponse = _reflection.GeneratedProtocolMessageType('ConnectResponse', (_message.Message,), {
   'DESCRIPTOR' : _CONNECTRESPONSE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.ConnectResponse)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.ConnectResponse)
   })
 _sym_db.RegisterMessage(ConnectResponse)
 
 HeartbeatRequest = _reflection.GeneratedProtocolMessageType('HeartbeatRequest', (_message.Message,), {
   'DESCRIPTOR' : _HEARTBEATREQUEST,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.HeartbeatRequest)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.HeartbeatRequest)
   })
 _sym_db.RegisterMessage(HeartbeatRequest)
 
 HeartbeatResponse = _reflection.GeneratedProtocolMessageType('HeartbeatResponse', (_message.Message,), {
   'DESCRIPTOR' : _HEARTBEATRESPONSE,
-  '__module__' : 'fedlearner.common.trainer_worker_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.HeartbeatResponse)
+  '__module__' : 'DataJoin.common.trainer_worker_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.HeartbeatResponse)
   })
 _sym_db.RegisterMessage(HeartbeatResponse)
 
@@ -568,7 +568,7 @@ _sym_db.RegisterMessage(HeartbeatResponse)
 
 _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   name='TrainerWorkerService',
-  full_name='fedlearner.common.TrainerWorkerService',
+  full_name='DataJoin.common.TrainerWorkerService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -577,7 +577,7 @@ _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Transmit',
-    full_name='fedlearner.common.TrainerWorkerService.Transmit',
+    full_name='DataJoin.common.TrainerWorkerService.Transmit',
     index=0,
     containing_service=None,
     input_type=_TRAINERWORKERMESSAGE,
@@ -586,7 +586,7 @@ _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='StreamTransmit',
-    full_name='fedlearner.common.TrainerWorkerService.StreamTransmit',
+    full_name='DataJoin.common.TrainerWorkerService.StreamTransmit',
     index=1,
     containing_service=None,
     input_type=_TRAINERWORKERMESSAGE,
@@ -595,7 +595,7 @@ _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='LoadDataBlock',
-    full_name='fedlearner.common.TrainerWorkerService.LoadDataBlock',
+    full_name='DataJoin.common.TrainerWorkerService.LoadDataBlock',
     index=2,
     containing_service=None,
     input_type=_LOADDATABLOCKREQUEST,
@@ -604,7 +604,7 @@ _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='Connect',
-    full_name='fedlearner.common.TrainerWorkerService.Connect',
+    full_name='DataJoin.common.TrainerWorkerService.Connect',
     index=3,
     containing_service=None,
     input_type=_CONNECTREQUEST,
@@ -613,7 +613,7 @@ _TRAINERWORKERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='Heartbeat',
-    full_name='fedlearner.common.TrainerWorkerService.Heartbeat',
+    full_name='DataJoin.common.TrainerWorkerService.Heartbeat',
     index=4,
     containing_service=None,
     input_type=_HEARTBEATREQUEST,

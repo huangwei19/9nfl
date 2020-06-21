@@ -18,10 +18,10 @@ from DataJoin.common import common_pb2 as fedlearner_dot_common_dot_common__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='fedlearner/common/trainer_master_service.proto',
-  package='fedlearner.common',
+  package='DataJoin.common',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n.fedlearner/common/trainer_master_service.proto\x12\x11\x66\x65\x64learner.common\x1a\x1e\x66\x65\x64learner/common/common.proto\"9\n\x10\x44\x61taBlockRequest\x12\x13\n\x0bworker_rank\x18\x01 \x01(\r\x12\x10\n\x08\x62lock_id\x18\x02 \x01(\t\"G\n\rDataBlockInfo\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\t\x12\x11\n\tdata_path\x18\x02 \x01(\t\x12\x11\n\tmeta_path\x18\x03 \x01(\t\"y\n\x11\x44\x61taBlockResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.fedlearner.common.Status\x12\x39\n\x0f\x64\x61ta_block_info\x18\x02 \x01(\x0b\x32 .fedlearner.common.DataBlockInfo2w\n\x14TrainerMasterService\x12_\n\x10RequestDataBlock\x12#.fedlearner.common.DataBlockRequest\x1a$.fedlearner.common.DataBlockResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n.fedlearner/common/trainer_master_service.proto\x12\x11\x66\x65\x64learner.common\x1a\x1e\x66\x65\x64learner/common/common.proto\"9\n\x10\x44\x61taBlockRequest\x12\x13\n\x0bworker_rank\x18\x01 \x01(\r\x12\x10\n\x08\x62lock_id\x18\x02 \x01(\t\"G\n\rDataBlockInfo\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\t\x12\x11\n\tdata_path\x18\x02 \x01(\t\x12\x11\n\tmeta_path\x18\x03 \x01(\t\"y\n\x11\x44\x61taBlockResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.DataJoin.common.Status\x12\x39\n\x0f\x64\x61ta_block_info\x18\x02 \x01(\x0b\x32 .DataJoin.common.DataBlockInfo2w\n\x14TrainerMasterService\x12_\n\x10RequestDataBlock\x12#.DataJoin.common.DataBlockRequest\x1a$.DataJoin.common.DataBlockResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[fedlearner_dot_common_dot_common__pb2.DESCRIPTOR,])
 
@@ -30,20 +30,20 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _DATABLOCKREQUEST = _descriptor.Descriptor(
   name='DataBlockRequest',
-  full_name='fedlearner.common.DataBlockRequest',
+  full_name='DataJoin.common.DataBlockRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='worker_rank', full_name='fedlearner.common.DataBlockRequest.worker_rank', index=0,
+      name='worker_rank', full_name='DataJoin.common.DataBlockRequest.worker_rank', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='block_id', full_name='fedlearner.common.DataBlockRequest.block_id', index=1,
+      name='block_id', full_name='DataJoin.common.DataBlockRequest.block_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -68,27 +68,27 @@ _DATABLOCKREQUEST = _descriptor.Descriptor(
 
 _DATABLOCKINFO = _descriptor.Descriptor(
   name='DataBlockInfo',
-  full_name='fedlearner.common.DataBlockInfo',
+  full_name='DataJoin.common.DataBlockInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='block_id', full_name='fedlearner.common.DataBlockInfo.block_id', index=0,
+      name='block_id', full_name='DataJoin.common.DataBlockInfo.block_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data_path', full_name='fedlearner.common.DataBlockInfo.data_path', index=1,
+      name='data_path', full_name='DataJoin.common.DataBlockInfo.data_path', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='meta_path', full_name='fedlearner.common.DataBlockInfo.meta_path', index=2,
+      name='meta_path', full_name='DataJoin.common.DataBlockInfo.meta_path', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -113,20 +113,20 @@ _DATABLOCKINFO = _descriptor.Descriptor(
 
 _DATABLOCKRESPONSE = _descriptor.Descriptor(
   name='DataBlockResponse',
-  full_name='fedlearner.common.DataBlockResponse',
+  full_name='DataJoin.common.DataBlockResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='fedlearner.common.DataBlockResponse.status', index=0,
+      name='status', full_name='DataJoin.common.DataBlockResponse.status', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data_block_info', full_name='fedlearner.common.DataBlockResponse.data_block_info', index=1,
+      name='data_block_info', full_name='DataJoin.common.DataBlockResponse.data_block_info', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -157,22 +157,22 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 DataBlockRequest = _reflection.GeneratedProtocolMessageType('DataBlockRequest', (_message.Message,), {
   'DESCRIPTOR' : _DATABLOCKREQUEST,
-  '__module__' : 'fedlearner.common.trainer_master_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataBlockRequest)
+  '__module__' : 'DataJoin.common.trainer_master_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataBlockRequest)
   })
 _sym_db.RegisterMessage(DataBlockRequest)
 
 DataBlockInfo = _reflection.GeneratedProtocolMessageType('DataBlockInfo', (_message.Message,), {
   'DESCRIPTOR' : _DATABLOCKINFO,
-  '__module__' : 'fedlearner.common.trainer_master_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataBlockInfo)
+  '__module__' : 'DataJoin.common.trainer_master_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataBlockInfo)
   })
 _sym_db.RegisterMessage(DataBlockInfo)
 
 DataBlockResponse = _reflection.GeneratedProtocolMessageType('DataBlockResponse', (_message.Message,), {
   'DESCRIPTOR' : _DATABLOCKRESPONSE,
-  '__module__' : 'fedlearner.common.trainer_master_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataBlockResponse)
+  '__module__' : 'DataJoin.common.trainer_master_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataBlockResponse)
   })
 _sym_db.RegisterMessage(DataBlockResponse)
 
@@ -180,7 +180,7 @@ _sym_db.RegisterMessage(DataBlockResponse)
 
 _TRAINERMASTERSERVICE = _descriptor.ServiceDescriptor(
   name='TrainerMasterService',
-  full_name='fedlearner.common.TrainerMasterService',
+  full_name='DataJoin.common.TrainerMasterService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -189,7 +189,7 @@ _TRAINERMASTERSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='RequestDataBlock',
-    full_name='fedlearner.common.TrainerMasterService.RequestDataBlock',
+    full_name='DataJoin.common.TrainerMasterService.RequestDataBlock',
     index=0,
     containing_service=None,
     input_type=_DATABLOCKREQUEST,

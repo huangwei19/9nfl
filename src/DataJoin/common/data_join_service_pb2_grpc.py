@@ -17,42 +17,42 @@ class DataJoinMasterServiceStub(object):
       channel: A grpc.Channel.
     """
     self.GetDataSource = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/GetDataSource',
+        '/DataJoin.common.DataJoinMasterService/GetDataSource',
         request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.DataSource.FromString,
         )
     self.GetDataSourceStatus = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/GetDataSourceStatus',
+        '/DataJoin.common.DataJoinMasterService/GetDataSourceStatus',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.DataSourceRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_data__join__service__pb2.DataSourceStatus.FromString,
         )
     self.AbortDataSource = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/AbortDataSource',
+        '/DataJoin.common.DataJoinMasterService/AbortDataSource',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.DataSourceRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
     self.RequestJoinPartition = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/RequestJoinPartition',
+        '/DataJoin.common.DataJoinMasterService/RequestJoinPartition',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataResponse.FromString,
         )
     self.FinishJoinPartition = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/FinishJoinPartition',
+        '/DataJoin.common.DataJoinMasterService/FinishJoinPartition',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
     self.QueryRawDataManifest = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/QueryRawDataManifest',
+        '/DataJoin.common.DataJoinMasterService/QueryRawDataManifest',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataManifest.FromString,
         )
     self.FinishRawData = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/FinishRawData',
+        '/DataJoin.common.DataJoinMasterService/FinishRawData',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
     self.AddRawData = channel.unary_unary(
-        '/fedlearner.common.DataJoinMasterService/AddRawData',
+        '/DataJoin.common.DataJoinMasterService/AddRawData',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.RawDataRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
@@ -163,7 +163,7 @@ def add_DataJoinMasterServiceServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'fedlearner.common.DataJoinMasterService', rpc_method_handlers)
+      'DataJoin.common.DataJoinMasterService', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -178,17 +178,17 @@ class DataJoinServiceStub(object):
       channel: A grpc.Channel.
     """
     self.StartPartition = channel.unary_unary(
-        '/fedlearner.common.DataJoinService/StartPartition',
+        '/DataJoin.common.DataJoinService/StartPartition',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.StartPartitionRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_data__join__service__pb2.StartPartitionResponse.FromString,
         )
     self.SyncPartition = channel.unary_unary(
-        '/fedlearner.common.DataJoinService/SyncPartition',
+        '/DataJoin.common.DataJoinService/SyncPartition',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.SyncPartitionRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
     self.FinishPartition = channel.unary_unary(
-        '/fedlearner.common.DataJoinService/FinishPartition',
+        '/DataJoin.common.DataJoinService/FinishPartition',
         request_serializer=fedlearner_dot_common_dot_data__join__service__pb2.FinishPartitionRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_data__join__service__pb2.FinishPartitionResponse.FromString,
         )
@@ -239,5 +239,5 @@ def add_DataJoinServiceServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'fedlearner.common.DataJoinService', rpc_method_handlers)
+      'DataJoin.common.DataJoinService', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

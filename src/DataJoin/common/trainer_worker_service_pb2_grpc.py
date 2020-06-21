@@ -16,27 +16,27 @@ class TrainerWorkerServiceStub(object):
       channel: A grpc.Channel.
     """
     self.Transmit = channel.unary_unary(
-        '/fedlearner.common.TrainerWorkerService/Transmit',
+        '/DataJoin.common.TrainerWorkerService/Transmit',
         request_serializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.TrainerWorkerMessage.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.TrainerWorkerResponse.FromString,
         )
     self.StreamTransmit = channel.stream_stream(
-        '/fedlearner.common.TrainerWorkerService/StreamTransmit',
+        '/DataJoin.common.TrainerWorkerService/StreamTransmit',
         request_serializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.TrainerWorkerMessage.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.TrainerWorkerResponse.FromString,
         )
     self.LoadDataBlock = channel.unary_unary(
-        '/fedlearner.common.TrainerWorkerService/LoadDataBlock',
+        '/DataJoin.common.TrainerWorkerService/LoadDataBlock',
         request_serializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.LoadDataBlockRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_common__pb2.Status.FromString,
         )
     self.Connect = channel.unary_unary(
-        '/fedlearner.common.TrainerWorkerService/Connect',
+        '/DataJoin.common.TrainerWorkerService/Connect',
         request_serializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.ConnectRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.ConnectResponse.FromString,
         )
     self.Heartbeat = channel.unary_unary(
-        '/fedlearner.common.TrainerWorkerService/Heartbeat',
+        '/DataJoin.common.TrainerWorkerService/Heartbeat',
         request_serializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.HeartbeatRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_trainer__worker__service__pb2.HeartbeatResponse.FromString,
         )
@@ -111,5 +111,5 @@ def add_TrainerWorkerServiceServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'fedlearner.common.TrainerWorkerService', rpc_method_handlers)
+      'DataJoin.common.TrainerWorkerService', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

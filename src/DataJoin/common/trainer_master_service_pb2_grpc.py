@@ -15,7 +15,7 @@ class TrainerMasterServiceStub(object):
       channel: A grpc.Channel.
     """
     self.RequestDataBlock = channel.unary_unary(
-        '/fedlearner.common.TrainerMasterService/RequestDataBlock',
+        '/DataJoin.common.TrainerMasterService/RequestDataBlock',
         request_serializer=fedlearner_dot_common_dot_trainer__master__service__pb2.DataBlockRequest.SerializeToString,
         response_deserializer=fedlearner_dot_common_dot_trainer__master__service__pb2.DataBlockResponse.FromString,
         )
@@ -42,5 +42,5 @@ def add_TrainerMasterServiceServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'fedlearner.common.TrainerMasterService', rpc_method_handlers)
+      'DataJoin.common.TrainerMasterService', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

@@ -20,16 +20,16 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='fedlearner/common/data_join_service.proto',
-  package='fedlearner.common',
+  package='DataJoin.common',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n)fedlearner/common/data_join_service.proto\x12\x11\x66\x65\x64learner.common\x1a\x1e\x66\x65\x64learner/common/common.proto\x1a\x1bgoogle/protobuf/empty.proto\"P\n\x11\x44\x61taSourceRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.fedlearner.common.DataSourceMeta\"n\n\x10\x44\x61taSourceStatus\x12\'\n\x04role\x18\x01 \x01(\x0e\x32\x19.fedlearner.common.FLRole\x12\x31\n\x05state\x18\x02 \x01(\x0e\x32\".fedlearner.common.DataSourceState\"Y\n\x10SyncExampleIdRep\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x34\n\x05state\x18\x02 \x01(\x0e\x32%.fedlearner.common.SyncExampleIdState\"U\n\x0eJoinExampleRep\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x32\n\x05state\x18\x02 \x01(\x0e\x32#.fedlearner.common.JoinExampleState\"\xd4\x01\n\x0fRawDataManifest\x12\x14\n\x0cpartition_id\x18\x01 \x01(\x03\x12@\n\x13sync_example_id_rep\x18\x02 \x01(\x0b\x32#.fedlearner.common.SyncExampleIdRep\x12;\n\x10join_example_rep\x18\x03 \x01(\x0b\x32!.fedlearner.common.JoinExampleRep\x12\x10\n\x08\x66inished\x18\x04 \x01(\x08\x12\x1a\n\x12next_process_index\x18\x05 \x01(\x03\"5\n\x0bRawDataMeta\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bstart_index\x18\x02 \x01(\x03\"5\n\x10RawDataFilePaths\x12\x12\n\nfile_paths\x18\x01 \x03(\t\x12\r\n\x05\x64\x65\x64up\x18\x02 \x01(\x08\"\xd1\x02\n\x0eRawDataRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.fedlearner.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\x12\x31\n\x0fsync_example_id\x18\x04 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12.\n\x0cjoin_example\x18\x05 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x31\n\x0f\x66inish_raw_data\x18\x06 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12>\n\x0fraw_data_fpaths\x18\x07 \x01(\x0b\x32#.fedlearner.common.RawDataFilePathsH\x00\x42\x05\n\x03msg\"\xa7\x01\n\x0fRawDataResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.fedlearner.common.Status\x12\x36\n\x08manifest\x18\x02 \x01(\x0b\x32\".fedlearner.common.RawDataManifestH\x00\x12*\n\x08\x66inished\x18\x03 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03msg\"\xf8\x01\n\rDataBlockMeta\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\t\x12\x14\n\x0cpartition_id\x18\x02 \x01(\x03\x12\x14\n\x0c\x66ile_version\x18\x03 \x01(\r\x12\x12\n\nstart_time\x18\x04 \x01(\x03\x12\x10\n\x08\x65nd_time\x18\x05 \x01(\x03\x12\x13\n\x0b\x65xample_ids\x18\x06 \x03(\x0c\x12\x1a\n\x12leader_start_index\x18\x07 \x01(\x03\x12\x18\n\x10leader_end_index\x18\x08 \x01(\x03\x12\x1e\n\x16\x66ollower_restart_index\x18\t \x01(\x03\x12\x18\n\x10\x64\x61ta_block_index\x18\n \x01(\x03\"{\n\x15StartPartitionRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.fedlearner.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\"i\n\x16StartPartitionResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.fedlearner.common.Status\x12\x12\n\nnext_index\x18\x02 \x01(\x03\x12\x10\n\x08\x66inished\x18\x03 \x01(\x08\"u\n\x0eLiteExampleIds\x12\x14\n\x0cpartition_id\x18\x01 \x01(\x03\x12\x13\n\x0b\x62\x65gin_index\x18\x02 \x01(\x03\x12\x12\n\nexample_id\x18\x03 \x03(\x0c\x12\x12\n\nevent_time\x18\x04 \x03(\x03\x12\x10\n\x08\x66inished\x18\x05 \x01(\x08\"\x90\x01\n\x0bSyncContent\x12;\n\x0f\x64\x61ta_block_meta\x18\x01 \x01(\x0b\x32 .fedlearner.common.DataBlockMetaH\x00\x12=\n\x10lite_example_ids\x18\x02 \x01(\x0b\x32!.fedlearner.common.LiteExampleIdsH\x00\x42\x05\n\x03msg\"h\n\x14SyncPartitionRequest\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x02 \x01(\x03\x12\x15\n\rcontent_bytes\x18\x03 \x01(\x0c\x12\x12\n\ncompressed\x18\x04 \x01(\x08\"|\n\x16\x46inishPartitionRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.fedlearner.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\"V\n\x17\x46inishPartitionResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.fedlearner.common.Status\x12\x10\n\x08\x66inished\x18\x02 \x01(\x08\"k\n\x17LastDumpedExampleIdMeta\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bstart_index\x18\x02 \x01(\x03\x12\x11\n\tend_index\x18\x03 \x01(\x03\x12\x15\n\rprocess_index\x18\x04 \x01(\x03\"\x8b\x01\n\x15\x44umpedExampleIdAnchor\x12?\n\tlast_meta\x18\x01 \x01(\x0b\x32*.fedlearner.common.LastDumpedExampleIdMetaH\x00\x12*\n\x08undumped\x18\x02 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03msg\"@\n\x0eRawDataOptions\x12\x15\n\rraw_data_iter\x18\x01 \x01(\t\x12\x17\n\x0f\x63ompressed_type\x18\x02 \x01(\t\"\xae\x01\n\x14\x45xampleJoinerOptions\x12\x16\n\x0e\x65xample_joiner\x18\x01 \x01(\t\x12\x1b\n\x13min_matching_window\x18\x02 \x01(\x03\x12\x1b\n\x13max_matching_window\x18\x03 \x01(\x03\x12!\n\x19\x64ump_data_block_time_span\x18\x04 \x01(\x03\x12!\n\x19\x64ump_data_block_threshold\x18\x05 \x01(\x03\"[\n\x14\x45xampleIdDumpOptions\x12 \n\x18\x65xample_id_dump_interval\x18\x01 \x01(\x03\x12!\n\x19\x65xample_id_dump_threshold\x18\x02 \x01(\x03\"\xf8\x01\n\x0f\x44\x61taJoinOptions\x12\x15\n\ruse_mock_etcd\x18\x01 \x01(\x08\x12;\n\x10raw_data_options\x18\x02 \x01(\x0b\x32!.fedlearner.common.RawDataOptions\x12G\n\x16\x65xample_joiner_options\x18\x03 \x01(\x0b\x32\'.fedlearner.common.ExampleJoinerOptions\x12H\n\x17\x65xample_id_dump_options\x18\x04 \x01(\x0b\x32\'.fedlearner.common.ExampleIdDumpOptions\".\n\x15\x44\x61taJoinMasterOptions\x12\x15\n\ruse_mock_etcd\x18\x01 \x01(\x08*;\n\x12SyncExampleIdState\x12\x0c\n\x08UnSynced\x10\x00\x12\x0b\n\x07Syncing\x10\x01\x12\n\n\x06Synced\x10\x02*9\n\x10JoinExampleState\x12\x0c\n\x08UnJoined\x10\x00\x12\x0b\n\x07Joining\x10\x01\x12\n\n\x06Joined\x10\x02\x32\xd3\x05\n\x15\x44\x61taJoinMasterService\x12H\n\rGetDataSource\x12\x16.google.protobuf.Empty\x1a\x1d.fedlearner.common.DataSource\"\x00\x12\x62\n\x13GetDataSourceStatus\x12$.fedlearner.common.DataSourceRequest\x1a#.fedlearner.common.DataSourceStatus\"\x00\x12T\n\x0f\x41\x62ortDataSource\x12$.fedlearner.common.DataSourceRequest\x1a\x19.fedlearner.common.Status\"\x00\x12_\n\x14RequestJoinPartition\x12!.fedlearner.common.RawDataRequest\x1a\".fedlearner.common.RawDataResponse\"\x00\x12U\n\x13\x46inishJoinPartition\x12!.fedlearner.common.RawDataRequest\x1a\x19.fedlearner.common.Status\"\x00\x12_\n\x14QueryRawDataManifest\x12!.fedlearner.common.RawDataRequest\x1a\".fedlearner.common.RawDataManifest\"\x00\x12O\n\rFinishRawData\x12!.fedlearner.common.RawDataRequest\x1a\x19.fedlearner.common.Status\"\x00\x12L\n\nAddRawData\x12!.fedlearner.common.RawDataRequest\x1a\x19.fedlearner.common.Status\"\x00\x32\xbd\x02\n\x0f\x44\x61taJoinService\x12g\n\x0eStartPartition\x12(.fedlearner.common.StartPartitionRequest\x1a).fedlearner.common.StartPartitionResponse\"\x00\x12U\n\rSyncPartition\x12\'.fedlearner.common.SyncPartitionRequest\x1a\x19.fedlearner.common.Status\"\x00\x12j\n\x0f\x46inishPartition\x12).fedlearner.common.FinishPartitionRequest\x1a*.fedlearner.common.FinishPartitionResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n)fedlearner/common/data_join_service.proto\x12\x11\x66\x65\x64learner.common\x1a\x1e\x66\x65\x64learner/common/common.proto\x1a\x1bgoogle/protobuf/empty.proto\"P\n\x11\x44\x61taSourceRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.DataJoin.common.DataSourceMeta\"n\n\x10\x44\x61taSourceStatus\x12\'\n\x04role\x18\x01 \x01(\x0e\x32\x19.DataJoin.common.FLRole\x12\x31\n\x05state\x18\x02 \x01(\x0e\x32\".DataJoin.common.DataSourceState\"Y\n\x10SyncExampleIdRep\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x34\n\x05state\x18\x02 \x01(\x0e\x32%.DataJoin.common.SyncExampleIdState\"U\n\x0eJoinExampleRep\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x32\n\x05state\x18\x02 \x01(\x0e\x32#.DataJoin.common.JoinExampleState\"\xd4\x01\n\x0fRawDataManifest\x12\x14\n\x0cpartition_id\x18\x01 \x01(\x03\x12@\n\x13sync_example_id_rep\x18\x02 \x01(\x0b\x32#.DataJoin.common.SyncExampleIdRep\x12;\n\x10join_example_rep\x18\x03 \x01(\x0b\x32!.DataJoin.common.JoinExampleRep\x12\x10\n\x08\x66inished\x18\x04 \x01(\x08\x12\x1a\n\x12next_process_index\x18\x05 \x01(\x03\"5\n\x0bRawDataMeta\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bstart_index\x18\x02 \x01(\x03\"5\n\x10RawDataFilePaths\x12\x12\n\nfile_paths\x18\x01 \x03(\t\x12\r\n\x05\x64\x65\x64up\x18\x02 \x01(\x08\"\xd1\x02\n\x0eRawDataRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.DataJoin.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\x12\x31\n\x0fsync_example_id\x18\x04 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12.\n\x0cjoin_example\x18\x05 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12\x31\n\x0f\x66inish_raw_data\x18\x06 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12>\n\x0fraw_data_fpaths\x18\x07 \x01(\x0b\x32#.DataJoin.common.RawDataFilePathsH\x00\x42\x05\n\x03msg\"\xa7\x01\n\x0fRawDataResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.DataJoin.common.Status\x12\x36\n\x08manifest\x18\x02 \x01(\x0b\x32\".DataJoin.common.RawDataManifestH\x00\x12*\n\x08\x66inished\x18\x03 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03msg\"\xf8\x01\n\rDataBlockMeta\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\t\x12\x14\n\x0cpartition_id\x18\x02 \x01(\x03\x12\x14\n\x0c\x66ile_version\x18\x03 \x01(\r\x12\x12\n\nstart_time\x18\x04 \x01(\x03\x12\x10\n\x08\x65nd_time\x18\x05 \x01(\x03\x12\x13\n\x0b\x65xample_ids\x18\x06 \x03(\x0c\x12\x1a\n\x12leader_start_index\x18\x07 \x01(\x03\x12\x18\n\x10leader_end_index\x18\x08 \x01(\x03\x12\x1e\n\x16\x66ollower_restart_index\x18\t \x01(\x03\x12\x18\n\x10\x64\x61ta_block_index\x18\n \x01(\x03\"{\n\x15StartPartitionRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.DataJoin.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\"i\n\x16StartPartitionResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.DataJoin.common.Status\x12\x12\n\nnext_index\x18\x02 \x01(\x03\x12\x10\n\x08\x66inished\x18\x03 \x01(\x08\"u\n\x0eLiteExampleIds\x12\x14\n\x0cpartition_id\x18\x01 \x01(\x03\x12\x13\n\x0b\x62\x65gin_index\x18\x02 \x01(\x03\x12\x12\n\nexample_id\x18\x03 \x03(\x0c\x12\x12\n\nevent_time\x18\x04 \x03(\x03\x12\x10\n\x08\x66inished\x18\x05 \x01(\x08\"\x90\x01\n\x0bSyncContent\x12;\n\x0f\x64\x61ta_block_meta\x18\x01 \x01(\x0b\x32 .DataJoin.common.DataBlockMetaH\x00\x12=\n\x10lite_example_ids\x18\x02 \x01(\x0b\x32!.DataJoin.common.LiteExampleIdsH\x00\x42\x05\n\x03msg\"h\n\x14SyncPartitionRequest\x12\x0f\n\x07rank_id\x18\x01 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x02 \x01(\x03\x12\x15\n\rcontent_bytes\x18\x03 \x01(\x0c\x12\x12\n\ncompressed\x18\x04 \x01(\x08\"|\n\x16\x46inishPartitionRequest\x12;\n\x10\x64\x61ta_source_meta\x18\x01 \x01(\x0b\x32!.DataJoin.common.DataSourceMeta\x12\x0f\n\x07rank_id\x18\x02 \x01(\x03\x12\x14\n\x0cpartition_id\x18\x03 \x01(\x03\"V\n\x17\x46inishPartitionResponse\x12)\n\x06status\x18\x01 \x01(\x0b\x32\x19.DataJoin.common.Status\x12\x10\n\x08\x66inished\x18\x02 \x01(\x08\"k\n\x17LastDumpedExampleIdMeta\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bstart_index\x18\x02 \x01(\x03\x12\x11\n\tend_index\x18\x03 \x01(\x03\x12\x15\n\rprocess_index\x18\x04 \x01(\x03\"\x8b\x01\n\x15\x44umpedExampleIdAnchor\x12?\n\tlast_meta\x18\x01 \x01(\x0b\x32*.DataJoin.common.LastDumpedExampleIdMetaH\x00\x12*\n\x08undumped\x18\x02 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03msg\"@\n\x0eRawDataOptions\x12\x15\n\rraw_data_iter\x18\x01 \x01(\t\x12\x17\n\x0f\x63ompressed_type\x18\x02 \x01(\t\"\xae\x01\n\x14\x45xampleJoinerOptions\x12\x16\n\x0e\x65xample_joiner\x18\x01 \x01(\t\x12\x1b\n\x13min_matching_window\x18\x02 \x01(\x03\x12\x1b\n\x13max_matching_window\x18\x03 \x01(\x03\x12!\n\x19\x64ump_data_block_time_span\x18\x04 \x01(\x03\x12!\n\x19\x64ump_data_block_threshold\x18\x05 \x01(\x03\"[\n\x14\x45xampleIdDumpOptions\x12 \n\x18\x65xample_id_dump_interval\x18\x01 \x01(\x03\x12!\n\x19\x65xample_id_dump_threshold\x18\x02 \x01(\x03\"\xf8\x01\n\x0f\x44\x61taJoinOptions\x12\x15\n\ruse_mock_etcd\x18\x01 \x01(\x08\x12;\n\x10raw_data_options\x18\x02 \x01(\x0b\x32!.DataJoin.common.RawDataOptions\x12G\n\x16\x65xample_joiner_options\x18\x03 \x01(\x0b\x32\'.DataJoin.common.ExampleJoinerOptions\x12H\n\x17\x65xample_id_dump_options\x18\x04 \x01(\x0b\x32\'.DataJoin.common.ExampleIdDumpOptions\".\n\x15\x44\x61taJoinMasterOptions\x12\x15\n\ruse_mock_etcd\x18\x01 \x01(\x08*;\n\x12SyncExampleIdState\x12\x0c\n\x08UnSynced\x10\x00\x12\x0b\n\x07Syncing\x10\x01\x12\n\n\x06Synced\x10\x02*9\n\x10JoinExampleState\x12\x0c\n\x08UnJoined\x10\x00\x12\x0b\n\x07Joining\x10\x01\x12\n\n\x06Joined\x10\x02\x32\xd3\x05\n\x15\x44\x61taJoinMasterService\x12H\n\rGetDataSource\x12\x16.google.protobuf.Empty\x1a\x1d.DataJoin.common.DataSource\"\x00\x12\x62\n\x13GetDataSourceStatus\x12$.DataJoin.common.DataSourceRequest\x1a#.DataJoin.common.DataSourceStatus\"\x00\x12T\n\x0f\x41\x62ortDataSource\x12$.DataJoin.common.DataSourceRequest\x1a\x19.DataJoin.common.Status\"\x00\x12_\n\x14RequestJoinPartition\x12!.DataJoin.common.RawDataRequest\x1a\".DataJoin.common.RawDataResponse\"\x00\x12U\n\x13\x46inishJoinPartition\x12!.DataJoin.common.RawDataRequest\x1a\x19.DataJoin.common.Status\"\x00\x12_\n\x14QueryRawDataManifest\x12!.DataJoin.common.RawDataRequest\x1a\".DataJoin.common.RawDataManifest\"\x00\x12O\n\rFinishRawData\x12!.DataJoin.common.RawDataRequest\x1a\x19.DataJoin.common.Status\"\x00\x12L\n\nAddRawData\x12!.DataJoin.common.RawDataRequest\x1a\x19.DataJoin.common.Status\"\x00\x32\xbd\x02\n\x0f\x44\x61taJoinService\x12g\n\x0eStartPartition\x12(.DataJoin.common.StartPartitionRequest\x1a).DataJoin.common.StartPartitionResponse\"\x00\x12U\n\rSyncPartition\x12\'.DataJoin.common.SyncPartitionRequest\x1a\x19.DataJoin.common.Status\"\x00\x12j\n\x0f\x46inishPartition\x12).DataJoin.common.FinishPartitionRequest\x1a*.DataJoin.common.FinishPartitionResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[fedlearner_dot_common_dot_common__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
 _SYNCEXAMPLEIDSTATE = _descriptor.EnumDescriptor(
   name='SyncExampleIdState',
-  full_name='fedlearner.common.SyncExampleIdState',
+  full_name='DataJoin.common.SyncExampleIdState',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -56,7 +56,7 @@ _sym_db.RegisterEnumDescriptor(_SYNCEXAMPLEIDSTATE)
 SyncExampleIdState = enum_type_wrapper.EnumTypeWrapper(_SYNCEXAMPLEIDSTATE)
 _JOINEXAMPLESTATE = _descriptor.EnumDescriptor(
   name='JoinExampleState',
-  full_name='fedlearner.common.JoinExampleState',
+  full_name='DataJoin.common.JoinExampleState',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -92,13 +92,13 @@ Joined = 2
 
 _DATASOURCEREQUEST = _descriptor.Descriptor(
   name='DataSourceRequest',
-  full_name='fedlearner.common.DataSourceRequest',
+  full_name='DataJoin.common.DataSourceRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='data_source_meta', full_name='fedlearner.common.DataSourceRequest.data_source_meta', index=0,
+      name='data_source_meta', full_name='DataJoin.common.DataSourceRequest.data_source_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -123,20 +123,20 @@ _DATASOURCEREQUEST = _descriptor.Descriptor(
 
 _DATASOURCESTATUS = _descriptor.Descriptor(
   name='DataSourceStatus',
-  full_name='fedlearner.common.DataSourceStatus',
+  full_name='DataJoin.common.DataSourceStatus',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='role', full_name='fedlearner.common.DataSourceStatus.role', index=0,
+      name='role', full_name='DataJoin.common.DataSourceStatus.role', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='fedlearner.common.DataSourceStatus.state', index=1,
+      name='state', full_name='DataJoin.common.DataSourceStatus.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -161,20 +161,20 @@ _DATASOURCESTATUS = _descriptor.Descriptor(
 
 _SYNCEXAMPLEIDREP = _descriptor.Descriptor(
   name='SyncExampleIdRep',
-  full_name='fedlearner.common.SyncExampleIdRep',
+  full_name='DataJoin.common.SyncExampleIdRep',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.SyncExampleIdRep.rank_id', index=0,
+      name='rank_id', full_name='DataJoin.common.SyncExampleIdRep.rank_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='fedlearner.common.SyncExampleIdRep.state', index=1,
+      name='state', full_name='DataJoin.common.SyncExampleIdRep.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -199,20 +199,20 @@ _SYNCEXAMPLEIDREP = _descriptor.Descriptor(
 
 _JOINEXAMPLEREP = _descriptor.Descriptor(
   name='JoinExampleRep',
-  full_name='fedlearner.common.JoinExampleRep',
+  full_name='DataJoin.common.JoinExampleRep',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.JoinExampleRep.rank_id', index=0,
+      name='rank_id', full_name='DataJoin.common.JoinExampleRep.rank_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='fedlearner.common.JoinExampleRep.state', index=1,
+      name='state', full_name='DataJoin.common.JoinExampleRep.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -237,41 +237,41 @@ _JOINEXAMPLEREP = _descriptor.Descriptor(
 
 _RAWDATAMANIFEST = _descriptor.Descriptor(
   name='RawDataManifest',
-  full_name='fedlearner.common.RawDataManifest',
+  full_name='DataJoin.common.RawDataManifest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.RawDataManifest.partition_id', index=0,
+      name='partition_id', full_name='DataJoin.common.RawDataManifest.partition_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='sync_example_id_rep', full_name='fedlearner.common.RawDataManifest.sync_example_id_rep', index=1,
+      name='sync_example_id_rep', full_name='DataJoin.common.RawDataManifest.sync_example_id_rep', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='join_example_rep', full_name='fedlearner.common.RawDataManifest.join_example_rep', index=2,
+      name='join_example_rep', full_name='DataJoin.common.RawDataManifest.join_example_rep', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='fedlearner.common.RawDataManifest.finished', index=3,
+      name='finished', full_name='DataJoin.common.RawDataManifest.finished', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_process_index', full_name='fedlearner.common.RawDataManifest.next_process_index', index=4,
+      name='next_process_index', full_name='DataJoin.common.RawDataManifest.next_process_index', index=4,
       number=5, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -296,20 +296,20 @@ _RAWDATAMANIFEST = _descriptor.Descriptor(
 
 _RAWDATAMETA = _descriptor.Descriptor(
   name='RawDataMeta',
-  full_name='fedlearner.common.RawDataMeta',
+  full_name='DataJoin.common.RawDataMeta',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='file_path', full_name='fedlearner.common.RawDataMeta.file_path', index=0,
+      name='file_path', full_name='DataJoin.common.RawDataMeta.file_path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='start_index', full_name='fedlearner.common.RawDataMeta.start_index', index=1,
+      name='start_index', full_name='DataJoin.common.RawDataMeta.start_index', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -334,20 +334,20 @@ _RAWDATAMETA = _descriptor.Descriptor(
 
 _RAWDATAFILEPATHS = _descriptor.Descriptor(
   name='RawDataFilePaths',
-  full_name='fedlearner.common.RawDataFilePaths',
+  full_name='DataJoin.common.RawDataFilePaths',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='file_paths', full_name='fedlearner.common.RawDataFilePaths.file_paths', index=0,
+      name='file_paths', full_name='DataJoin.common.RawDataFilePaths.file_paths', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='dedup', full_name='fedlearner.common.RawDataFilePaths.dedup', index=1,
+      name='dedup', full_name='DataJoin.common.RawDataFilePaths.dedup', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -372,55 +372,55 @@ _RAWDATAFILEPATHS = _descriptor.Descriptor(
 
 _RAWDATAREQUEST = _descriptor.Descriptor(
   name='RawDataRequest',
-  full_name='fedlearner.common.RawDataRequest',
+  full_name='DataJoin.common.RawDataRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='data_source_meta', full_name='fedlearner.common.RawDataRequest.data_source_meta', index=0,
+      name='data_source_meta', full_name='DataJoin.common.RawDataRequest.data_source_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.RawDataRequest.rank_id', index=1,
+      name='rank_id', full_name='DataJoin.common.RawDataRequest.rank_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.RawDataRequest.partition_id', index=2,
+      name='partition_id', full_name='DataJoin.common.RawDataRequest.partition_id', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='sync_example_id', full_name='fedlearner.common.RawDataRequest.sync_example_id', index=3,
+      name='sync_example_id', full_name='DataJoin.common.RawDataRequest.sync_example_id', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='join_example', full_name='fedlearner.common.RawDataRequest.join_example', index=4,
+      name='join_example', full_name='DataJoin.common.RawDataRequest.join_example', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finish_raw_data', full_name='fedlearner.common.RawDataRequest.finish_raw_data', index=5,
+      name='finish_raw_data', full_name='DataJoin.common.RawDataRequest.finish_raw_data', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='raw_data_fpaths', full_name='fedlearner.common.RawDataRequest.raw_data_fpaths', index=6,
+      name='raw_data_fpaths', full_name='DataJoin.common.RawDataRequest.raw_data_fpaths', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -438,7 +438,7 @@ _RAWDATAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='msg', full_name='fedlearner.common.RawDataRequest.msg',
+      name='msg', full_name='DataJoin.common.RawDataRequest.msg',
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=823,
@@ -448,27 +448,27 @@ _RAWDATAREQUEST = _descriptor.Descriptor(
 
 _RAWDATARESPONSE = _descriptor.Descriptor(
   name='RawDataResponse',
-  full_name='fedlearner.common.RawDataResponse',
+  full_name='DataJoin.common.RawDataResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='fedlearner.common.RawDataResponse.status', index=0,
+      name='status', full_name='DataJoin.common.RawDataResponse.status', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='manifest', full_name='fedlearner.common.RawDataResponse.manifest', index=1,
+      name='manifest', full_name='DataJoin.common.RawDataResponse.manifest', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='fedlearner.common.RawDataResponse.finished', index=2,
+      name='finished', full_name='DataJoin.common.RawDataResponse.finished', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -486,7 +486,7 @@ _RAWDATARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='msg', full_name='fedlearner.common.RawDataResponse.msg',
+      name='msg', full_name='DataJoin.common.RawDataResponse.msg',
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=1163,
@@ -496,76 +496,76 @@ _RAWDATARESPONSE = _descriptor.Descriptor(
 
 _DATABLOCKMETA = _descriptor.Descriptor(
   name='DataBlockMeta',
-  full_name='fedlearner.common.DataBlockMeta',
+  full_name='DataJoin.common.DataBlockMeta',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='block_id', full_name='fedlearner.common.DataBlockMeta.block_id', index=0,
+      name='block_id', full_name='DataJoin.common.DataBlockMeta.block_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.DataBlockMeta.partition_id', index=1,
+      name='partition_id', full_name='DataJoin.common.DataBlockMeta.partition_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='file_version', full_name='fedlearner.common.DataBlockMeta.file_version', index=2,
+      name='file_version', full_name='DataJoin.common.DataBlockMeta.file_version', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='fedlearner.common.DataBlockMeta.start_time', index=3,
+      name='start_time', full_name='DataJoin.common.DataBlockMeta.start_time', index=3,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='fedlearner.common.DataBlockMeta.end_time', index=4,
+      name='end_time', full_name='DataJoin.common.DataBlockMeta.end_time', index=4,
       number=5, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_ids', full_name='fedlearner.common.DataBlockMeta.example_ids', index=5,
+      name='example_ids', full_name='DataJoin.common.DataBlockMeta.example_ids', index=5,
       number=6, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='leader_start_index', full_name='fedlearner.common.DataBlockMeta.leader_start_index', index=6,
+      name='leader_start_index', full_name='DataJoin.common.DataBlockMeta.leader_start_index', index=6,
       number=7, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='leader_end_index', full_name='fedlearner.common.DataBlockMeta.leader_end_index', index=7,
+      name='leader_end_index', full_name='DataJoin.common.DataBlockMeta.leader_end_index', index=7,
       number=8, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='follower_restart_index', full_name='fedlearner.common.DataBlockMeta.follower_restart_index', index=8,
+      name='follower_restart_index', full_name='DataJoin.common.DataBlockMeta.follower_restart_index', index=8,
       number=9, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='data_block_index', full_name='fedlearner.common.DataBlockMeta.data_block_index', index=9,
+      name='data_block_index', full_name='DataJoin.common.DataBlockMeta.data_block_index', index=9,
       number=10, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -590,27 +590,27 @@ _DATABLOCKMETA = _descriptor.Descriptor(
 
 _STARTPARTITIONREQUEST = _descriptor.Descriptor(
   name='StartPartitionRequest',
-  full_name='fedlearner.common.StartPartitionRequest',
+  full_name='DataJoin.common.StartPartitionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='data_source_meta', full_name='fedlearner.common.StartPartitionRequest.data_source_meta', index=0,
+      name='data_source_meta', full_name='DataJoin.common.StartPartitionRequest.data_source_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.StartPartitionRequest.rank_id', index=1,
+      name='rank_id', full_name='DataJoin.common.StartPartitionRequest.rank_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.StartPartitionRequest.partition_id', index=2,
+      name='partition_id', full_name='DataJoin.common.StartPartitionRequest.partition_id', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -635,27 +635,27 @@ _STARTPARTITIONREQUEST = _descriptor.Descriptor(
 
 _STARTPARTITIONRESPONSE = _descriptor.Descriptor(
   name='StartPartitionResponse',
-  full_name='fedlearner.common.StartPartitionResponse',
+  full_name='DataJoin.common.StartPartitionResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='fedlearner.common.StartPartitionResponse.status', index=0,
+      name='status', full_name='DataJoin.common.StartPartitionResponse.status', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_index', full_name='fedlearner.common.StartPartitionResponse.next_index', index=1,
+      name='next_index', full_name='DataJoin.common.StartPartitionResponse.next_index', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='fedlearner.common.StartPartitionResponse.finished', index=2,
+      name='finished', full_name='DataJoin.common.StartPartitionResponse.finished', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -680,41 +680,41 @@ _STARTPARTITIONRESPONSE = _descriptor.Descriptor(
 
 _LITEEXAMPLEIDS = _descriptor.Descriptor(
   name='LiteExampleIds',
-  full_name='fedlearner.common.LiteExampleIds',
+  full_name='DataJoin.common.LiteExampleIds',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.LiteExampleIds.partition_id', index=0,
+      name='partition_id', full_name='DataJoin.common.LiteExampleIds.partition_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='begin_index', full_name='fedlearner.common.LiteExampleIds.begin_index', index=1,
+      name='begin_index', full_name='DataJoin.common.LiteExampleIds.begin_index', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_id', full_name='fedlearner.common.LiteExampleIds.example_id', index=2,
+      name='example_id', full_name='DataJoin.common.LiteExampleIds.example_id', index=2,
       number=3, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='event_time', full_name='fedlearner.common.LiteExampleIds.event_time', index=3,
+      name='event_time', full_name='DataJoin.common.LiteExampleIds.event_time', index=3,
       number=4, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='fedlearner.common.LiteExampleIds.finished', index=4,
+      name='finished', full_name='DataJoin.common.LiteExampleIds.finished', index=4,
       number=5, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -739,20 +739,20 @@ _LITEEXAMPLEIDS = _descriptor.Descriptor(
 
 _SYNCCONTENT = _descriptor.Descriptor(
   name='SyncContent',
-  full_name='fedlearner.common.SyncContent',
+  full_name='DataJoin.common.SyncContent',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='data_block_meta', full_name='fedlearner.common.SyncContent.data_block_meta', index=0,
+      name='data_block_meta', full_name='DataJoin.common.SyncContent.data_block_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='lite_example_ids', full_name='fedlearner.common.SyncContent.lite_example_ids', index=1,
+      name='lite_example_ids', full_name='DataJoin.common.SyncContent.lite_example_ids', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -770,7 +770,7 @@ _SYNCCONTENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='msg', full_name='fedlearner.common.SyncContent.msg',
+      name='msg', full_name='DataJoin.common.SyncContent.msg',
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=1935,
@@ -780,34 +780,34 @@ _SYNCCONTENT = _descriptor.Descriptor(
 
 _SYNCPARTITIONREQUEST = _descriptor.Descriptor(
   name='SyncPartitionRequest',
-  full_name='fedlearner.common.SyncPartitionRequest',
+  full_name='DataJoin.common.SyncPartitionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.SyncPartitionRequest.rank_id', index=0,
+      name='rank_id', full_name='DataJoin.common.SyncPartitionRequest.rank_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.SyncPartitionRequest.partition_id', index=1,
+      name='partition_id', full_name='DataJoin.common.SyncPartitionRequest.partition_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='content_bytes', full_name='fedlearner.common.SyncPartitionRequest.content_bytes', index=2,
+      name='content_bytes', full_name='DataJoin.common.SyncPartitionRequest.content_bytes', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='compressed', full_name='fedlearner.common.SyncPartitionRequest.compressed', index=3,
+      name='compressed', full_name='DataJoin.common.SyncPartitionRequest.compressed', index=3,
       number=4, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -832,27 +832,27 @@ _SYNCPARTITIONREQUEST = _descriptor.Descriptor(
 
 _FINISHPARTITIONREQUEST = _descriptor.Descriptor(
   name='FinishPartitionRequest',
-  full_name='fedlearner.common.FinishPartitionRequest',
+  full_name='DataJoin.common.FinishPartitionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='data_source_meta', full_name='fedlearner.common.FinishPartitionRequest.data_source_meta', index=0,
+      name='data_source_meta', full_name='DataJoin.common.FinishPartitionRequest.data_source_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rank_id', full_name='fedlearner.common.FinishPartitionRequest.rank_id', index=1,
+      name='rank_id', full_name='DataJoin.common.FinishPartitionRequest.rank_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='partition_id', full_name='fedlearner.common.FinishPartitionRequest.partition_id', index=2,
+      name='partition_id', full_name='DataJoin.common.FinishPartitionRequest.partition_id', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -877,20 +877,20 @@ _FINISHPARTITIONREQUEST = _descriptor.Descriptor(
 
 _FINISHPARTITIONRESPONSE = _descriptor.Descriptor(
   name='FinishPartitionResponse',
-  full_name='fedlearner.common.FinishPartitionResponse',
+  full_name='DataJoin.common.FinishPartitionResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='fedlearner.common.FinishPartitionResponse.status', index=0,
+      name='status', full_name='DataJoin.common.FinishPartitionResponse.status', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='fedlearner.common.FinishPartitionResponse.finished', index=1,
+      name='finished', full_name='DataJoin.common.FinishPartitionResponse.finished', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -915,34 +915,34 @@ _FINISHPARTITIONRESPONSE = _descriptor.Descriptor(
 
 _LASTDUMPEDEXAMPLEIDMETA = _descriptor.Descriptor(
   name='LastDumpedExampleIdMeta',
-  full_name='fedlearner.common.LastDumpedExampleIdMeta',
+  full_name='DataJoin.common.LastDumpedExampleIdMeta',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='file_path', full_name='fedlearner.common.LastDumpedExampleIdMeta.file_path', index=0,
+      name='file_path', full_name='DataJoin.common.LastDumpedExampleIdMeta.file_path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='start_index', full_name='fedlearner.common.LastDumpedExampleIdMeta.start_index', index=1,
+      name='start_index', full_name='DataJoin.common.LastDumpedExampleIdMeta.start_index', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='end_index', full_name='fedlearner.common.LastDumpedExampleIdMeta.end_index', index=2,
+      name='end_index', full_name='DataJoin.common.LastDumpedExampleIdMeta.end_index', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='process_index', full_name='fedlearner.common.LastDumpedExampleIdMeta.process_index', index=3,
+      name='process_index', full_name='DataJoin.common.LastDumpedExampleIdMeta.process_index', index=3,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -967,20 +967,20 @@ _LASTDUMPEDEXAMPLEIDMETA = _descriptor.Descriptor(
 
 _DUMPEDEXAMPLEIDANCHOR = _descriptor.Descriptor(
   name='DumpedExampleIdAnchor',
-  full_name='fedlearner.common.DumpedExampleIdAnchor',
+  full_name='DataJoin.common.DumpedExampleIdAnchor',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='last_meta', full_name='fedlearner.common.DumpedExampleIdAnchor.last_meta', index=0,
+      name='last_meta', full_name='DataJoin.common.DumpedExampleIdAnchor.last_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='undumped', full_name='fedlearner.common.DumpedExampleIdAnchor.undumped', index=1,
+      name='undumped', full_name='DataJoin.common.DumpedExampleIdAnchor.undumped', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -998,7 +998,7 @@ _DUMPEDEXAMPLEIDANCHOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='msg', full_name='fedlearner.common.DumpedExampleIdAnchor.msg',
+      name='msg', full_name='DataJoin.common.DumpedExampleIdAnchor.msg',
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=2511,
@@ -1008,20 +1008,20 @@ _DUMPEDEXAMPLEIDANCHOR = _descriptor.Descriptor(
 
 _RAWDATAOPTIONS = _descriptor.Descriptor(
   name='RawDataOptions',
-  full_name='fedlearner.common.RawDataOptions',
+  full_name='DataJoin.common.RawDataOptions',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='raw_data_iter', full_name='fedlearner.common.RawDataOptions.raw_data_iter', index=0,
+      name='raw_data_iter', full_name='DataJoin.common.RawDataOptions.raw_data_iter', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='compressed_type', full_name='fedlearner.common.RawDataOptions.compressed_type', index=1,
+      name='compressed_type', full_name='DataJoin.common.RawDataOptions.compressed_type', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1046,41 +1046,41 @@ _RAWDATAOPTIONS = _descriptor.Descriptor(
 
 _EXAMPLEJOINEROPTIONS = _descriptor.Descriptor(
   name='ExampleJoinerOptions',
-  full_name='fedlearner.common.ExampleJoinerOptions',
+  full_name='DataJoin.common.ExampleJoinerOptions',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='example_joiner', full_name='fedlearner.common.ExampleJoinerOptions.example_joiner', index=0,
+      name='example_joiner', full_name='DataJoin.common.ExampleJoinerOptions.example_joiner', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='min_matching_window', full_name='fedlearner.common.ExampleJoinerOptions.min_matching_window', index=1,
+      name='min_matching_window', full_name='DataJoin.common.ExampleJoinerOptions.min_matching_window', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='max_matching_window', full_name='fedlearner.common.ExampleJoinerOptions.max_matching_window', index=2,
+      name='max_matching_window', full_name='DataJoin.common.ExampleJoinerOptions.max_matching_window', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='dump_data_block_time_span', full_name='fedlearner.common.ExampleJoinerOptions.dump_data_block_time_span', index=3,
+      name='dump_data_block_time_span', full_name='DataJoin.common.ExampleJoinerOptions.dump_data_block_time_span', index=3,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='dump_data_block_threshold', full_name='fedlearner.common.ExampleJoinerOptions.dump_data_block_threshold', index=4,
+      name='dump_data_block_threshold', full_name='DataJoin.common.ExampleJoinerOptions.dump_data_block_threshold', index=4,
       number=5, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1105,20 +1105,20 @@ _EXAMPLEJOINEROPTIONS = _descriptor.Descriptor(
 
 _EXAMPLEIDDUMPOPTIONS = _descriptor.Descriptor(
   name='ExampleIdDumpOptions',
-  full_name='fedlearner.common.ExampleIdDumpOptions',
+  full_name='DataJoin.common.ExampleIdDumpOptions',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='example_id_dump_interval', full_name='fedlearner.common.ExampleIdDumpOptions.example_id_dump_interval', index=0,
+      name='example_id_dump_interval', full_name='DataJoin.common.ExampleIdDumpOptions.example_id_dump_interval', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_id_dump_threshold', full_name='fedlearner.common.ExampleIdDumpOptions.example_id_dump_threshold', index=1,
+      name='example_id_dump_threshold', full_name='DataJoin.common.ExampleIdDumpOptions.example_id_dump_threshold', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1143,34 +1143,34 @@ _EXAMPLEIDDUMPOPTIONS = _descriptor.Descriptor(
 
 _DATAJOINOPTIONS = _descriptor.Descriptor(
   name='DataJoinOptions',
-  full_name='fedlearner.common.DataJoinOptions',
+  full_name='DataJoin.common.DataJoinOptions',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='use_mock_etcd', full_name='fedlearner.common.DataJoinOptions.use_mock_etcd', index=0,
+      name='use_mock_etcd', full_name='DataJoin.common.DataJoinOptions.use_mock_etcd', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='raw_data_options', full_name='fedlearner.common.DataJoinOptions.raw_data_options', index=1,
+      name='raw_data_options', full_name='DataJoin.common.DataJoinOptions.raw_data_options', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_joiner_options', full_name='fedlearner.common.DataJoinOptions.example_joiner_options', index=2,
+      name='example_joiner_options', full_name='DataJoin.common.DataJoinOptions.example_joiner_options', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='example_id_dump_options', full_name='fedlearner.common.DataJoinOptions.example_id_dump_options', index=3,
+      name='example_id_dump_options', full_name='DataJoin.common.DataJoinOptions.example_id_dump_options', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1195,13 +1195,13 @@ _DATAJOINOPTIONS = _descriptor.Descriptor(
 
 _DATAJOINMASTEROPTIONS = _descriptor.Descriptor(
   name='DataJoinMasterOptions',
-  full_name='fedlearner.common.DataJoinMasterOptions',
+  full_name='DataJoin.common.DataJoinMasterOptions',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='use_mock_etcd', full_name='fedlearner.common.DataJoinMasterOptions.use_mock_etcd', index=0,
+      name='use_mock_etcd', full_name='DataJoin.common.DataJoinMasterOptions.use_mock_etcd', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -1309,169 +1309,169 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 DataSourceRequest = _reflection.GeneratedProtocolMessageType('DataSourceRequest', (_message.Message,), {
   'DESCRIPTOR' : _DATASOURCEREQUEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataSourceRequest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataSourceRequest)
   })
 _sym_db.RegisterMessage(DataSourceRequest)
 
 DataSourceStatus = _reflection.GeneratedProtocolMessageType('DataSourceStatus', (_message.Message,), {
   'DESCRIPTOR' : _DATASOURCESTATUS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataSourceStatus)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataSourceStatus)
   })
 _sym_db.RegisterMessage(DataSourceStatus)
 
 SyncExampleIdRep = _reflection.GeneratedProtocolMessageType('SyncExampleIdRep', (_message.Message,), {
   'DESCRIPTOR' : _SYNCEXAMPLEIDREP,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.SyncExampleIdRep)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.SyncExampleIdRep)
   })
 _sym_db.RegisterMessage(SyncExampleIdRep)
 
 JoinExampleRep = _reflection.GeneratedProtocolMessageType('JoinExampleRep', (_message.Message,), {
   'DESCRIPTOR' : _JOINEXAMPLEREP,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.JoinExampleRep)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.JoinExampleRep)
   })
 _sym_db.RegisterMessage(JoinExampleRep)
 
 RawDataManifest = _reflection.GeneratedProtocolMessageType('RawDataManifest', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATAMANIFEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataManifest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataManifest)
   })
 _sym_db.RegisterMessage(RawDataManifest)
 
 RawDataMeta = _reflection.GeneratedProtocolMessageType('RawDataMeta', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATAMETA,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataMeta)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataMeta)
   })
 _sym_db.RegisterMessage(RawDataMeta)
 
 RawDataFilePaths = _reflection.GeneratedProtocolMessageType('RawDataFilePaths', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATAFILEPATHS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataFilePaths)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataFilePaths)
   })
 _sym_db.RegisterMessage(RawDataFilePaths)
 
 RawDataRequest = _reflection.GeneratedProtocolMessageType('RawDataRequest', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATAREQUEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataRequest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataRequest)
   })
 _sym_db.RegisterMessage(RawDataRequest)
 
 RawDataResponse = _reflection.GeneratedProtocolMessageType('RawDataResponse', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATARESPONSE,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataResponse)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataResponse)
   })
 _sym_db.RegisterMessage(RawDataResponse)
 
 DataBlockMeta = _reflection.GeneratedProtocolMessageType('DataBlockMeta', (_message.Message,), {
   'DESCRIPTOR' : _DATABLOCKMETA,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataBlockMeta)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataBlockMeta)
   })
 _sym_db.RegisterMessage(DataBlockMeta)
 
 StartPartitionRequest = _reflection.GeneratedProtocolMessageType('StartPartitionRequest', (_message.Message,), {
   'DESCRIPTOR' : _STARTPARTITIONREQUEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.StartPartitionRequest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.StartPartitionRequest)
   })
 _sym_db.RegisterMessage(StartPartitionRequest)
 
 StartPartitionResponse = _reflection.GeneratedProtocolMessageType('StartPartitionResponse', (_message.Message,), {
   'DESCRIPTOR' : _STARTPARTITIONRESPONSE,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.StartPartitionResponse)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.StartPartitionResponse)
   })
 _sym_db.RegisterMessage(StartPartitionResponse)
 
 LiteExampleIds = _reflection.GeneratedProtocolMessageType('LiteExampleIds', (_message.Message,), {
   'DESCRIPTOR' : _LITEEXAMPLEIDS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.LiteExampleIds)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.LiteExampleIds)
   })
 _sym_db.RegisterMessage(LiteExampleIds)
 
 SyncContent = _reflection.GeneratedProtocolMessageType('SyncContent', (_message.Message,), {
   'DESCRIPTOR' : _SYNCCONTENT,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.SyncContent)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.SyncContent)
   })
 _sym_db.RegisterMessage(SyncContent)
 
 SyncPartitionRequest = _reflection.GeneratedProtocolMessageType('SyncPartitionRequest', (_message.Message,), {
   'DESCRIPTOR' : _SYNCPARTITIONREQUEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.SyncPartitionRequest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.SyncPartitionRequest)
   })
 _sym_db.RegisterMessage(SyncPartitionRequest)
 
 FinishPartitionRequest = _reflection.GeneratedProtocolMessageType('FinishPartitionRequest', (_message.Message,), {
   'DESCRIPTOR' : _FINISHPARTITIONREQUEST,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.FinishPartitionRequest)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.FinishPartitionRequest)
   })
 _sym_db.RegisterMessage(FinishPartitionRequest)
 
 FinishPartitionResponse = _reflection.GeneratedProtocolMessageType('FinishPartitionResponse', (_message.Message,), {
   'DESCRIPTOR' : _FINISHPARTITIONRESPONSE,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.FinishPartitionResponse)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.FinishPartitionResponse)
   })
 _sym_db.RegisterMessage(FinishPartitionResponse)
 
 LastDumpedExampleIdMeta = _reflection.GeneratedProtocolMessageType('LastDumpedExampleIdMeta', (_message.Message,), {
   'DESCRIPTOR' : _LASTDUMPEDEXAMPLEIDMETA,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.LastDumpedExampleIdMeta)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.LastDumpedExampleIdMeta)
   })
 _sym_db.RegisterMessage(LastDumpedExampleIdMeta)
 
 DumpedExampleIdAnchor = _reflection.GeneratedProtocolMessageType('DumpedExampleIdAnchor', (_message.Message,), {
   'DESCRIPTOR' : _DUMPEDEXAMPLEIDANCHOR,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DumpedExampleIdAnchor)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DumpedExampleIdAnchor)
   })
 _sym_db.RegisterMessage(DumpedExampleIdAnchor)
 
 RawDataOptions = _reflection.GeneratedProtocolMessageType('RawDataOptions', (_message.Message,), {
   'DESCRIPTOR' : _RAWDATAOPTIONS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.RawDataOptions)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.RawDataOptions)
   })
 _sym_db.RegisterMessage(RawDataOptions)
 
 ExampleJoinerOptions = _reflection.GeneratedProtocolMessageType('ExampleJoinerOptions', (_message.Message,), {
   'DESCRIPTOR' : _EXAMPLEJOINEROPTIONS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.ExampleJoinerOptions)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.ExampleJoinerOptions)
   })
 _sym_db.RegisterMessage(ExampleJoinerOptions)
 
 ExampleIdDumpOptions = _reflection.GeneratedProtocolMessageType('ExampleIdDumpOptions', (_message.Message,), {
   'DESCRIPTOR' : _EXAMPLEIDDUMPOPTIONS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.ExampleIdDumpOptions)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.ExampleIdDumpOptions)
   })
 _sym_db.RegisterMessage(ExampleIdDumpOptions)
 
 DataJoinOptions = _reflection.GeneratedProtocolMessageType('DataJoinOptions', (_message.Message,), {
   'DESCRIPTOR' : _DATAJOINOPTIONS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataJoinOptions)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataJoinOptions)
   })
 _sym_db.RegisterMessage(DataJoinOptions)
 
 DataJoinMasterOptions = _reflection.GeneratedProtocolMessageType('DataJoinMasterOptions', (_message.Message,), {
   'DESCRIPTOR' : _DATAJOINMASTEROPTIONS,
-  '__module__' : 'fedlearner.common.data_join_service_pb2'
-  # @@protoc_insertion_point(class_scope:fedlearner.common.DataJoinMasterOptions)
+  '__module__' : 'DataJoin.common.data_join_service_pb2'
+  # @@protoc_insertion_point(class_scope:DataJoin.common.DataJoinMasterOptions)
   })
 _sym_db.RegisterMessage(DataJoinMasterOptions)
 
@@ -1479,7 +1479,7 @@ _sym_db.RegisterMessage(DataJoinMasterOptions)
 
 _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   name='DataJoinMasterService',
-  full_name='fedlearner.common.DataJoinMasterService',
+  full_name='DataJoin.common.DataJoinMasterService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -1488,7 +1488,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='GetDataSource',
-    full_name='fedlearner.common.DataJoinMasterService.GetDataSource',
+    full_name='DataJoin.common.DataJoinMasterService.GetDataSource',
     index=0,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
@@ -1497,7 +1497,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='GetDataSourceStatus',
-    full_name='fedlearner.common.DataJoinMasterService.GetDataSourceStatus',
+    full_name='DataJoin.common.DataJoinMasterService.GetDataSourceStatus',
     index=1,
     containing_service=None,
     input_type=_DATASOURCEREQUEST,
@@ -1506,7 +1506,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='AbortDataSource',
-    full_name='fedlearner.common.DataJoinMasterService.AbortDataSource',
+    full_name='DataJoin.common.DataJoinMasterService.AbortDataSource',
     index=2,
     containing_service=None,
     input_type=_DATASOURCEREQUEST,
@@ -1515,7 +1515,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='RequestJoinPartition',
-    full_name='fedlearner.common.DataJoinMasterService.RequestJoinPartition',
+    full_name='DataJoin.common.DataJoinMasterService.RequestJoinPartition',
     index=3,
     containing_service=None,
     input_type=_RAWDATAREQUEST,
@@ -1524,7 +1524,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='FinishJoinPartition',
-    full_name='fedlearner.common.DataJoinMasterService.FinishJoinPartition',
+    full_name='DataJoin.common.DataJoinMasterService.FinishJoinPartition',
     index=4,
     containing_service=None,
     input_type=_RAWDATAREQUEST,
@@ -1533,7 +1533,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='QueryRawDataManifest',
-    full_name='fedlearner.common.DataJoinMasterService.QueryRawDataManifest',
+    full_name='DataJoin.common.DataJoinMasterService.QueryRawDataManifest',
     index=5,
     containing_service=None,
     input_type=_RAWDATAREQUEST,
@@ -1542,7 +1542,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='FinishRawData',
-    full_name='fedlearner.common.DataJoinMasterService.FinishRawData',
+    full_name='DataJoin.common.DataJoinMasterService.FinishRawData',
     index=6,
     containing_service=None,
     input_type=_RAWDATAREQUEST,
@@ -1551,7 +1551,7 @@ _DATAJOINMASTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='AddRawData',
-    full_name='fedlearner.common.DataJoinMasterService.AddRawData',
+    full_name='DataJoin.common.DataJoinMasterService.AddRawData',
     index=7,
     containing_service=None,
     input_type=_RAWDATAREQUEST,
@@ -1566,7 +1566,7 @@ DESCRIPTOR.services_by_name['DataJoinMasterService'] = _DATAJOINMASTERSERVICE
 
 _DATAJOINSERVICE = _descriptor.ServiceDescriptor(
   name='DataJoinService',
-  full_name='fedlearner.common.DataJoinService',
+  full_name='DataJoin.common.DataJoinService',
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
@@ -1575,7 +1575,7 @@ _DATAJOINSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='StartPartition',
-    full_name='fedlearner.common.DataJoinService.StartPartition',
+    full_name='DataJoin.common.DataJoinService.StartPartition',
     index=0,
     containing_service=None,
     input_type=_STARTPARTITIONREQUEST,
@@ -1584,7 +1584,7 @@ _DATAJOINSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='SyncPartition',
-    full_name='fedlearner.common.DataJoinService.SyncPartition',
+    full_name='DataJoin.common.DataJoinService.SyncPartition',
     index=1,
     containing_service=None,
     input_type=_SYNCPARTITIONREQUEST,
@@ -1593,7 +1593,7 @@ _DATAJOINSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='FinishPartition',
-    full_name='fedlearner.common.DataJoinService.FinishPartition',
+    full_name='DataJoin.common.DataJoinService.FinishPartition',
     index=2,
     containing_service=None,
     input_type=_FINISHPARTITIONREQUEST,

@@ -18,7 +18,7 @@ import "tensorflow/core/framework/tensor.proto";
 import "fedlearner/common/common.proto";
 
 
-package fedlearner.common;
+package DataJoin.common;
 
 
 message PrefetchMessage {
