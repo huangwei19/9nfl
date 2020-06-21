@@ -6,6 +6,7 @@ from google.protobuf import text_format
 from tensorflow.python.platform import gfile
 from DataJoin.settings import http_server_logger
 from DataJoin.utils.api_utils import proxy_data_api
+from DataJoin.utils.core import get_host_ip
 
 EXAMPLE_ID = "example_id"
 EVENT_TIME = "event_time"
@@ -14,7 +15,7 @@ EXAMPLE_ID_NS = '%X'
 DEFATLT_LABEL = "0 0"
 import codecs
 
-data_center_ip = os.environ.get("datacenter_ip")
+http_server_ip = get_host_ip()
 data_path_vw_bas_dir = os.environ.get("data_path_vw_bas_dir")
 
 def map_fn(proto):

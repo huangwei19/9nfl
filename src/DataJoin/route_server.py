@@ -15,8 +15,10 @@ from DataJoin.apps.parse_data_block_meta_app import manager as parse_data_block_
 from DataJoin.db.db_models import init_database_tables
 from DataJoin.utils.api_utils import get_json_result
 from DataJoin.common import proxy_data_pb2_grpc
-from DataJoin.settings import _ONE_DAY_IN_SECONDS, API_VERSION, IP, HTTP_PORT, PROXY_DATA_HOST, PROXY_DATA_PORT, http_server_logger
+from DataJoin.settings import _ONE_DAY_IN_SECONDS, API_VERSION, IP, HTTP_PORT, PROXY_DATA_HOST, PROXY_DATA_PORT, \
+    http_server_logger
 from DataJoin.utils.grpc_utils import ProxyDataService
+from DataJoin.utils.core import get_host_ip
 
 '''
 Initialize the manager
@@ -39,9 +41,9 @@ if __name__ == '__main__':
             '/{}/parse'.format(API_VERSION): parse_data_block_meta_app_manager,
         }
     )
-    data_center_ip = os.environ.get("datacenter_ip")
-    http_server_logger.info('data_center_ip is :%s' % data_center_ip)
-    # data_center_ip = "10.181.54.64"
+    http_server_ip = get_host_ip()
+    http_server_logger.info('http_server_ip is :%s' % http_server_ip)
+    # http_server_ip = "10.181.54.64"
     init_database_tables()
     # start grpc server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
