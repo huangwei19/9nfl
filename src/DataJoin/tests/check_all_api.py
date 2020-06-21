@@ -16,7 +16,7 @@
 import sys
 import requests
 import json
-from src.DataJoin.settings import API_VERSION, HTTP_PORT
+from DataJoin.settings import API_VERSION, HTTP_PORT
 
 fate_flow_server_host = 'http://127.0.0.1:{}/{}'.format(HTTP_PORT, API_VERSION)
 job_id = sys.argv[1]

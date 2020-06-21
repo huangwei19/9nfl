@@ -2,7 +2,7 @@
 
 import threading
 import logging
-from src.DataJoin.data_join.example_id_dumper import AppendExamplesManager
+from DataJoin.data_join.example_id_dumper import AppendExamplesManager
 
 
 class ExampleIdSyncFollower(object):

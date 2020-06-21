@@ -7,15 +7,15 @@ import tensorflow
 import grpc
 from google.protobuf import empty_pb2
 
-from src.DataJoin.common import common_pb2 as common_pb
-from src.DataJoin.common import data_join_service_pb2_grpc as dj_grpc
-from src.DataJoin.common import data_join_service_pb2 as dj_pb
-from src.DataJoin.proxy.channel import make_insecure_channel, ChannelType
-from src.DataJoin.data_join.raw_data_visitor import RawDataLoader
+from DataJoin.common import common_pb2 as common_pb
+from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
+from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.proxy.channel import make_insecure_channel, ChannelType
+from DataJoin.data_join.raw_data_visitor import RawDataLoader
 
 import multiprocessing
 
-from src.DataJoin.data_join import (
+from DataJoin.data_join import (
     example_id_sync_leader, example_id_sync_follower,
     example_join_leader, example_join_follower
 )

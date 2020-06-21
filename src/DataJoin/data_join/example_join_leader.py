@@ -7,11 +7,11 @@ from contextlib import contextmanager
 
 from google.protobuf import empty_pb2
 
-from src.DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.common import data_join_service_pb2 as dj_pb
 
-from src.DataJoin.data_join.routine_worker import RoutineWorker
-from src.DataJoin.data_join.joiner_impl.example_joiner import DataJoiner
-from src.DataJoin.data_join.joiner_impl.stream_joiner import MemoryDataJoiner
+from DataJoin.data_join.routine_worker import RoutineWorker
+from DataJoin.data_join.joiner_impl.example_joiner import DataJoiner
+from DataJoin.data_join.joiner_impl.stream_joiner import MemoryDataJoiner
 
 
 class ExampleJoinLeader(object):

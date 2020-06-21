@@ -1,9 +1,9 @@
 
 import os
 
-from src.DataJoin.settings import REDIS, REDIS_QUEUE_DB_INDEX
+from DataJoin.settings import REDIS, REDIS_QUEUE_DB_INDEX
 import redis
-from src.DataJoin.settings import http_server_logger
+from DataJoin.settings import http_server_logger
 
 
 def singleton(cls, *args, **kw):

@@ -7,9 +7,9 @@ import __main__
 from peewee import Model, CharField, IntegerField, BigIntegerField, TextField, CompositeKey
 from playhouse.pool import PooledMySQLDatabase
 
-from src.DataJoin.utils import log_utils
-from src.DataJoin.utils.core import current_timestamp
-from src.DataJoin.settings import DATABASE, http_server_logger
+from DataJoin.utils import log_utils
+from DataJoin.utils.core import current_timestamp
+from DataJoin.settings import DATABASE, http_server_logger
 
 LOGGER = log_utils.getLogger()
 

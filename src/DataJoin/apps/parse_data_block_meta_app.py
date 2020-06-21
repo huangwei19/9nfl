@@ -1,12 +1,12 @@
 
 from flask import Flask, request
 
-from src.DataJoin.settings import http_server_logger
-from src.DataJoin.utils.api_utils import get_json_result
-from src.DataJoin.controller.parse_data_block_meta import StartParseDataBlockMeta
-from src.DataJoin.utils import core
+from DataJoin.settings import http_server_logger
+from DataJoin.utils.api_utils import get_json_result
+from DataJoin.controller.parse_data_block_meta import StartParseDataBlockMeta
+from DataJoin.utils import core
 import sys
-from src.DataJoin.utils.grpc_utils import get_grpc_server_directory, get_job_log_directory
+from DataJoin.utils.grpc_utils import get_grpc_server_directory, get_job_log_directory
 
 manager = Flask(__name__)
 

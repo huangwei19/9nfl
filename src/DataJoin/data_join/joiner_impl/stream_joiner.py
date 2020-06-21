@@ -2,7 +2,7 @@
 
 import logging
 
-from src.DataJoin.data_join.joiner_impl.example_joiner import DataJoiner
+from DataJoin.data_join.joiner_impl.example_joiner import DataJoiner
 
 
 class MemoryDataJoiner(DataJoiner):

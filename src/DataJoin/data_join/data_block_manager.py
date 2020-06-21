@@ -9,9 +9,9 @@ import tensorflow.compat.v1 as tf
 from google.protobuf import text_format
 from tensorflow.compat.v1 import gfile
 
-from src.DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.common import data_join_service_pb2 as dj_pb
 
-from src.DataJoin.data_join.common import (
+from DataJoin.data_join.common import (
     make_tf_record_iter, encode_data_block_meta_fname,
     encode_block_id, encode_data_block_fname, partition_repr
 )

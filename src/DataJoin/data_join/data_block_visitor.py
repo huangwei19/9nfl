@@ -19,8 +19,8 @@ import logging
 
 from tensorflow.compat.v1 import gfile
 
-from src.DataJoin.common.etcd_client import EtcdClient
-from src.DataJoin.data_join.common import (
+from DataJoin.common.etcd_client import EtcdClient
+from DataJoin.data_join.common import (
     DataBlockSuffix, encode_data_block_meta_fname,
     load_data_block_meta, encode_data_block_fname,
     decode_block_id, retrieve_data_source, partition_repr

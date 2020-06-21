@@ -20,7 +20,7 @@ import threading
 import random
 from contextlib import contextmanager
 import etcd3
-from src.DataJoin.common import mock_etcd
+from DataJoin.common import mock_etcd
 
 class EtcdClient(object):
     ETCD_CLIENT_POOL_LOCK = threading.Lock()

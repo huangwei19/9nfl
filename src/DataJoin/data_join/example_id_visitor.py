@@ -9,12 +9,12 @@ from google.protobuf import text_format
 from google.protobuf import empty_pb2
 from tensorflow.compat.v1 import gfile
 
-from src.DataJoin.common import data_join_service_pb2 as dj_pb
-from src.DataJoin.data_join import visitor
-from src.DataJoin.data_join.common import (
+from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.data_join import visitor
+from DataJoin.data_join.common import (
     ExampleIdSuffix, make_tf_record_iter, partition_repr
 )
-from src.DataJoin.data_join.raw_data_iter_impl import (
+from DataJoin.data_join.raw_data_iter_impl import (
     tf_record_iter, raw_data_iter
 )
 

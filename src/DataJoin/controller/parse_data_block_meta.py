@@ -3,8 +3,8 @@ import subprocess
 import os
 from tensorflow.python.platform import gfile
 import time
-from src.DataJoin.settings import http_server_logger
-from src.DataJoin.controller.sync_convert_data_block import StartSyncConvertDataBlock
+from DataJoin.settings import http_server_logger
+from DataJoin.controller.sync_convert_data_block import StartSyncConvertDataBlock
 
 time_stamp = str(int(time.time()))
 

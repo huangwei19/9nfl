@@ -7,10 +7,10 @@ from contextlib import contextmanager
 
 from google.protobuf import empty_pb2
 
-from src.DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.common import data_join_service_pb2 as dj_pb
 
-from src.DataJoin.data_join.routine_worker import RoutineWorker
-from src.DataJoin.data_join.data_join_worker import InitRawDataLoading
+from DataJoin.data_join.routine_worker import RoutineWorker
+from DataJoin.data_join.data_join_worker import InitRawDataLoading
 
 
 class ExampleIdSyncLeader(object):

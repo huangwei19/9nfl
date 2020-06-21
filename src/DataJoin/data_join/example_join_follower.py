@@ -2,8 +2,8 @@
 
 import threading
 
-from src.DataJoin.data_join.routine_worker import RoutineWorker
-from src.DataJoin.data_join.data_block_dumper import DataBlockDumperManager
+from DataJoin.data_join.routine_worker import RoutineWorker
+from DataJoin.data_join.data_block_dumper import DataBlockDumperManager
 
 
 class ExampleJoinFollower(object):

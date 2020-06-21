@@ -2,7 +2,7 @@ import argparse
 import json
 import logging
 import os
-from src.DataJoin.db.redis_manager import RedisManage
+from DataJoin.db.redis_manager import RedisManage
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)

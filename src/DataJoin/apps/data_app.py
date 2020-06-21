@@ -1,10 +1,10 @@
 
 from flask import Flask, request
 
-from src.DataJoin.settings import http_server_logger
-from src.DataJoin.utils import data_utils
-from src.DataJoin.utils.api_utils import get_json_result
-from src.DataJoin.driver.data_controller import DataController
+from DataJoin.settings import http_server_logger
+from DataJoin.utils import data_utils
+from DataJoin.utils.api_utils import get_json_result
+from DataJoin.driver.data_controller import DataController
 
 manager = Flask(__name__)
 

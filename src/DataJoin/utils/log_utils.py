@@ -5,7 +5,7 @@ from logging.handlers import TimedRotatingFileHandler
 import os
 import inspect
 from threading import RLock
-from src.DataJoin.utils import file_utils
+from DataJoin.utils import file_utils
 
 
 class LoggerFactory(object):

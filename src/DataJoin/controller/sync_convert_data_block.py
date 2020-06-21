@@ -1,11 +1,11 @@
 import grpc
 import tensorflow as tf
 import os
-from src.DataJoin.common import data_join_service_pb2
+from DataJoin.common import data_join_service_pb2
 from google.protobuf import text_format
 from tensorflow.python.platform import gfile
-from src.DataJoin.settings import http_server_logger
-from src.DataJoin.utils.api_utils import proxy_data_api
+from DataJoin.settings import http_server_logger
+from DataJoin.utils.api_utils import proxy_data_api
 
 EXAMPLE_ID = "example_id"
 EVENT_TIME = "event_time"

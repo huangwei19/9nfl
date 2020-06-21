@@ -1,5 +1,5 @@
 
-from src.DataJoin.manager.data_managers import DataManagers
+from DataJoin.manager.data_managers import DataManagers
 
 
 class DataController(object):

@@ -2,7 +2,7 @@
 import os
 import time
 import subprocess
-from src.DataJoin.settings import http_server_logger
+from DataJoin.settings import http_server_logger
 
 
 def current_timestamp():

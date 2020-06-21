@@ -1,7 +1,7 @@
 
 import operator
 import threading
-from src.DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource, Coordinator
+from DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource, Coordinator
 
 
 class IdCounter:

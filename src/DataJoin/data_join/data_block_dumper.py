@@ -4,7 +4,7 @@ import threading
 import logging
 import os
 from contextlib import contextmanager
-from src.DataJoin.data_join.data_block_manager import (
+from DataJoin.data_join.data_block_manager import (
     DataBlockMaker, DataBlockManager
 )
 

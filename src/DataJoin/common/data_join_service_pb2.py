@@ -14,7 +14,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from src.DataJoin.common import common_pb2 as fedlearner_dot_common_dot_common__pb2
+from DataJoin.common import common_pb2 as fedlearner_dot_common_dot_common__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 

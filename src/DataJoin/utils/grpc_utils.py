@@ -1,11 +1,11 @@
 import requests
 import json
-from src.DataJoin.common import proxy_data_pb2, proxy_data_pb2_grpc
+from DataJoin.common import proxy_data_pb2, proxy_data_pb2_grpc
 import grpc
-from src.DataJoin.settings import HEADERS, DEFAULT_GRPC_OVERALL_TIMEOUT, \
+from DataJoin.settings import HEADERS, DEFAULT_GRPC_OVERALL_TIMEOUT, \
     http_server_logger
 import os
-from src.DataJoin.utils import file_utils
+from DataJoin.utils import file_utils
 
 
 def get_url(_suffix):

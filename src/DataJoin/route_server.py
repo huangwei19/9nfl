@@ -10,13 +10,13 @@ from grpc._cython import cygrpc
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 from flask import Flask
-from src.DataJoin.apps.data_app import manager as data_app_manager
-from src.DataJoin.apps.parse_data_block_meta_app import manager as parse_data_block_meta_app_manager
-from src.DataJoin.db.db_models import init_database_tables
-from src.DataJoin.utils.api_utils import get_json_result
-from src.DataJoin.common import proxy_data_pb2_grpc
-from src.DataJoin.settings import _ONE_DAY_IN_SECONDS, API_VERSION, IP, HTTP_PORT, PROXY_DATA_HOST, PROXY_DATA_PORT, http_server_logger
-from src.DataJoin.utils.grpc_utils import ProxyDataService
+from DataJoin.apps.data_app import manager as data_app_manager
+from DataJoin.apps.parse_data_block_meta_app import manager as parse_data_block_meta_app_manager
+from DataJoin.db.db_models import init_database_tables
+from DataJoin.utils.api_utils import get_json_result
+from DataJoin.common import proxy_data_pb2_grpc
+from DataJoin.settings import _ONE_DAY_IN_SECONDS, API_VERSION, IP, HTTP_PORT, PROXY_DATA_HOST, PROXY_DATA_PORT, http_server_logger
+from DataJoin.utils.grpc_utils import ProxyDataService
 
 '''
 Initialize the manager

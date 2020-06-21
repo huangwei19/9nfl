@@ -3,9 +3,9 @@ import json
 import grpc
 
 from flask import jsonify
-from src.DataJoin.settings import DEFAULT_GRPC_OVERALL_TIMEOUT
-from src.DataJoin.settings import http_server_logger
-from src.DataJoin.utils.grpc_utils import get_grpc_proxy_data_channel, wrap_grpc_proxy_data_packet
+from DataJoin.settings import DEFAULT_GRPC_OVERALL_TIMEOUT
+from DataJoin.settings import http_server_logger
+from DataJoin.utils.grpc_utils import get_grpc_proxy_data_channel, wrap_grpc_proxy_data_packet
 
 
 def get_json_result(retcode=0, retmsg='success', data=None, job_id=None, meta=None):

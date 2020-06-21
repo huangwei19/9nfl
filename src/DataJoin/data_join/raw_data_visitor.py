@@ -1,9 +1,9 @@
 # coding: utf-8
 
 import logging
-from src.DataJoin.data_join import common
-from src.DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
-from src.DataJoin.data_join.raw_data_iter_impl.tf_record_iter import TfRecordDataIterator
+from DataJoin.data_join import common
+from DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
+from DataJoin.data_join.raw_data_iter_impl.tf_record_iter import TfRecordDataIterator
 from os import path
 from tensorflow.compat.v1 import gfile
 import uuid

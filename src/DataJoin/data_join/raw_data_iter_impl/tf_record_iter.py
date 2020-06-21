@@ -6,7 +6,7 @@ from contextlib import contextmanager
 import tensorflow.compat.v1 as tf
 
 import fedlearner.data_join.common as common
-from src.DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
+from DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
 import traceback
 
 

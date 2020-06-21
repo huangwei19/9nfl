@@ -1,7 +1,7 @@
 
-from src.DataJoin.utils.core import current_timestamp
-from src.DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource
-from src.DataJoin.settings import http_server_logger
+from DataJoin.utils.core import current_timestamp
+from DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource
+from DataJoin.settings import http_server_logger
 
 
 class DataManagers(object):

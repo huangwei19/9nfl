@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 
-from src.DataJoin.utils import file_utils
-from src.DataJoin.utils import log_utils
+from DataJoin.utils import file_utils
+from DataJoin.utils import log_utils
 
 log_utils.LoggerFactory.set_directory(os.path.join(file_utils.get_project_base_directory(), 'logs', 'server'))
 http_server_logger = log_utils.getLogger("server_stat")
