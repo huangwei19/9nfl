@@ -16,12 +16,13 @@ from DataJoin.data_join.common import (
     encode_block_id, encode_data_block_fname, partition_repr
 )
 
+from DataJoin.utils import get_host_ip
 import requests
 
-convert_svc = os.environ.get("DataConvert_Svc")
+host_ip = get_host_ip()
 
 
-def res_convert_tf_into_pw(meta_path, block_path):
+def save_data_block_info(meta_path, block_path):
     HEADERS = {
         'Content-Type': 'application/json',
     }
@@ -29,7 +30,7 @@ def res_convert_tf_into_pw(meta_path, block_path):
 
     data = {'dfs_data_block_meta': meta_path, 'dfs_data_block': block_path}
 
-    url = "http://{0}:9380/v1/parse/data/block/meta".format(str(convert_svc))
+    url = "http://{0}:9380/v1/parse/data/block/meta".format(str(host_ip))
 
     response = action(url=url, json=data, headers=HEADERS)
 
@@ -118,8 +119,8 @@ class DataBlockMaker(object):
             )
             gfile.Rename(self._tmp_fpath, data_block_path, True)
             meta_path = self._build_data_block_meta()
-            # todo: request convert tfrecord  into vw api
-            # res_convert_tf_into_pw(meta_path, data_block_path)
+            # todo: request save data block info
+            save_data_block_info(meta_path, data_block_path)
             return self._data_block_meta
         gfile.Remove(self._tmp_fpath)
         return None

@@ -83,6 +83,7 @@ class SyncConvertDataBlock(object):
         meta_iter = self.tf_read(self.meta_path)
         meta_info = text_format.Parse(next(meta_iter),
                                       data_join_service_pb2.DataBlockMeta())
+        '''
 
         data_path_vw = os.path.join(self.data_path_vw_bas_dir, "partition_{0}".format(
             meta_info.partition_id))
@@ -96,6 +97,7 @@ class SyncConvertDataBlock(object):
             put_cmd = "hadoop fs -put {0} {1}".format(tmp_out_path, data_path_vw)
             os.system(put_cmd)
         data_block_path_convert = os.path.join(data_path_vw, "{0}.data".format(meta_info.block_id))
+        '''
         http_server_logger.info('meta info block_id: {0}'.format(meta_info.block_id))
         http_server_logger.info('meta info partition_id: {0}'.format(meta_info.partition_id))
         http_server_logger.info('meta info leader_start_index: {0}'.format(meta_info.leader_start_index))
@@ -109,7 +111,7 @@ class SyncConvertDataBlock(object):
                          leader_end_index=meta_info.leader_end_index,
                          follower_restart_index=meta_info.follower_restart_index,
                          data_block_index=meta_info.data_block_index,
-                         dfs_data_block_dir=data_block_path_convert,
+                         dfs_data_block_dir=self.data_path,
                          create_status=2,
                          consumed_status=1,
                          data_source_name=self.data_source_name

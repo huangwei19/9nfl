@@ -2,7 +2,7 @@
 
 CURRENT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-export PYTHONPATH=$PYTHONPATH:$CUR_DIR/../..:$CUR_DIR/common/protobuf:/opt/tiger/pyutil
+export PYTHONPATH=$PYTHONPATH:CURRENT_DIR/../..:CURRENT_DIR/common/protobuf:/opt/tiger/pyutil
 log_dir="${CURRENT_DIR}/logs"
 IFS='-' read -r -a array <<< "$WORKER_UUID"
 export INDEX="${array[1]}"
