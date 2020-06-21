@@ -21,6 +21,8 @@ import requests
 
 host_ip = get_host_ip()
 
+mode = os.environ.get("MODE", None)
+
 
 def save_data_block_info(meta_path, block_path):
     HEADERS = {
@@ -120,7 +122,8 @@ class DataBlockMaker(object):
             gfile.Rename(self._tmp_fpath, data_block_path, True)
             meta_path = self._build_data_block_meta()
             # todo: request save data block info
-            save_data_block_info(meta_path, data_block_path)
+            if mode == "distribute":
+                save_data_block_info(meta_path, data_block_path)
             return self._data_block_meta
         gfile.Remove(self._tmp_fpath)
         return None
@@ -267,4 +270,3 @@ class DataBlockManager(object):
     def _evict_data_block_cache_if_full(self):
         while len(self._data_block_meta_cache) > 1024:
             self._data_block_meta_cache.popitem()
-
