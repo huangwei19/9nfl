@@ -92,7 +92,7 @@ class RoutineWorker(object):
             except Exception as e:  # pylint: disable=broad-except
                 logging.error("worker: %s run %d rounds with exception: %s",
                               self._name, exec_round, str(e))
-                print(traceback.print_exc(e))
+                print(traceback.print_exc())
             else:
                 logging.info("worker: %s exec %d round", self._name, exec_round)
             exec_round += 1

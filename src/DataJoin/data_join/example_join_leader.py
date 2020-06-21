@@ -225,3 +225,4 @@ class ExampleJoinLeader(object):
         logging.info("data block producing has been finished " \
                      "for partition %d", data_join_wrap._partition_id)
         return True
+

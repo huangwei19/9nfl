@@ -204,7 +204,7 @@ class DataJoinService(object):
 
     def stop_data_join_service(self):
         if self._data_join_server_started:
-            self._data_join_worker.stop_data_join_processor()
+            self._data_join_worker.stop()
             self._worker_server.stop(None)
             self._data_join_server_started = False
             logging.info("Data Join Worker:{0} of data_source :{1} stopped".

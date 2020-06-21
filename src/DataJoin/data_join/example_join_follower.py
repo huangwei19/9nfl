@@ -120,3 +120,4 @@ class ExampleJoinFollower(object):
                 self._processor_routine_map.setup_args(self.data_block_consumer_wrap)
                 return True
             return False
+

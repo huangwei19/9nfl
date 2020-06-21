@@ -6,6 +6,7 @@ import socket
 import logging
 import collections
 import grpc
+from DataJoin.common.etcd_client import EtcdClient
 
 INTERNAL_PROXY = os.environ.get('INTERNAL_PROXY', None)
 

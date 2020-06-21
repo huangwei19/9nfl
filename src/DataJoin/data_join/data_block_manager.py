@@ -266,3 +266,4 @@ class DataBlockManager(object):
     def _evict_data_block_cache_if_full(self):
         while len(self._data_block_meta_cache) > 1024:
             self._data_block_meta_cache.popitem()
+

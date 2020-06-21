@@ -70,3 +70,4 @@ class ExampleIdSyncFollower(object):
             self._check_partition(partition_id)
             self.example_appender.finish_send_examples()
             return not self.example_appender.need_append_into_queue()
+

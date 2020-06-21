@@ -66,3 +66,4 @@ class RawDataLoader(RawDataManager):
     def _new_raw_data_iter(self):
         return DataIterator.build(self._raw_data_options)
 
+

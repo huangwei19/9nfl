@@ -66,9 +66,9 @@ class TfRecordDataIterator(DataIterator):
         return 'TF_RECORD_ITERATOR'
 
     def _data_iterator_factory(self, file_path):
-        with common.make_tf_record_iter(file_path) as iterator:
-            for data_item in iterator:
-                yield TfRecordDataItemParser(data_item)
+        with common.make_tf_record_iter(file_path) as record_iter:
+            for record in record_iter:
+                yield TfRecordDataItemParser(record)
 
     def _reset_data_iterator(self, file_path):
         if file_path is not None:
@@ -125,3 +125,4 @@ class TfDataSetIter(DataIterator, metaclass=MetaClass):
         assert self._fiter is not None, "_fiter must be not None in _next"
         return next(self._fiter)
 '''
+

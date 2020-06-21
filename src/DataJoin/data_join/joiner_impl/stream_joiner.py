@@ -61,3 +61,4 @@ class MemoryDataJoiner(DataJoiner):
     def _data_join_finalizer(self, is_data_joiner_finished):
         data_block_meta = super(MemoryDataJoiner, self)._data_join_finalizer(is_data_joiner_finished)
         return data_block_meta
+

@@ -218,7 +218,7 @@ class ExampleIdManager(visitor.IndexMetaManager):
             os._exit(-1) # pylint: disable=protected-access
 
 class ExampleIdVisitor(visitor.Visitor):
-    class ExampleIdItem(raw_data_iter.DataIterator.Item):
+    class ExampleIdItem(raw_data_iter.RawDataIter.Item):
         def __init__(self, example_id, event_time, index):
             self._index = index
             self._example_id = example_id
@@ -237,7 +237,7 @@ class ExampleIdVisitor(visitor.Visitor):
         def index(self):
             return self._index
 
-    class ExampleIdIter(tf_record_iter.TfRecordDataIterator):
+    class ExampleIdIter(tf_record_iter.TfRecordIter):
         @classmethod
         def name(cls):
             return 'EXAMPLE_ID_TF_RECORD'

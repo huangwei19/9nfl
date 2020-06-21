@@ -136,3 +136,4 @@ class DataJoiner(object, metaclass=MetaClass):
             self._data_block_maker = None
         if maker is not None:
             del maker
+

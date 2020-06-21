@@ -82,3 +82,4 @@ class DataIterator(object, metaclass=MetaClass):
             "base class {0} not implement for resetting data iterator ".format(
                 DataIterator.iterator_name())
         )
+
