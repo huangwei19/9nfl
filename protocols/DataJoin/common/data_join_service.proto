@@ -1,7 +1,7 @@
 
 
 syntax = "proto3";
-import "fedlearner/common/common.proto";
+import "DataJoin/common/common.proto";
 import "google/protobuf/empty.proto";
 
 package DataJoin.common;
