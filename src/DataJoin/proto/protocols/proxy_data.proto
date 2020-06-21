@@ -1,0 +1,27 @@
+
+
+syntax = "proto3";
+
+// includes key and value field, supporting sequential and random data transfer
+message Data {
+    string key = 1;     // compatible with list / dict
+    bytes value = 2;    // actual value
+    string operator = 3;
+}
+
+message HeaderData {
+    string operator = 1;
+}
+
+// data streaming packet
+message Packet {
+    HeaderData header = 1;
+    Data body = 2;          // packet body
+}
+
+
+// data transfer service
+service ProxyDataService {
+    rpc UnaryCall (Packet) returns (Packet);
+}
+
