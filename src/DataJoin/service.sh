@@ -8,7 +8,7 @@ IFS='-' read -r -a array <<< "$RANK_UUID"
 export INDEX="${array[1]}"
 
 get_http_server_pid() {
-    http_server_pid=`ps aux | grep "python route_server.py" | grep -v grep | awk '{print $2}'`
+    http_server_pid=`ps aux | grep "python $CURRENT_DIR/route_server.py" | grep -v grep | awk '{print $2}'`
     if [[ -n ${http_server_pid} ]]; then
         return 0
     else
@@ -17,7 +17,7 @@ get_http_server_pid() {
 }
 
 get_data_join_server_pid() {
-    data_join_server_pid=`ps aux | grep "python data_join_worker.py" | grep -v grep | awk '{print $2}'`
+    data_join_server_pid=`ps aux | grep "python $CURRENT_DIR/data_join/data_join_worker.py" | grep -v grep | awk '{print $2}'`
     if [[ -n ${data_join_server_pid} ]]; then
         return 0
     else
