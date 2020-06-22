@@ -4,17 +4,13 @@ import threading
 import logging
 import zlib
 from contextlib import contextmanager
-
-from google.protobuf import empty_pb2
-
 from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.data_join.data_joiner_builder.data_joiner import DataJoiner
+from DataJoin.data_join.data_joiner_builder.memory_data_joiner import MemoryDataJoiner
 
-from DataJoin.data_join.routine_worker import RoutineWorker
-from DataJoin.data_join.joiner_impl.example_joiner import DataJoiner
-from DataJoin.data_join.joiner_impl.stream_joiner import MemoryDataJoiner
 
-
-class ExampleJoinLeader(object):
+class DataBlockProducer(object):
     class DataJoinerWrapper(object):
         def __init__(self,
                      example_joiner_options, raw_data_options, data_block_dir,
@@ -61,22 +57,22 @@ class ExampleJoinLeader(object):
         with self._lock:
             if not self._processor_start:
                 self._processor_routine.update(
-                    build_data_joiner=RoutineWorker(
+                    build_data_joiner=ProcessorManager(
                         'build_data_joiner',
                         self._build_data_joiner_processor,
                         self._impl_build_data_joiner_factor, 6),
-                    data_joiner=RoutineWorker(
+                    data_joiner=ProcessorManager(
                         'data_joiner',
                         self._data_join_processor,
                         self._impl_data_join_factor, 5),
-                    data_block_meta_sender=RoutineWorker(
+                    data_block_meta_sender=ProcessorManager(
                         'data_block_meta_sender',
                         self._send_data_block_meta_processor,
                         self._impl_send_data_block_meta_factor, 5)
                 )
 
                 for processor in self._processor_routine.values():
-                    processor.start_routine()
+                    processor.active_processor()
                 self._processor_start = True
 
     def stop_processors(self):
@@ -87,14 +83,14 @@ class ExampleJoinLeader(object):
                 self._processor_start = False
         if wait_stop:
             for processor in self._processor_routine.values():
-                processor.stop_routine()
+                processor.inactive_processor()
 
     def _enable_build_data_joiner_processor(self):
         self._data_join_wrap = None
-        self._processor_routine.get('build_data_joiner').wakeup()
+        self._processor_routine.get('build_data_joiner').enable_processor()
 
     def _build_data_joiner_processor(self):
-        data_join_wrap = ExampleJoinLeader.DataJoinerWrapper(
+        data_join_wrap = DataBlockProducer.DataJoinerWrapper(
             self._example_joiner_options, self._raw_data_options,
             self._data_block_dir,
             self._data_source_name, self._raw_data_dir,
@@ -111,10 +107,10 @@ class ExampleJoinLeader(object):
             return self._data_join_wrap is None
 
     def _enable_data_join_processor(self):
-        self._processor_routine.get('data_joiner').wakeup()
+        self._processor_routine.get('data_joiner').enable_processor()
 
     def _data_join_processor(self, data_join_wrap):
-        assert isinstance(data_join_wrap, ExampleJoinLeader.DataJoinerWrapper)
+        assert isinstance(data_join_wrap, DataBlockProducer.DataJoinerWrapper)
         if data_join_wrap.data_join_switch():
             with data_join_wrap.data_joiner_factory() as joiner:
                 for data_block_meta in joiner:
@@ -125,14 +121,14 @@ class ExampleJoinLeader(object):
     def _impl_data_join_factor(self):
         with self._lock:
             if self._data_join_wrap is not None:
-                self._processor_routine.get('data_joiner').setup_args(self._data_join_wrap)
+                self._processor_routine.get('data_joiner').build_impl_processor_parameter(self._data_join_wrap)
             return self._data_join_wrap is not None
 
     def _enable_data_block_meta_sender(self):
-        self._processor_routine.get('data_block_meta_sender').wakeup()
+        self._processor_routine.get('data_block_meta_sender').enable_processor()
 
     def _send_data_block_meta_processor(self, data_join_wrap):
-        assert isinstance(data_join_wrap, ExampleJoinLeader.DataJoinerWrapper)
+        assert isinstance(data_join_wrap, DataBlockProducer.DataJoinerWrapper)
         joined_finished = False
         if not data_join_wrap.data_block_producer_finished:
             with self._send_data_block_meta_executor(data_join_wrap) as send_executor:
@@ -143,14 +139,14 @@ class ExampleJoinLeader(object):
     def _impl_send_data_block_meta_factor(self):
         with self._lock:
             if self._data_join_wrap is not None:
-                self._processor_routine.get('data_block_meta_sender').setup_args(
+                self._processor_routine.get('data_block_meta_sender').build_impl_processor_parameter(
                     self._data_join_wrap
                 )
             return self._data_join_wrap is not None
 
     @contextmanager
     def _send_data_block_meta_executor(self, data_join_wrap):
-        assert isinstance(data_join_wrap, ExampleJoinLeader.DataJoinerWrapper)
+        assert isinstance(data_join_wrap, DataBlockProducer.DataJoinerWrapper)
 
         def send_executor():
             data_join_wrap.next_data_block_index, data_join_wrap.data_block_producer_finished = \
@@ -169,7 +165,7 @@ class ExampleJoinLeader(object):
         yield send_executor
 
     def _sync_data_block_meta_sender_status(self, data_join_wrap):
-        assert isinstance(data_join_wrap, ExampleJoinLeader.DataJoinerWrapper)
+        assert isinstance(data_join_wrap, DataBlockProducer.DataJoinerWrapper)
         req = dj_pb.StartPartitionRequest(
             rank_id=self._rank_id,
             partition_id=data_join_wrap._partition_id
@@ -203,7 +199,7 @@ class ExampleJoinLeader(object):
             )
 
     def _finish_send_data_block_meta(self, data_join_wrap):
-        assert isinstance(data_join_wrap, ExampleJoinLeader.DataJoinerWrapper)
+        assert isinstance(data_join_wrap, DataBlockProducer.DataJoinerWrapper)
         assert data_join_wrap.is_data_joiner_finished()
         if not data_join_wrap.data_block_producer_finished:
             request = dj_pb.FinishPartitionRequest(

@@ -5,20 +5,18 @@ import zlib
 from concurrent import futures
 import tensorflow
 import grpc
-from google.protobuf import empty_pb2
 
 from DataJoin.common import common_pb2 as common_pb
 from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
 from DataJoin.common import data_join_service_pb2 as dj_pb
 from DataJoin.proxy.channel import make_insecure_channel, ChannelType
-from DataJoin.data_join.raw_data_visitor import RawDataLoader
+from DataJoin.data_join.raw_data_loader import RawDataLoader
 
 import multiprocessing
 
-from DataJoin.data_join import (
-    example_id_sync_leader, example_id_sync_follower,
-    example_join_leader, example_join_follower
-)
+from DataJoin.data_join import example_id_producer, example_id_consumer,\
+    data_block_producer, data_block_consumer
+
 from functools import wraps
 
 
@@ -150,12 +148,12 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
     def _init_data_join_processor(self, options_args):
         if self._role == common_pb.FLRole.Leader:
             self._leader_process = \
-                example_id_sync_leader.ExampleIdSyncLeader(
+                example_id_producer.ExampleIdProducer(
                     self._peer_client, self._raw_data_dir, self._partition_id,
                     self._rank_id, options_args.raw_data_options, self._mode, self._init_raw_data_loading
                 )
             self._follower_process = \
-                example_join_follower.ExampleJoinFollower(
+                data_block_consumer.DataBlockConsumer(
                     self._partition_id, options_args.raw_data_options,
                     self._init_raw_data_loading, self._data_block_dir,
                     self._data_source_name
@@ -165,14 +163,14 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
                 "if role not leader, should be Follower"
             follower_data_queue = multiprocessing.Queue(-1)
             self._leader_process = \
-                example_join_leader.ExampleJoinLeader(
+                data_block_producer.DataBlockProducer(
                     self._peer_client, self._rank_id, self._raw_data_dir,
                     options_args.raw_data_options, options_args.example_joiner_options
                     , self._partition_id, follower_data_queue, self._mode,
                     self._data_block_dir, self._data_source_name
                 )
             self._follower_process = \
-                example_id_sync_follower.ExampleIdSyncFollower(
+                example_id_consumer.ExampleIdConsumer(
                     self._partition_id, follower_data_queue
                 )
 
@@ -247,7 +245,7 @@ class RunDataJoinService(object):
                             choices=['', 'ZLIB', 'GZIP'],
                             help='the compressed type of raw data')
         parser.add_argument('--example_joiner', type=str,
-                            default='STREAM_JOINER',
+                            default='MEMORY_JOINER',
                             help='the join method of data joiner')
 
         parser.add_argument('--dump_data_block_time_span', type=int, default=-1,

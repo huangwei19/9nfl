@@ -1,9 +1,9 @@
 # coding: utf-8
 
 import logging
-from DataJoin.data_join import common
-from DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
-from DataJoin.data_join.raw_data_iter_impl.tf_record_iter import TfRecordDataIterator
+from DataJoin.settings import Invalid_ExampleId
+from DataJoin.data_join.data_iterator_builder.data_iterator import DataIterator
+from DataJoin.data_join.data_iterator_builder.tf_data_iterator import TfRecordDataIterator
 from os import path
 from tensorflow.compat.v1 import gfile
 import uuid
@@ -47,10 +47,10 @@ class RawDataManager(object):
         for fpath in self._all_fpath:
             raw_data_iter = self._new_raw_data_iter()
             first_item = raw_data_iter.reset_data_iterator(fpath)
-            if first_item.example_id != common.InvalidExampleId:
+            if first_item.example_id != Invalid_ExampleId:
                 self.item_dict[first_item.example_id] = first_item
             for item in raw_data_iter:
-                if first_item.example_id != common.InvalidExampleId:
+                if first_item.example_id != Invalid_ExampleId:
                     self.item_dict[item.example_id] = item
 
         assert self.item_dict, "No raw data in file path"

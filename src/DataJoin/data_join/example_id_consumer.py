@@ -2,10 +2,10 @@
 
 import threading
 import logging
-from DataJoin.data_join.example_id_dumper import AppendExamplesManager
+from DataJoin.data_join.example_id_appender import AppendExamplesManager
 
 
-class ExampleIdSyncFollower(object):
+class ExampleIdConsumer(object):
     class ExampleIdAppender(object):
         def __init__(self, queue, partition_id):
             self.example_id_append_manager = \
@@ -48,7 +48,7 @@ class ExampleIdSyncFollower(object):
 
     def add_example_items(self, req):
         assert req.HasField('lite_example_ids'), \
-            "req should has lite_example_ids for ExampleIdSyncFollower"
+            "req should has lite_example_ids for ExampleIdConsumer"
         with self._lock:
             self._check_partition(req.lite_example_ids.partition_id)
             self.example_appender.append_batch_examples_into_queue(req.lite_example_ids)

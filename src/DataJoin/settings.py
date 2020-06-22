@@ -7,6 +7,11 @@ HEADERS = {
     'Content-Type': 'application/json',
 }
 
+Data_Block_Suffix = '.data'
+Data_Block_Meta_Suffix = '.meta'
+Invalid_ExampleId = ''
+Invalid_EventTime = -8223372020784275321
+
 IP = '0.0.0.0'
 GRPC_PORT = 9360
 HTTP_PORT = 9380

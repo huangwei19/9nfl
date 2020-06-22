@@ -2,11 +2,11 @@
 
 import threading
 
-from DataJoin.data_join.routine_worker import RoutineWorker
+from DataJoin.data_join.processor_manager import ProcessorManager
 from DataJoin.data_join.data_block_dumper import DataBlockDumperManager
 
 
-class ExampleJoinFollower(object):
+class DataBlockConsumer(object):
     class DataBlockConsumerWrapper(object):
         def __init__(self, partition_id, init_raw_data_loading,
                      data_block_dir, data_source_name):
@@ -28,7 +28,7 @@ class ExampleJoinFollower(object):
         self._data_block_dir = data_block_dir
         self._data_source_name = data_source_name
         self._processor_routine_map = None
-        self.data_block_consumer_wrap = ExampleJoinFollower.DataBlockConsumerWrapper(
+        self.data_block_consumer_wrap = DataBlockConsumer.DataBlockConsumerWrapper(
             partition_id, self._init_loading,
             self._data_block_dir, self._data_source_name
         )
@@ -50,7 +50,7 @@ class ExampleJoinFollower(object):
 
     def add_example_items(self, req):
         assert req.HasField('data_block_meta'), \
-            "the request must has filed :data_block_meta for ExampleJoinFollower"
+            "the request must has filed :data_block_meta for DataBlockConsumer"
         with self._lock:
             self._check_status(req.data_block_meta.partition_id)
             return self.data_block_consumer_wrap.add_synced_data_block_meta(
@@ -84,12 +84,12 @@ class ExampleJoinFollower(object):
                 assert self._processor_routine_map is None, \
                     "the data block consumer processor is not None" \
                     " when start processor"
-                self._processor_routine_map = RoutineWorker(
+                self._processor_routine_map = ProcessorManager(
                     'data_block_dumper',
                     self._data_block_consumer_processor,
                     self._data_block_consumer_processor_factor, 6
                 )
-                self._processor_routine_map.start_routine()
+                self._processor_routine_map.active_processor()
                 self._processor_started = True
 
     def stop_dump_worker(self):
@@ -99,7 +99,7 @@ class ExampleJoinFollower(object):
                 dumper_worker = self._processor_routine_map
                 self._processor_routine_map = None
         if dumper_worker is not None:
-            dumper_worker.stop_routine()
+            dumper_worker.inactive_processor()
 
     def _check_status(self, partition_id):
         if partition_id != self.data_block_consumer_wrap.partition_id:
@@ -117,7 +117,7 @@ class ExampleJoinFollower(object):
         with self._lock:
             if self.data_block_consumer_wrap is not None \
                     and self.data_block_consumer_wrap.need_dump():
-                self._processor_routine_map.setup_args(self.data_block_consumer_wrap)
+                self._processor_routine_map.build_impl_processor_parameter(self.data_block_consumer_wrap)
                 return True
             return False
 

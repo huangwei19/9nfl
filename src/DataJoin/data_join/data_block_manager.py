@@ -11,10 +11,8 @@ from tensorflow.compat.v1 import gfile
 
 from DataJoin.common import data_join_service_pb2 as dj_pb
 
-from DataJoin.data_join.common import (
-    make_tf_record_iter, encode_data_block_meta_fname,
-    encode_block_id, encode_data_block_fname, partition_repr
-)
+from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_meta_file_name_wrap,\
+    block_id_wrap, data_block_file_name_wrap, partition_id_wrap
 
 from DataJoin.utils.base import get_host_ip
 import requests
@@ -110,11 +108,11 @@ class DataBlockMaker(object):
         self._tf_record_writer.close()
         if len(self._data_block_meta.example_ids) > 0:
             self._data_block_meta.block_id = \
-                encode_block_id(self._data_source_name,
+                block_id_wrap(self._data_source_name,
                                 self._data_block_meta)
             data_block_path = os.path.join(
                 self._get_data_block_dir(),
-                encode_data_block_fname(
+                data_block_file_name_wrap(
                     self._data_source_name,
                     self._data_block_meta
                 )
@@ -130,7 +128,7 @@ class DataBlockMaker(object):
 
     def _get_data_block_dir(self):
         return os.path.join(
-            self._dirname, partition_repr(self._partition_id)
+            self._dirname, partition_id_wrap(self._partition_id)
         )
 
     def _get_tmp_fpath(self):
@@ -148,7 +146,7 @@ class DataBlockMaker(object):
                 tmp_meta_fpath, meta
             )
         else:
-            meta_fname = encode_data_block_meta_fname(self._data_source_name,
+            meta_fname = data_block_meta_file_name_wrap(self._data_source_name,
                                                       self._partition_id,
                                                       meta.data_block_index)
             meta_fpath = os.path.join(self._get_data_block_dir(), meta_fname)
@@ -249,7 +247,7 @@ class DataBlockManager(object):
             return None
         if index not in self._data_block_meta_cache:
             fpath = self._get_data_block_meta_path(index)
-            with make_tf_record_iter(fpath) as record_iter:
+            with tf_record_iterator_factory(fpath) as record_iter:
                 self._data_block_meta_cache[index] = \
                     text_format.Parse(next(record_iter),
                                       dj_pb.DataBlockMeta())
@@ -257,7 +255,7 @@ class DataBlockManager(object):
         return self._data_block_meta_cache[index]
 
     def _get_data_block_meta_path(self, data_block_index):
-        meta_fname = encode_data_block_meta_fname(
+        meta_fname = data_block_meta_file_name_wrap(
             self._data_source_name,
             self._partition_id, data_block_index
         )
@@ -265,7 +263,7 @@ class DataBlockManager(object):
 
     def _encode_data_block_dir(self):
         return os.path.join(self._data_block_dir,
-                            partition_repr(self._partition_id))
+                            partition_id_wrap(self._partition_id))
 
     def _evict_data_block_cache_if_full(self):
         while len(self._data_block_meta_cache) > 1024:

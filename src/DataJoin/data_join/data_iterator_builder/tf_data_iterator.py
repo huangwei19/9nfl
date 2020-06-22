@@ -1,12 +1,10 @@
 # coding: utf-8
 
 import logging
-from contextlib import contextmanager
-
 import tensorflow.compat.v1 as tf
-
-import DataJoin.data_join.common as common
-from DataJoin.data_join.raw_data_iter_impl.raw_data_iter import DataIterator
+from DataJoin.settings import Invalid_ExampleId, Invalid_EventTime
+from DataJoin.utils.data_process import tf_record_iterator_factory
+from DataJoin.data_join.data_iterator_builder.data_iterator import DataIterator
 import traceback
 
 
@@ -42,7 +40,7 @@ class TfRecordDataItemParser(DataIterator.DataItemParser):
                 logging.info("Parse event time Failed from {0},"
                              "error msg:{1}".format(self._item_iter,
                                                     traceback.print_exc(str(e))))
-                self._event_time = common.InvalidEventTime
+                self._event_time = Invalid_EventTime
         return self._event_time
 
     @property
@@ -56,7 +54,7 @@ class TfRecordDataItemParser(DataIterator.DataItemParser):
                 logging.info("Parse example id Failed from {0},"
                              "error msg:{1}".format(self._item_iter,
                                                     traceback.print_exc(str(e))))
-                self._example_id = common.InvalidExampleId
+                self._example_id = Invalid_ExampleId
         return self._example_id
 
 
@@ -66,7 +64,7 @@ class TfRecordDataIterator(DataIterator):
         return 'TF_RECORD_ITERATOR'
 
     def _data_iterator_factory(self, file_path):
-        with common.make_tf_record_iter(file_path) as record_iter:
+        with tf_record_iterator_factory(file_path) as record_iter:
             for record in record_iter:
                 yield TfRecordDataItemParser(record)
 
@@ -80,49 +78,4 @@ class TfRecordDataIterator(DataIterator):
     def _visit_next_item(self):
         assert self._data_iterator is not None, "data_iterator should not be None in _next"
         return next(self._data_iterator)
-
-
-'''
-class TfDataSetIter(DataIterator, metaclass=MetaClass):
-    @classmethod
-    def name(cls):
-        return 'TF_DATASET'
-
-    @contextmanager
-    def _data_set(self, fpath):
-        data_set = None
-        expt = None
-        try:
-            data_set = tf.data.TFRecordDataset(
-                [fpath],
-                compression_type=self._options.compressed_type,
-                num_parallel_reads=4
-            )
-            data_set = data_set.batch(64)
-            yield data_set
-        except Exception as e:  # pylint: disable=broad-except
-            logging.warning("Failed to access file: %s, reason %s", fpath, e)
-            expt = e
-        if data_set is not None:
-            del data_set
-        if expt is not None:
-            raise expt
-
-    def _data_iterator_factory(self, fpath):
-        with self._data_set(fpath) as data_set:
-            for batch in iter(data_set):
-                for raw_data in batch.numpy():
-                    yield TfRecordDataItemParser(raw_data)
-
-    def _reset_data_iterator(self, file_path):
-        if file_path is not None:
-            fiter = self._data_iterator_factory(file_path)
-            item = next(fiter)
-            return fiter, item
-        return None, None
-
-    def _next(self):
-        assert self._fiter is not None, "_fiter must be not None in _next"
-        return next(self._fiter)
-'''
 

@@ -6,11 +6,8 @@ import time
 import os
 from contextlib import contextmanager
 
-from DataJoin.data_join.data_block_manager import (
-    DataBlockMaker, DataBlockManager
-)
-
-from DataJoin.data_join.raw_data_visitor import RawDataLoader
+from DataJoin.data_join.data_block_manager import DataBlockMaker, DataBlockManager
+from DataJoin.data_join.raw_data_loader import RawDataLoader
 
 
 class MetaClass(type):

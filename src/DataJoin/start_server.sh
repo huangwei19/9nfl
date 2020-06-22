@@ -17,7 +17,7 @@ get_http_server_pid() {
 }
 
 get_data_join_server_pid() {
-    data_join_server_pid=`ps aux | grep "python $CURRENT_DIR/data_join/data_join_worker.py" | grep -v grep | awk '{print $2}'`
+    data_join_server_pid=`ps aux | grep "python $CURRENT_DIR/data_join/data_join_server.py" | grep -v grep | awk '{print $2}'`
     if [[ -n ${data_join_server_pid} ]]; then
         return 0
     else
@@ -87,7 +87,7 @@ data_join_server_start() {
     get_data_join_server_pid
     if [[ $? -eq 1 ]]; then
         mkdir_data_join_log_dir
-        python $CURRENT_DIR/data_join/data_join_worker.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
+        python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
         if [[ $? -eq 0 ]]; then
             sleep 2
             get_data_join_server_pid

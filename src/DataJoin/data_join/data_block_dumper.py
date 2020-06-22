@@ -2,11 +2,8 @@
 
 import threading
 import logging
-import os
 from contextlib import contextmanager
-from DataJoin.data_join.data_block_manager import (
-    DataBlockMaker, DataBlockManager
-)
+from DataJoin.data_join.data_block_manager import DataBlockMaker, DataBlockManager
 
 
 class DataBlockDumperManager(object):
@@ -94,9 +91,9 @@ class DataBlockDumperManager(object):
         try:
             builder = \
                 DataBlockMaker(self._data_block_dir,
-                                 self._data_source_name,
-                                 self._partition_id,
-                                 meta.data_block_index)
+                               self._data_source_name,
+                               self._partition_id,
+                               meta.data_block_index)
             builder.init_by_meta(meta)
             builder.set_data_block_manager(self._data_block_manager)
             yield builder
@@ -143,4 +140,3 @@ class DataBlockDumperManager(object):
                 skip_count += 1
             self._fly_data_block_meta = \
                 self._fly_data_block_meta[skip_count:]
-

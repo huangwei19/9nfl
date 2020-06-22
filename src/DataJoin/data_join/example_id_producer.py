@@ -2,18 +2,13 @@
 
 import threading
 import logging
-import os
 from contextlib import contextmanager
-
-from google.protobuf import empty_pb2
-
 from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.data_join.data_join_server import InitRawDataLoading
 
-from DataJoin.data_join.routine_worker import RoutineWorker
-from DataJoin.data_join.data_join_worker import InitRawDataLoading
 
-
-class ExampleIdSyncLeader(object):
+class ExampleIdProducer(object):
 
     def __init__(self, peer_client, raw_data_dir, partition_id,
                  rank_id, raw_data_options, mode, init_raw_data_loading_object):
@@ -31,13 +26,13 @@ class ExampleIdSyncLeader(object):
     def start_processors(self):
         with self._lock:
             if not self._processor_start:
-                self._processor_routine.update(example_id_sender_processor=RoutineWorker(
+                self._processor_routine.update(example_id_sender_processor=ProcessorManager(
                         'example_id_sender_processor',
                         self._send_example_id_processor,
                         self._impl_send_example_id_factor, 6))
 
                 for key, processor in self._processor_routine.items():
-                    processor.start_routine()
+                    processor.active_processor()
                 self._processor_start = True
                 self._enable_example_id_sender_processor()
 
@@ -49,10 +44,10 @@ class ExampleIdSyncLeader(object):
                 self._processor_start = False
         if wait_stop:
             for processor in self._processor_routine.values():
-                processor.stop_routine()
+                processor.inactive_processor()
 
     def _enable_example_id_sender_processor(self):
-        self._processor_routine['example_id_sender_processor'].wakeup()
+        self._processor_routine['example_id_sender_processor'].enable_processor()
 
     def _send_example_id_processor(self, init_loading):
         if not init_loading.follower_finished:
@@ -64,7 +59,7 @@ class ExampleIdSyncLeader(object):
     def _impl_send_example_id_factor(self):
         with self._lock:
             if self._init_loading is not None:
-                self._processor_routine['example_id_sender_processor'].setup_args(
+                self._processor_routine['example_id_sender_processor'].build_impl_processor_parameter(
                     self._init_loading
                 )
             return self._init_loading is not None
