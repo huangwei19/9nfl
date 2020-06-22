@@ -3,7 +3,7 @@ import json
 from DataJoin.common import proxy_data_pb2, proxy_data_pb2_grpc
 import grpc
 import logging
-from DataJoin.settings import HEADERS, DEFAULT_GRPC_OVERALL_TIMEOUT
+from DataJoin.settings import HEADERS
 
 
 def get_url(_suffix):

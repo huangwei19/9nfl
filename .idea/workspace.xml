@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/service.sh" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/service.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataJoin/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataJoin/utils/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/utils/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,14 +65,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="66" />
+          <entry key="py" value="67" />
           <entry key="sh" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="66" />
+          <entry key="Python" value="67" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -126,8 +128,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+            <state relative-caret-position="140">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -135,11 +137,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="8" column="11" lean-forward="true" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+            <state relative-caret-position="60">
+              <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -156,11 +158,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/service.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="19" column="90" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="90" />
+            <state relative-caret-position="220">
+              <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/api.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -200,11 +211,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>BaseDataBase</find>
-      <find>database_config</find>
-      <find>DATABASE</find>
-      <find>self.database_connection</find>
-      <find>instances</find>
       <find>init_database_tables</find>
       <find>close_connection</find>
       <find>database_connection</find>
@@ -230,6 +236,11 @@
       <find>pid</find>
       <find>${pid}</find>
       <find>status</find>
+      <find>proxy_data_api</find>
+      <find>wrap_grpc_proxy_data_packet</find>
+      <find>DEFAULT_GRPC_OVERALL_TIMEOUT</find>
+      <find>SERVERS</find>
+      <find>SERVER_MODULE</find>
     </findStrings>
     <replaceStrings>
       <replace>DataJoin.</replace>
@@ -260,8 +271,8 @@
       <replace>mkdir_http_server_log_dir</replace>
       <replace>get_http_server_pid</replace>
       <replace>${http_server_pid}</replace>
-      <replace>http_server_status</replace>
       <replace />
+      <replace>http_server_status</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -313,12 +324,12 @@
         <option value="$PROJECT_DIR$/src/DataJoin/prepare_register_uuid.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/db/redis_manager.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/manager/data_managers.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/utils/api.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/base.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/data_process.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/service.sh" />
+        <option value="$PROJECT_DIR$/src/DataJoin/utils/api.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/settings.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/service.sh" />
       </list>
     </option>
   </component>
@@ -477,9 +488,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12449475" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19886823" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -720,13 +730,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/log_wrap.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -784,23 +787,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="8" column="11" lean-forward="true" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_join_worker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-446">
@@ -813,8 +799,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/service.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="19" column="90" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="90" />
+        <state relative-caret-position="220">
+          <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
         </state>
       </provider>
     </entry>

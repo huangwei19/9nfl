@@ -3,7 +3,6 @@ import json
 import grpc
 
 from flask import jsonify
-from DataJoin.settings import DEFAULT_GRPC_OVERALL_TIMEOUT
 import logging
 from DataJoin.utils.grpc_wrap import get_grpc_proxy_data_channel, wrap_grpc_proxy_data_packet
 
@@ -19,8 +18,8 @@ def get_json_result(retcode=0, retmsg='success', data=None, job_id=None, meta=No
     return jsonify(response)
 
 
-def proxy_data_api(method, endpoint, json_body, overall_timeout=DEFAULT_GRPC_OVERALL_TIMEOUT):
-    _packet = wrap_grpc_proxy_data_packet(json_body, method, endpoint, overall_timeout=overall_timeout)
+def proxy_data_api(method, endpoint, json_body):
+    _packet = wrap_grpc_proxy_data_packet(json_body, method, endpoint)
     try:
         channel, stub = get_grpc_proxy_data_channel()
         _return = stub.UnaryCall(_packet)

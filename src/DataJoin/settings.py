@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 
 api_version = "v1"
-SERVERS = 'servers'
-SERVER_MODULE = 'route_server.py'
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
-DEFAULT_GRPC_OVERALL_TIMEOUT = 60 * 1000  # ms
 HEADERS = {
     'Content-Type': 'application/json',
 }
