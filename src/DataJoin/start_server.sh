@@ -2,8 +2,8 @@
 
 CURRENT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-http_server_log_dir="${CURRENT_DIR}/http_server_logs"
-data_join_log_dir="${CURRENT_DIR}/data_join_logs"
+http_server_log_dir="${CURRENT_DIR}/logs/http_server_logs"
+data_join_log_dir="${CURRENT_DIR}/logs/data_join_logs"
 IFS='-' read -r -a array <<< "$RANK_UUID"
 export INDEX="${array[1]}"
 
@@ -84,23 +84,12 @@ start_http_server() {
 
 
 data_join_server_start() {
-    get_data_join_server_pid
-    if [[ $? -eq 1 ]]; then
-        mkdir_data_join_log_dir
-        python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
-        if [[ $? -eq 0 ]]; then
-            sleep 2
-            get_data_join_server_pid
-            if [[ $? -eq 0 ]]; then
-                echo "data join service start successfully. pid: ${data_join_server_pid}"
-            else
-                echo " data join service start failed"
-            fi
-        else
-            echo "data join service start failed"
-        fi
+    mkdir_data_join_log_dir
+    python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
+    if [[ $? -eq 0 ]]; then
+        echo "data join service start successfully"
     else
-        echo "data join service already started. pid: ${http_server_pid}"
+        echo "data join service start failed"
     fi
 }
 
@@ -113,6 +102,6 @@ case "$1" in
         data_join_server_status
         ;;
     *)
-        echo "usage: $0 {start|http_server_status|data_join_server_status}"
+        echo "usage: $0 {start}"
         exit -1
 esac
