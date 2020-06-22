@@ -1,15 +1,7 @@
 
 # -*- coding: utf-8 -*-
-import os
 
-from DataJoin.utils import file_utils
-from DataJoin.utils import log_utils
-
-log_utils.LoggerFactory.set_directory(os.path.join(file_utils.get_project_base_directory(), 'logs', 'server'))
-http_server_logger = log_utils.getLogger("server_stat")
-
-
-API_VERSION = "v1"
+api_version = "v1"
 SERVERS = 'servers'
 SERVER_MODULE = 'route_server.py'
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
@@ -37,7 +29,7 @@ REDIS = {
     'password': "jim://2834234004239665491/1078",
     'max_connections': 500
 }
-REDIS_QUEUE_DB_INDEX = 0
+db_index = 0
 
 PROXY_DATA_HOST = "localhost"
 PROXY_DATA_PORT = 9400

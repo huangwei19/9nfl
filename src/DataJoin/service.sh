@@ -2,96 +2,117 @@
 
 CURRENT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-export PYTHONPATH=$PYTHONPATH:CURRENT_DIR/../..:CURRENT_DIR/common/protobuf:/opt/tiger/pyutil
-log_dir="${CURRENT_DIR}/logs"
-IFS='-' read -r -a array <<< "$WORKER_UUID"
+http_server_log_dir="${CURRENT_DIR}/http_server_logs"
+data_join_log_dir="${CURRENT_DIR}/data_join_logs"
+IFS='-' read -r -a array <<< "$RANK_UUID"
 export INDEX="${array[1]}"
 
-get_pid() {
-    pid=`ps aux | grep "python route_server" | grep -v grep | awk '{print $2}'`
-    if [[ -n ${pid} ]]; then
+get_http_server_pid() {
+    http_server_pid=`ps aux | grep "python route_server.py" | grep -v grep | awk '{print $2}'`
+    if [[ -n ${http_server_pid} ]]; then
         return 0
     else
         return 1
     fi
 }
 
-mkdir_logs_dir() {
-    if [[ ! -d $log_dir ]]; then
-        mkdir -p $log_dir
+get_data_join_server_pid() {
+    data_join_server_pid=`ps aux | grep "python data_join_worker.py" | grep -v grep | awk '{print $2}'`
+    if [[ -n ${data_join_server_pid} ]]; then
+        return 0
+    else
+        return 1
     fi
 }
 
-status() {
-    get_pid
-    if [[ -n ${pid} ]]; then
-        echo "status:
-        `ps aux | grep ${pid} | grep -v grep`"
+mkdir_http_server_log_dir() {
+    if [[ ! -d $http_server_log_dir ]]; then
+        mkdir -p $http_server_log_dir
+    fi
+}
+
+mkdir_data_join_log_dir() {
+    if [[ ! -d $data_join_log_dir ]]; then
+        mkdir -p $data_join_log_dir
+    fi
+}
+
+http_server_status() {
+    get_http_server_pid
+    if [[ -n ${http_server_pid} ]]; then
+        echo "http_server_status:
+        `ps aux | grep ${http_server_pid} | grep -v grep`"
         exit 1
     else
-        echo "service not running"
+        echo "http service not running"
         exit 0
     fi
 }
 
-start() {
-    get_pid
-    if [[ $? -eq 1 ]]; then
-        mkdir_logs_dir
-        nohup python $CURRENT_DIR/route_server.py >> "${log_dir}/console.log" 2>>"${log_dir}/error.log" &
-        python $CURRENT_DIR/data_join/data_join_worker.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
-        if [[ $? -eq 0 ]]; then
-            sleep 2
-            get_pid
-            if [[ $? -eq 0 ]]; then
-                echo "service start sucessfully. pid: ${pid}"
-            else
-                echo "service start failed"
-            fi
-        else
-            echo "service start failed"
-        fi
+data_join_server_status() {
+    get_data_join_server_pid
+    if [[ -n ${data_join_server_pid} ]]; then
+        echo "data_join_server_pid:
+        `ps aux | grep ${data_join_server_pid} | grep -v grep`"
+        exit 1
     else
-        echo "service already started. pid: ${pid}"
+        echo "data join service not running"
+        exit 0
     fi
 }
 
-stop() {
-    get_pid
-    if [[ -n ${pid} ]]; then
-        echo "killing:
-        `ps aux | grep ${pid} | grep -v grep`"
-        kill -9 ${pid}
+start_http_server() {
+    get_http_server_pid
+    if [[ $? -eq 1 ]]; then
+        mkdir_http_server_log_dir
+        nohup python $CURRENT_DIR/route_server.py >> "${http_server_log_dir}/console.log" 2>>"${http_server_log_dir}/error.log" &
         if [[ $? -eq 0 ]]; then
-            echo "killed"
+            sleep 2
+            get_http_server_pid
+            if [[ $? -eq 0 ]]; then
+                echo "http service start successful. pid: ${http_server_pid}"
+            else
+                echo " http service start failed"
+            fi
         else
-            echo "kill error"
+            echo "http service start failed"
         fi
     else
-        echo "service not running"
+        echo "http service already started. pid: ${http_server_pid}"
+    fi
+}
+
+
+data_join_server_start() {
+    get_data_join_server_pid
+    if [[ $? -eq 1 ]]; then
+        mkdir_data_join_log_dir
+        python $CURRENT_DIR/data_join/data_join_worker.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
+        if [[ $? -eq 0 ]]; then
+            sleep 2
+            get_data_join_server_pid
+            if [[ $? -eq 0 ]]; then
+                echo "data join service start successfully. pid: ${data_join_server_pid}"
+            else
+                echo " data join service start failed"
+            fi
+        else
+            echo "data join service start failed"
+        fi
+    else
+        echo "data join service already started. pid: ${http_server_pid}"
     fi
 }
 
 
 case "$1" in
     start)
-        start
-        status
-        ;;
-
-    stop)
-        stop
-        ;;
-    status)
-        status
-        ;;
-
-    restart)
-        stop
-        start
-        status
+        start_http_server
+        data_join_server_start
+        http_server_status
+        data_join_server_status
         ;;
     *)
-        echo "usage: $0 {start|stop|status}"
+        echo "usage: $0 {start|http_server_status|data_join_server_status}"
         exit -1
 esac

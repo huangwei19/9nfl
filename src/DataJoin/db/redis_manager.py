@@ -1,19 +1,18 @@
-
 import os
-
-from DataJoin.settings import REDIS, REDIS_QUEUE_DB_INDEX
+from DataJoin.settings import REDIS, db_index
 import redis
-from DataJoin.settings import http_server_logger
+import logging
+import traceback
 
 
 def singleton(cls, *args, **kw):
-    instances = {}
+    _registry = dict()
 
     def _singleton():
         key = str(cls) + str(os.getpid())
-        if key not in instances:
-            instances[key] = cls(*args, **kw)
-        return instances[key]
+        if key not in _registry:
+            _registry[key] = cls(*args, **kw)
+        return _registry[key]
 
     return _singleton
 
@@ -21,45 +20,44 @@ def singleton(cls, *args, **kw):
 @singleton
 class RedisManage(object):
     def __init__(self):
-        config = REDIS.copy()
-        self.pool = redis.ConnectionPool(host=config['host'], port=config['port'], password=config['password'], \
-             max_connections=config['max_connections'], db=REDIS_QUEUE_DB_INDEX)
-        http_server_logger.info('init redis connection pool.')
+        redis_conf = REDIS.copy()
+        self.redis_pool = redis.ConnectionPool(host=redis_conf['host'], port=redis_conf['port'],
+                                               password=redis_conf['password'], \
+                                               max_connections=redis_conf['max_connections'], db=db_index)
+        logging.info('init redis connection pool successfully.')
 
-    def get_conn(self):
-        return redis.Redis(connection_pool=self.pool, decode_responses=True)
+    def acquire_redis_conn(self):
+        return redis.Redis(connection_pool=self.redis_pool, decode_responses=True)
 
     def get(self, key):
         try:
-            conn = self.get_conn()
-            value = conn.get(key)
+            redis_conn = self.acquire_redis_conn()
+            value = redis_conn.get(key)
             if value:
-                http_server_logger.info('get from redis, {}:{}'.format(key, value))
+                logging.info('get from redis, {}:{}'.format(key, value))
                 return True, value
             else:
-                http_server_logger.info('get from redis return nil, key={}'.format(key))
-                return False,value
+                logging.info('get from redis return nul, key={}'.format(key))
+                return False, value
         except Exception as e:
-            http_server_logger.exception(e)
-            http_server_logger.error('get from redis failed')
+            logging.error('get value from redis failed')
+            traceback.print_exc(str(e))
             return None
 
-    def setex(self, key, value, expire_seconds=108000*24*5):
+    def set(self, key, value, expire_seconds=108000 * 24 * 5):
         try:
-            conn = self.get_conn()
-            conn.setex(key, expire_seconds, value)
-            http_server_logger.info('set {}:{} {} into redis.'.format(key, value, expire_seconds))
+            redis_conn = self.acquire_redis_conn()
+            redis_conn.setex(key, expire_seconds, value)
+            logging.info('set {}:{} {} into redis.'.format(key, value, expire_seconds))
         except Exception as e:
-            http_server_logger.exception(e)
-            http_server_logger.info('set {}:{} {} into redis failed.'.format(key, value, expire_seconds))
+            logging.info('set {}:{} {} into redis failed.'.format(key, value, expire_seconds))
+            traceback.print_exc(str(e))
 
     def delete(self, *key):
         try:
-            conn = self.get_conn()
-            conn.delete(*key)
-            http_server_logger.info('del {} from redis.'.format(*key))
+            redis_conn = self.acquire_redis_conn()
+            redis_conn.delete(*key)
+            logging.info('del {} from redis.'.format(*key))
         except Exception as e:
-            http_server_logger.exception(e)
-            http_server_logger.info('del {} from redis failed.'.format(*key))
-
-
+            logging.info('del {} from redis failed.'.format(*key))
+            traceback.print_exc(str(e))

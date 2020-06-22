@@ -16,5 +16,5 @@ if __name__ == "__main__":
         redis_cli.delete(remote_ip)
     while not host_ip:
         host_ip = os.environ.get("HOST_IP", None)
-    redis_cli.setex(remote_ip, "{0}:8001".format(os.environ.get("HOST_IP", None)))
+    redis_cli.set(remote_ip, "{0}:8001".format(os.environ.get("HOST_IP", None)))
 

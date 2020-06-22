@@ -1,9 +1,8 @@
 
 from flask import Flask, request
-
-from DataJoin.settings import http_server_logger
-from DataJoin.utils import data_utils
-from DataJoin.utils.api_utils import get_json_result
+import logging
+from DataJoin.utils import data_process
+from DataJoin.utils.api import get_json_result
 from DataJoin.driver.data_controller import DataController
 
 manager = Flask(__name__)
@@ -11,7 +10,7 @@ manager = Flask(__name__)
 
 @manager.errorhandler(500)
 def internal_server_error(e):
-    http_server_logger.exception(e)
+    logging.error(str(e))
     return get_json_result(retcode=100, retmsg=str(e))
 
 
@@ -25,7 +24,7 @@ def create_data_block_meta(block_id, partition_id, file_version):
 
 @manager.route('/query/data/block/meta', methods=['POST'])
 def query_data_block_meta():
-    data_block_metas = data_utils.query_data_block_meta(**request.json)
+    data_block_metas = data_process.query_data_block_meta(**request.json)
     if not data_block_metas:
         return get_json_result(retcode=101, retmsg='find data block meta failed')
     return get_json_result(retcode=0, retmsg='success', data=[task.to_json() for task in data_block_metas])
@@ -33,7 +32,7 @@ def query_data_block_meta():
 
 @manager.route('/query/data/source/meta', methods=['POST'])
 def query_data_source_meta():
-    data_source_metas = data_utils.query_data_source_meta(**request.json)
+    data_source_metas = data_process.query_data_source_meta(**request.json)
     if not data_source_metas:
         return get_json_result(retcode=101, retmsg='find data source meta failed')
     return get_json_result(retcode=0, retmsg='success', data=[task.to_json() for task in data_source_metas])
@@ -41,7 +40,7 @@ def query_data_source_meta():
 
 @manager.route('/query/data/source', methods=['POST'])
 def query_data_source():
-    data_sources = data_utils.query_data_source(**request.json)
+    data_sources = data_process.query_data_source(**request.json)
     if not data_sources:
         return get_json_result(retcode=101, retmsg='find data source failed')
     return get_json_result(retcode=0, retmsg='success', data=[task.to_json() for task in data_sources])

@@ -2,10 +2,8 @@ import requests
 import json
 from DataJoin.common import proxy_data_pb2, proxy_data_pb2_grpc
 import grpc
-from DataJoin.settings import HEADERS, DEFAULT_GRPC_OVERALL_TIMEOUT, \
-    http_server_logger
-import os
-from DataJoin.utils import file_utils
+import logging
+from DataJoin.settings import HEADERS, DEFAULT_GRPC_OVERALL_TIMEOUT
 
 
 def get_url(_suffix):
@@ -18,7 +16,7 @@ def get_grpc_proxy_data_channel():
     return channel, stub
 
 
-def wrap_grpc_proxy_data_packet(_json_body, _method, _url, overall_timeout=DEFAULT_GRPC_OVERALL_TIMEOUT):
+def wrap_grpc_proxy_data_packet(_json_body, _method, _url):
     _data = proxy_data_pb2.Data(key=_url, value=bytes(json.dumps(_json_body), 'utf-8'))
     _header = proxy_data_pb2.HeaderData(operator=_method)
     return proxy_data_pb2.Packet(header=_header, body=_data)
@@ -36,19 +34,11 @@ class ProxyDataService(proxy_data_pb2_grpc.ProxyDataServiceServicer):
         param = bytes.decode(bytes(json.dumps(param_dict), 'utf-8'))
 
         action = getattr(requests, method.lower(), None)
-        http_server_logger.info('rpc receive: {}'.format(packet))
+        logging.info('rpc receive: {}'.format(packet))
         if action:
-            http_server_logger.info("rpc receive:{} {}".format(_suffix, param))
+            logging.info("rpc receive:{} {}".format(_suffix, param))
             resp = action(url=get_url(_suffix), data=param, headers=HEADERS)
         else:
             pass
         resp_json = resp.json()
         return wrap_grpc_proxy_data_packet(resp_json, method, _suffix)
-
-
-def get_grpc_server_directory(server_type):
-    return os.path.join(file_utils.get_project_base_directory(), 'servers', server_type)
-
-
-def get_job_log_directory(server_type):
-    return os.path.join(file_utils.get_project_base_directory(), 'logs', server_type)

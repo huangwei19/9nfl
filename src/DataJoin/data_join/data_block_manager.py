@@ -16,7 +16,7 @@ from DataJoin.data_join.common import (
     encode_block_id, encode_data_block_fname, partition_repr
 )
 
-from DataJoin.utils.core import get_host_ip
+from DataJoin.utils.base import get_host_ip
 import requests
 
 host_ip = get_host_ip()

@@ -3,7 +3,7 @@ import subprocess
 import os
 from tensorflow.python.platform import gfile
 import time
-from DataJoin.settings import http_server_logger
+import logging
 from DataJoin.controller.sync_convert_data_block import StartSyncConvertDataBlock
 
 time_stamp = str(int(time.time()))
@@ -28,14 +28,14 @@ class DataBlockController(object):
         self.dfs_data_block_dir = dfs_data_block_dir
 
     def data_block_controller(self):
-        http_server_logger.info('Fetch Data Block Meta from Path:%s' % self.dfs_data_block_dir)
+        logging.info('Fetch Data Block Meta from Path:%s' % self.dfs_data_block_dir)
         data_meta_fpaths = \
             [os.path.join(self.dfs_data_block_dir, f)
              for f in gfile.ListDirectory(self.dfs_data_block_dir)
              if not gfile.IsDirectory(os.path.join(self.dfs_data_block_dir, f))
              and f.endswith(".meta")]
         data_meta_fpaths.sort()
-        http_server_logger.info("data_meta_fpaths: %s" % data_meta_fpaths)
+        logging.info("data_meta_fpaths: %s" % data_meta_fpaths)
         data_block_fpaths = \
             [os.path.join(self.dfs_data_block_dir, f)
              for f in gfile.ListDirectory(self.dfs_data_block_dir)
@@ -52,14 +52,14 @@ class DataBlockController(object):
             index = data_block_path.split(".")[-3]
             # index = int((data_block_path.split("/")[-1]).split("_")[-1].split(".")[-2])
             data_block_fpaths_dict[str(index)] = data_block_path
-        http_server_logger.info("data_block_fpaths:%s" % data_block_fpaths_dict)
+        logging.info("data_block_fpaths:%s" % data_block_fpaths_dict)
         result = list()
         for i in range(len(data_block_fpaths_dict)):
             time.sleep(2)
             meta_path = data_meta_fpaths_dict["{:08}".format(i)]
             data_path = data_block_fpaths_dict["{:08}".format(i)]
-            http_server_logger.info("----------meta path-------: %s" % meta_path)
-            http_server_logger.info("----------data path--------:%s" % data_path)
+            logging.info("----------meta path-------: %s" % meta_path)
+            logging.info("----------data path--------:%s" % data_path)
 
             start_sync_data_block_pid = run_subprocess(
                 [
@@ -86,13 +86,13 @@ class StartParseDataBlockMeta(object):
         if dfs_data_block_dir:
             if dfs_data_block_dir.endswith('/'):
                 dfs_data_block_dir = dfs_data_block_dir.strip('/')
-            http_server_logger.info('Fetch Data Block Meta from dir:%s' % dfs_data_block_dir)
+            logging.info('Fetch Data Block Meta from dir:%s' % dfs_data_block_dir)
             dir_fpaths = \
                 [os.path.join(dfs_data_block_dir, f)
                  for f in gfile.ListDirectory(dfs_data_block_dir)
                  if gfile.IsDirectory(os.path.join(dfs_data_block_dir, f))]
 
-            # http_server_logger.info(3333333333333333333, dir_fpaths)
+            # logging.info(3333333333333333333, dir_fpaths)
             for data_block_path in dir_fpaths:
                 DataBlockController(data_block_path).data_block_controller()
         else:
@@ -106,8 +106,6 @@ class StartParseDataBlockMeta(object):
                 ])
 
 
-
 if __name__ == '__main__':
     # 解析hdfs上的datablockmeta pb格式化的数据
     StartParseDataBlockMeta().run_task()
-

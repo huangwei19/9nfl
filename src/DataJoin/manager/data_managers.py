@@ -1,7 +1,7 @@
 
-from DataJoin.utils.core import current_timestamp
+from DataJoin.utils.base import current_timestamp
 from DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource
-from DataJoin.settings import http_server_logger
+import logging
 
 
 class DataManagers(object):
@@ -22,7 +22,7 @@ class DataManagers(object):
 
     def save_data_block_meta_info(self, data_block_meta_info, create=False):
         with DB.connection_context():
-            http_server_logger.info(
+            logging.info(
                 'save {} {} data_block_meta: {}'.format(self.block_id, self.partition_id, data_block_meta_info))
             data_block_metas = DataBlockMeta.select().where(DataBlockMeta.block_id == self.block_id)
             is_insert = True
@@ -52,7 +52,7 @@ class DataManagers(object):
 
     def save_data_source_meta_info(self, data_source_meta_info, create=False):
         with DB.connection_context():
-            http_server_logger.info(
+            logging.info(
                 'save {} data_source_meta: {}'.format(self.data_source_name, data_source_meta_info))
             data_source_metas = DataSourceMeta.select().where(DataSourceMeta.block_id == self.block_id)
             is_insert = True
@@ -79,7 +79,7 @@ class DataManagers(object):
 
     def save_data_source_info(self, data_source_info, create=False):
         with DB.connection_context():
-            http_server_logger.info(
+            logging.info(
                 'save {} data_source: {}'.format(self.data_source_name, data_source_info))
             data_sources = DataSource.select().where(DataSource.block_id == self.block_id)
             is_insert = True
