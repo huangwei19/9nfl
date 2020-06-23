@@ -19,6 +19,8 @@ _fl_ops_so_lock = threading.Lock()
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+#os.environ["_FILE_GET_CMD"] = dir_path + '/file_get.sh'
+
 def load_fl_ops_lib():
 
   global _fl_ops_so
@@ -33,7 +35,7 @@ def load_fl_ops_lib():
     if _fl_ops_so:
       return _fl_ops_so
     
-    _fl_ops_so = tf.load_op_library(dir_path + "/fl_rpc_bridge.so")  
+    _fl_ops_so = tf.load_op_library(dir_path + "/_fl.so")
     return _fl_ops_so
 
   finally:
@@ -44,8 +46,8 @@ def load_fl_ops_lib():
 def _RegisterGradient(op, grad):
   ops_lib = load_fl_ops_lib()
   grad_sname = op.get_attr("grad_sname")
-  #return ops_lib.fl_grad_backprop_request(grad, datamsg_sname=grad_sname)
   grad = ops_lib.fl_grad_backprop_request(grad, datamsg_sname=grad_sname)
+  # unnecessary
   return tf.reduce_min(grad)
 
 @ops.RegisterGradient("FlTensorRecvWithGradBp")
@@ -106,25 +108,6 @@ class FlTFRecordDataset(UnaryDataset):
   @property
   def element_spec(self):
     return self._input_dataset.element_spec
-
-
-class FlSequenceFileDataset(UnaryDataset):
-
-  def __init__(self, input_dataset):
-
-    self._input_dataset = input_dataset
-    self._ops_lib = load_fl_ops_lib()
-   
-    variant_tensor = self._ops_lib.fl_sequence_file_dataset(
-        input_dataset._variant_tensor, 
-        (tf.string, tf.string))
-
-    super(FlSequenceFileDataset, self).__init__(input_dataset, variant_tensor)
-
-  @property
-  def element_spec(self):
-    return ( tensor_spec.TensorSpec([], dtypes.string), 
-              tensor_spec.TensorSpec([], dtypes.string) )
 
 
 class FlTextLineDataset(UnaryDataset):

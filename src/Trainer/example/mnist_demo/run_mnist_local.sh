@@ -30,7 +30,7 @@ if [ ! -d ${MNIST_DIR}/logs ];then
     mkdir ${MNIST_DIR}/logs
 fi
 
-export  _FL_HDFS_GET_SCRIPT_PATH="./local_get.sh"
+export  _FILE_GET_CMD="./local_get.sh"
 
 train(){
 set -x
