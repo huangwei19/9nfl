@@ -94,7 +94,7 @@ class ProcessorManager(object):
             except Exception as e:
                 logging.error("processor: %s implement %d rounds with exception",
                               self._impl_processor_name, impl_count)
-                traceback.print_exc(str(e))
+                traceback.print_exc()
             else:
                 logging.info("processor: %s implement %d round", self._impl_processor_name, impl_count)
             impl_count += 1
