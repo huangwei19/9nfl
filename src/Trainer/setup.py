@@ -5,7 +5,7 @@ REQUIRED_PACKAGES = [
   'tensorflow >=1.15'
 ]
 
-EXTENSION_NAME = 'fl_comm_libs/fl_rpc_bridge.so'
+EXTENSION_NAME = 'fl_comm_libs/_fl.so'
 
 setup(name='fl_comm_libs',
     version='0.1',

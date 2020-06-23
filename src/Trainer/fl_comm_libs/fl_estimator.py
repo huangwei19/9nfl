@@ -12,8 +12,6 @@ from tensorflow_estimator.python.estimator import model_fn as model_fn_lib
 from tensorflow.estimator import ModeKeys
 from tensorflow.python.client import timeline
 from tensorflow.core.protobuf import config_pb2
-import chief_restore_checkpoint_patch
-
 
 def _extract_metric_update_ops(eval_dict):
     """Separate update operations from metric value operations."""
