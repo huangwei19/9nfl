@@ -35,7 +35,7 @@ def load_fl_ops_lib():
     if _fl_ops_so:
       return _fl_ops_so
     
-    _fl_ops_so = tf.load_op_library(dir_path + "/_fl.so")
+    _fl_ops_so = tf.load_op_library(dir_path + "/_fl_ops.so")
     return _fl_ops_so
 
   finally:
