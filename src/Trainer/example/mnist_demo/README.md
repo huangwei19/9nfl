@@ -4,7 +4,7 @@
 2. Put `fl_comm_libs` in this directory .
 
 #### Standalone Mode
-```python
+```bash
 DATA_DIR=../mnist_data
 PYTHON=python
 
