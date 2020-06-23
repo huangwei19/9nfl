@@ -27,7 +27,7 @@ class DataBlockProducer(object):
 
         def get_next_data_block_meta(self):
             assert self.next_data_block_index >= 0
-            return self.data_joiner.get_data_block_meta_by_index(
+            return self.data_joiner.acquire_data_block_meta_by_index(
                 self.next_data_block_index
             )
 

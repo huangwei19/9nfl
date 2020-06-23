@@ -80,20 +80,21 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
         self._data_block_dir = self._data_source.data_block_dir
         self._data_source_name = self._data_source.data_source_name
         self._mode = self._data_source.mode
-        self._leader_process = None
-        self._follower_process = None
+        self._producer_process = None
+        self._consumer_process = None
         self._init_raw_data_loading = InitRawDataLoading(self._raw_data_dir, options_args.raw_data_options,
                                                          self._partition_id, self._mode)
         self._init_data_join_processor(options_args)
 
     def start_data_join_processor(self):
-        self._leader_process.start_processors()
+        self._producer_process.start_processors()
         if self._role == common_pb.FLRole.Leader:
-            self._follower_process.start_dump_worker()
+            self._consumer_process.start_processors()
 
     def stop_data_join_processor(self):
-        self._leader_process.stop_processors()
-        self._follower_process.stop_dump_worker()
+        self._producer_process.stop_processors()
+        if self._role == common_pb.FLRole.Leader:
+            self._consumer_process.stop_processors()
 
     @partition_id_wrap
     @rank_id_wrap
@@ -105,7 +106,7 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
             content_bytes = zlib.decompress(content_bytes)
         send_example_items = dj_pb.SyncContent()
         send_example_items.ParseFromString(content_bytes)
-        status, _ = self._follower_process.add_example_items(send_example_items)
+        status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
         if not status:
             response.code = -1
             response.error_message = "not need example items"
@@ -118,14 +119,14 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
         response = dj_pb.StartPartitionResponse()
         peer_partition_id = request.partition_id
         partition_id = \
-            self._follower_process.get_partition_id()
+            self._consumer_process.fetch_partition_id()
         if peer_partition_id != partition_id:
             response.status.code = -2
             response.status.error_message = \
                 "partition_id :{0} does not match peer partition_id:{1}".format(partition_id, peer_partition_id)
         if response.status.code == 0:
             response.next_index, response.finished = \
-                self._follower_process.start_sync_partition(peer_partition_id)
+                self._consumer_process.partition_syncer_to_consumer(peer_partition_id)
         return response
 
     @partition_id_wrap
@@ -134,25 +135,25 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
         logging.info("Finish Partition Req:{0}".format(request.partition_id))
         response = dj_pb.FinishPartitionResponse()
         peer_partition_id = request.partition_id
-        partition_id = self._follower_process.get_partition_id()
+        partition_id = self._consumer_process.fetch_partition_id()
         assert partition_id == peer_partition_id, \
             "partition_id :{0} does not match peer partition_id:{1}".format(partition_id, peer_partition_id)
         response.finished = \
-            self._follower_process.finish_send_partition(
+            self._consumer_process.finish_partition_transmit(
                 peer_partition_id
             )
         if response.finished:
-            self._follower_process.reset_partition(peer_partition_id)
+            self._consumer_process.reset_consumer_wrap(peer_partition_id)
         return response
 
     def _init_data_join_processor(self, options_args):
         if self._role == common_pb.FLRole.Leader:
-            self._leader_process = \
+            self._producer_process = \
                 example_id_producer.ExampleIdProducer(
                     self._peer_client, self._raw_data_dir, self._partition_id,
                     self._rank_id, options_args.raw_data_options, self._mode, self._init_raw_data_loading
                 )
-            self._follower_process = \
+            self._consumer_process = \
                 data_block_consumer.DataBlockConsumer(
                     self._partition_id, options_args.raw_data_options,
                     self._init_raw_data_loading, self._data_block_dir,
@@ -162,14 +163,14 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
             assert self._role == common_pb.FLRole.Follower, \
                 "if role not leader, should be Follower"
             follower_data_queue = multiprocessing.Queue(-1)
-            self._leader_process = \
+            self._producer_process = \
                 data_block_producer.DataBlockProducer(
                     self._peer_client, self._rank_id, self._raw_data_dir,
                     options_args.raw_data_options, options_args.example_joiner_options
                     , self._partition_id, follower_data_queue, self._mode,
                     self._data_block_dir, self._data_source_name
                 )
-            self._follower_process = \
+            self._consumer_process = \
                 example_id_consumer.ExampleIdConsumer(
                     self._partition_id, follower_data_queue
                 )

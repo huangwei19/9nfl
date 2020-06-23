@@ -36,10 +36,10 @@ class MemoryDataJoiner(DataJoiner):
                 if len(lite_example_ids.example_id) > 0:
                     for example_id in lite_example_ids.example_id:
                         if example_id in item_dict:
-                            builder = self._acquire_data_block_maker(True)
-                            builder.append(item_dict[example_id].record, example_id,
-                                           item_dict[example_id].event_time)
-                            if builder.check_data_block_full():
+                            maker = self._acquire_data_block_maker(True)
+                            maker.save(item_dict[example_id].record, example_id,
+                                       item_dict[example_id].event_time)
+                            if maker.is_data_block_exceed_threshold():
                                 yield self._data_join_finalizer(lite_example_ids.finished)
                     if lite_example_ids.finished:
                         if self._acquire_data_block_maker(False) is not None:

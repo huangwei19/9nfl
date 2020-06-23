@@ -82,27 +82,27 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="188" />
+          <entry key="py" value="217" />
           <entry key="sh" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="188" />
+          <entry key="Python" value="217" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="44" />
-          <entry key="py" value="348" />
+          <entry key="dummy" value="49" />
+          <entry key="py" value="836" />
           <entry key="sh" value="224" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="268" />
-          <entry key="Python" value="348" />
+          <entry key="PLAIN_TEXT" value="273" />
+          <entry key="Python" value="836" />
         </counts>
       </usages-collector>
     </session>
@@ -110,10 +110,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2332">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="100">
+              <caret line="5" column="62" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="62" />
               <folding>
                 <element signature="e#17#33#0" expanded="true" />
               </folding>
@@ -122,85 +122,43 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_saver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="860">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="-1700">
+              <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
               <folding>
-                <element signature="e#17#31#0" expanded="true" />
+                <element signature="e#17#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="232" column="60" lean-forward="true" selection-start-line="232" selection-start-column="60" selection-end-line="232" selection-end-column="60" />
+            <state relative-caret-position="448">
+              <caret line="148" column="22" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="22" />
               <folding>
-                <element signature="e#17#31#0" expanded="true" />
+                <element signature="e#17#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/route_server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-end-line="21" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="142">
+              <caret line="8" column="82" lean-forward="true" selection-start-line="8" selection-start-column="82" selection-end-line="8" selection-end-column="82" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/start_server.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1920">
-              <caret line="96" column="43" lean-forward="true" selection-start-line="96" selection-start-column="43" selection-end-line="96" selection-end-column="43" />
-              <folding>
-                <element signature="e#17#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/raw_data_loader.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="7" column="38" lean-forward="true" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="7" column="65" lean-forward="true" selection-start-line="7" selection-start-column="65" selection-end-line="7" selection-end-column="65" />
+            <state relative-caret-position="120">
+              <caret line="6" column="58" lean-forward="true" selection-start-line="6" selection-start-column="58" selection-end-line="6" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -225,68 +183,68 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>example_join_leader</find>
-      <find>raw_data_visitor</find>
-      <find>data_process</find>
-      <find>data_iterator_factory</find>
-      <find>data_joiner_factory</find>
-      <find>joiner_impl</find>
-      <find>raw_data_iter_impl</find>
-      <find>data_joiner_builder</find>
-      <find>example_joiner</find>
-      <find>stream_joiner</find>
-      <find>raw_data_iter</find>
-      <find>tf_record_iter</find>
-      <find>tf_record_iterator_factory</find>
-      <find>DataBlockConsumer</find>
-      <find>DataBlockConsumerWrapper</find>
-      <find>ExampleJoinFollower</find>
-      <find>ExampleJoinLeader</find>
-      <find>DataJoinerWrapper</find>
-      <find>ExampleIdSyncFollower</find>
-      <find>ExampleIdSyncLeader</find>
-      <find>routine_worker</find>
-      <find>RoutineWorker</find>
-      <find>start_routine</find>
-      <find>stop_routine</find>
-      <find>is_stopped</find>
-      <find>setup_args</find>
-      <find>obtain_args</find>
-      <find>_routine</find>
-      <find>_wait_for_exec</find>
-      <find>wakeup(</find>
+      <find>finish_data_block</find>
+      <find>get_data_block_meta</find>
+      <find>check_data_block_full</find>
+      <find>append</find>
+      <find>meta</find>
+      <find>_build_data_block_meta</find>
+      <find>append_data_example_to_fpath</find>
+      <find>_saved_example_num</find>
+      <find>_appended_example_num</find>
+      <find>_dumped_index</find>
+      <find>_dumping_index</find>
+      <find>self._dumped_index</find>
+      <find>self._dumping_index</find>
+      <find>self._saved_data_block_index</find>
+      <find>self._saved_data_block_meta_index</find>
+      <find>self._saving_data_block_meta_index</find>
+      <find>_sync_dumped_index</find>
+      <find>_acquire_data_block_meta_path</find>
+      <find>_get_data_block_meta_path</find>
+      <find>_encode_data_block_dir</find>
+      <find>_make_data_block_dir_if_no_existed</find>
+      <find>_evict_data_block_cache_if_full</find>
+      <find>self._data_block_meta_cache</find>
+      <find>_remove_item_from_data_block_cache</find>
+      <find>DataBlockManager</find>
+      <find>self._data_block_manager</find>
+      <find>get_lastest_data_block_meta</find>
+      <find>get_data_block_meta_by_index</find>
+      <find>commit_data_block_meta</find>
+      <find>DataBlockController</find>
     </findStrings>
     <replaceStrings>
-      <replace>tf_record_iterator</replace>
-      <replace>tf_record_iterator_factory</replace>
-      <replace>data_join_server</replace>
-      <replace>example_id_appender</replace>
-      <replace>example_id_consumer</replace>
-      <replace>example_id_producer</replace>
-      <replace>data_block_consumer</replace>
-      <replace>data_block_producer</replace>
-      <replace>raw_data_loader</replace>
-      <replace>data_iterator_factory</replace>
-      <replace>data_joiner_factory</replace>
-      <replace>data_it_factory</replace>
-      <replace />
-      <replace>Data_Block_Meta_Suffix</replace>
-      <replace>data_iterator_builder</replace>
-      <replace>data_joiner_builder</replace>
-      <replace>ExampleJoinFoll</replace>
-      <replace>DataBlockConsumer</replace>
-      <replace>DataBlockProducer</replace>
-      <replace>ExampleIdConsumer</replace>
-      <replace>ExampleIdProducer</replace>
-      <replace>ProcessorManager</replace>
-      <replace>active_processor</replace>
-      <replace>inactive_processor</replace>
-      <replace>is_inactive</replace>
-      <replace>build_impl_processor_parameter</replace>
-      <replace>acquire_impl_processor_parameter</replace>
-      <replace>implementor</replace>
-      <replace>entry_impl_processor</replace>
-      <replace>enable_processor(</replace>
+      <replace>build_data_block_manager</replace>
+      <replace>_example_num_threshold</replace>
+      <replace>example_num_threshold</replace>
+      <replace>init_args_meta</replace>
+      <replace>self._appended_example_num</replace>
+      <replace>init_maker_by_input_meta</replace>
+      <replace>append_data_example_to_fpath</replace>
+      <replace>data_block_finalizer</replace>
+      <replace>is_data_block_full</replace>
+      <replace>self._appent_example_num</replace>
+      <replace>is_data_block_exceed_threshold</replace>
+      <replace>_make_data_block_meta</replace>
+      <replace>save_data_record</replace>
+      <replace>_saved_example_num</replace>
+      <replace>self._saved_data_block_meta_index</replace>
+      <replace>self._saving_data_block_meta_index</replace>
+      <replace>self._saved_data_block_index</replace>
+      <replace>self._saving_data_block_index</replace>
+      <replace>_sync_saved_data_block_index</replace>
+      <replace>self._data_block_meta_cache</replace>
+      <replace>_acquire_data_block_meta_path</replace>
+      <replace>_data_block_dir_wrap</replace>
+      <replace>_create_data_block_dir_if_need</replace>
+      <replace>_remove_item_from_data_block_cache</replace>
+      <replace>self._data_block_meta_memory_buffer</replace>
+      <replace>_remove_item_from_data_block_memory_buffer</replace>
+      <replace>DataBlockController</replace>
+      <replace>acquire_data_block_meta_by_index</replace>
+      <replace>update_data_block_meta</replace>
+      <replace>DataBlockManager</replace>
     </replaceStrings>
     <dirStrings>
       <dir>E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin\data_join\joiner_impl</dir>
@@ -301,8 +259,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/__init__.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/apps/model_task_app.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/apps/__init__.py" />
         <option value="$PROJECT_DIR$/ci/ci_test.sh" />
         <option value="$PROJECT_DIR$/src/DataJoin/proxy/channel.py" />
@@ -327,31 +283,33 @@
         <option value="$PROJECT_DIR$/src/DataJoin/service.sh" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/api.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/base.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/common.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/joiner_impl/example_joiner.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_join_worker.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/settings.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_iter_impl/tf_record_iter.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_join_leader.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_visitor.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/data_process.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_sync_leader.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_factory/stream_joiner.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/stream_joiner.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/tf_record_iter.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_loader.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_consumer.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/__init__.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_producer.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/start_server.sh" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_consumer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_saver.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py" />
       </list>
     </option>
   </component>
@@ -424,6 +382,13 @@
               <item name="data_join" type="462c0819:PsiDirectoryNode" />
               <item name="data_joiner_builder" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -479,7 +444,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14227971" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23039612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -603,16 +568,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/manager/data_managers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1706">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="e#1#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/log_wrap.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -703,131 +658,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/data_iterator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="64" lean-forward="true" selection-start-line="9" selection-start-column="64" selection-end-line="9" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/tf_data_iterator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="7" column="16" lean-forward="true" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
-          <folding>
-            <element signature="e#17#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="60" lean-forward="true" selection-start-line="9" selection-start-column="60" selection-end-line="9" selection-end-column="60" />
-          <folding>
-            <element signature="e#17#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_appender.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_consumer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="23" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="23" />
-          <folding>
-            <element signature="e#17#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_producer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/raw_data_loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="38" lean-forward="true" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="65" lean-forward="true" selection-start-line="7" selection-start-column="65" selection-end-line="7" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1920">
-          <caret line="96" column="43" lean-forward="true" selection-start-line="96" selection-start-column="43" selection-end-line="96" selection-end-column="43" />
-          <folding>
-            <element signature="e#17#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="232" column="60" lean-forward="true" selection-start-line="232" selection-start-column="60" selection-end-line="232" selection-end-column="60" />
-          <folding>
-            <element signature="e#17#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="860">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
-          <folding>
-            <element signature="e#17#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2332">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#17#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/route_server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20">
@@ -842,6 +672,144 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
           <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3440">
+          <caret line="172" column="34" selection-start-line="172" selection-start-column="17" selection-end-line="172" selection-end-column="34" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_appender.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_consumer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1120">
+          <caret line="56" column="28" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="28" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/raw_data_loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="38" lean-forward="true" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_producer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="96" column="43" lean-forward="true" selection-start-line="96" selection-start-column="16" selection-end-line="96" selection-end-column="43" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_saver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1700">
+          <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/data_iterator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="64" lean-forward="true" selection-start-line="9" selection-start-column="64" selection-end-line="9" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/tf_data_iterator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="16" lean-forward="true" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/manager/data_managers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1692">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#1#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="44" column="77" lean-forward="true" selection-start-line="44" selection-start-column="77" selection-end-line="44" selection-end-column="77" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="8" column="82" lean-forward="true" selection-start-line="8" selection-start-column="82" selection-end-line="8" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="62" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="62" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="148" column="22" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="22" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="58" lean-forward="true" selection-start-line="6" selection-start-column="58" selection-end-line="6" selection-end-column="58" />
         </state>
       </provider>
     </entry>

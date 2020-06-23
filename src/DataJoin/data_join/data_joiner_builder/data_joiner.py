@@ -55,10 +55,10 @@ class DataJoiner(object, metaclass=MetaClass):
     def joiner_name(cls):
         return 'BASE_DATA_JOINER'
 
-    def get_data_block_meta_by_index(self, index):
+    def acquire_data_block_meta_by_index(self, index):
         with self._lock:
             return self._data_joiner_finished, \
-                   self._data_block_manager.get_data_block_meta_by_index(index)
+                   self._data_block_manager.acquire_data_block_meta_by_index(index)
 
     @contextmanager
     def data_joiner_factory(self):
@@ -95,7 +95,7 @@ class DataJoiner(object, metaclass=MetaClass):
                 data_block_index,
                 self._data_joiner_options.dump_data_block_threshold
             )
-            self._data_block_maker.set_data_block_manager(
+            self._data_block_maker.build_data_block_manager(
                 self._data_block_manager
             )
             self._data_block_maker.set_follower_restart_index(
@@ -105,7 +105,7 @@ class DataJoiner(object, metaclass=MetaClass):
 
     def _data_join_finalizer(self, is_data_joiner_finished):
         if self._data_block_maker is not None:
-            data_block_meta = self._data_block_maker.finish_data_block()
+            data_block_meta = self._data_block_maker.data_block_finalizer()
             if is_data_joiner_finished:
                 self._set_data_joiner_finished()
             self._reset_data_block_maker()
