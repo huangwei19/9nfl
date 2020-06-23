@@ -12,6 +12,7 @@ import sys
 import time
 import logging
 import numpy as np
+import argparse
 
 sys.path.insert(0, '../')
 sys.path.insert(0, './')
@@ -34,7 +35,7 @@ def input_fn(l_dir, f_dir, batch_size, num_epochs=1):
     }
     def load_dataset(data_dir, feature_map):
         files = sorted([os.path.join(data_dir, f) 
-            for f in os.listdir(data_dir)])
+            for f in os.listdir(data_dir) if "tfrecord" in f])
         dataset = tf.data.TFRecordDataset(files)\
             .map(lambda proto: tf.io.parse_single_example(
                 proto, feature_map))
@@ -127,19 +128,18 @@ def model_fn(features, labels, mode):
             predictions=predictions)
 
 
-def run_estimator():
+def run_estimator(args):
     """
     用estimator
     """
-    DATA_DIR = "data"
-    l_train = DATA_DIR + "/leader_train"
-    f_train = DATA_DIR + "/follower_train"
+    l_train = os.path.join(args.data_dir, "leader_train")
+    f_train = os.path.join(args.data_dir, "follower_train")
 
     model_dir = "model_baseline"
     export_dir = "export_baseline"
     eval_steps = 1000
     batch_size = 128
-    n_epoch = 3
+    n_epoch = args.n_epoch
 
     if tf.io.gfile.exists(model_dir):
         tf.io.gfile.rmtree(model_dir)
@@ -157,4 +157,11 @@ def run_estimator():
     mnist_estimator.train(train_input)
 
 
-run_estimator()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--data_dir", dest="data_dir",
+        help="data_dir")
+    parser.add_argument("-n", "--n_epoch", dest="n_epoch",
+        type=int, default=1, help="n_epoch")
+    args = parser.parse_args()
+    run_estimator(args)
