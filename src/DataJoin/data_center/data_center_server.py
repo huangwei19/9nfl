@@ -7,7 +7,7 @@ import json
 from DataJoin.utils.api import proxy_data_api
 import logging
 import os
-from DataJoin.data_center.calculate_count import Calculate_Count
+from DataJoin.data_center.counter import Counter
 from DataJoin.data_center.data_block_manager import DataBlockMetaManage, ReidsHandle
 import traceback
 import sys
@@ -23,8 +23,9 @@ train_data_end = time_str_to_timestamp(str(os.environ.get("train_data_end", ''))
 train_data_start = 150003072
 train_data_end = 150005119
 '''
-train_data_start = int(str(os.environ.get("train_data_start", '')).replace("-", "").replace(":", "").replace(" ", ""))
-train_data_end = int(str(os.environ.get("train_data_end", '')).replace("-", "").replace(":", "").replace(" ", ""))
+train_data_start = int(
+    str(os.environ.get("train_data_start", 300000000)).replace("-", "").replace(":", "").replace(" ", ""))
+train_data_end = int(str(os.environ.get("train_data_end", 30000000)).replace("-", "").replace(":", "").replace(" ", ""))
 data_num_epoch = os.environ.get("data_num_epoch", 1)
 data_source_name = os.environ.get("data_source_name", "jd_bd_dsp_data_source")
 
@@ -66,12 +67,17 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
             self._data_center_queue = queue.Queue()
             self.data_bloc_dir = data_bloc_dir
             self._block_id_map = dict()
+            self.file_path_list = list()
             assert self.data_bloc_dir is not None, \
                 "data_bloc_dir should not be None if mode is local"
-            self.file_path_list = [path.join(self.data_bloc_dir, f)
-                                   for f in gfile.ListDirectory(self.data_bloc_dir)
-                                   if f.split(".")[-1] == "data" and
-                                   not gfile.IsDirectory(path.join(self.data_bloc_dir, f))]
+            self.dir_path_list = [path.join(self.data_bloc_dir, f)
+                                  for f in gfile.ListDirectory(self.data_bloc_dir)
+                                  if gfile.IsDirectory(path.join(self.data_bloc_dir, f))]
+            for dir_path in self.dir_path_list:
+                self.file_path_list += [path.join(dir_path, f)
+                                        for f in gfile.ListDirectory(dir_path)
+                                        if f.split(".")[-1] == "data" and
+                                        not gfile.IsDirectory(path.join(dir_path, f))]
             self.file_path_list.sort()
             self.encode_leader_data_block_info()
             self.encode_follower_data_block_info()
@@ -79,13 +85,13 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
     def encode_leader_data_block_info(self):
         for i in range(data_num_epoch):
             for file_path in self.file_path_list:
-                block_id = file_path.split('/')[-1]
+                block_id = (file_path.split('/')[-1]).replace(".data", "")
                 self._data_center_queue.put((block_id, file_path))
                 logging.info("block_id:{}, data_block_path: {}".format(block_id, file_path))
 
     def encode_follower_data_block_info(self):
         for file_path in self.file_path_list:
-            block_id = file_path.split('/')[-1]
+            block_id = (file_path.split('/')[-1]).replace(".data", "")
             self._block_id_map[block_id] = file_path
 
     def QueryDataBlock(self, request, context):
@@ -108,13 +114,18 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                             error_message="trainer request server query block success",
                             data_block_info=data_block_info)
                         return data_response
+                    else:
+                        return data_center_service_pb2.DataBlockResponse(
+                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("FINISHED"),
+                            error_message="trainer request server query block finished")
+
                 json_body = {}
                 if train_data_start and train_data_end:
                     json_body["start_time"] = train_data_start
                     json_body["end_time"] = train_data_end
                 if data_source_name:
                     json_body["data_source_name"] = data_source_name
-                t = Calculate_Count()
+                t = Counter()
                 num = t.run()
                 logging.info('execute query data block meta current num :%s' % num)
                 logging.info('data num epoch :%s' % data_num_epoch)
@@ -157,13 +168,18 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 
             else:
                 if self.data_center_mode == "local":
-                    data_block_info = data_center_service_pb2.DataBlockInfo(
-                        block_id=block_id,
-                        dfs_data_block_dir=self._block_id_map[block_id])
-                    data_response = data_center_service_pb2.DataBlockResponse(
-                        data_block_status=data_center_service_pb2.DataBlockStatus.Value("OK"),
-                        error_message="trainer request server query block success",
-                        data_block_info=data_block_info)
+                    if self._block_id_map.get(block_id, None):
+                        data_block_info = data_center_service_pb2.DataBlockInfo(
+                            block_id=block_id,
+                            dfs_data_block_dir=self._block_id_map[block_id])
+                        data_response = data_center_service_pb2.DataBlockResponse(
+                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("OK"),
+                            error_message="trainer request server query block success",
+                            data_block_info=data_block_info)
+                    else:
+                        data_response = data_center_service_pb2.DataBlockResponse(
+                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("NOT_FOUND"),
+                            error_message="Not Found Data Block")
                     return data_response
                 json_body = {"block_id": block_id}
                 logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
@@ -218,6 +234,7 @@ class StartDataCenterServer(object):
             DataBlockQueryService(data_center_mode, data_block_dir), server)
         server.add_insecure_port('{}:{}'.format(data_center_host, data_center_port))
         server.start()
+        logging.info("start data center server successfully host:{},port:{}".format(data_center_host, data_center_port))
         try:
             while True:
                 time.sleep(60 * 60 * 24)

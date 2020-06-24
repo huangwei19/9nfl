@@ -1,15 +1,12 @@
 import re
 import os
 import threading
-
 mutex = threading.Lock()
-
-
-class Calculate_Count(threading.Thread):
+class Counter(threading.Thread):
     def run(self):
         global var
         var = 0
-        path = os.getcwd() + '/calculate_count.py'
+        path = os.getcwd() + '/data_center/counter.py'
         with mutex:
             with open(path, 'r', encoding='utf-8') as fl:
                 fl.seek(4)
