@@ -1,9 +1,9 @@
 #!/bin/bash
 
 CURRENT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 http_server_log_dir="${CURRENT_DIR}/logs/http_server_logs"
 data_join_log_dir="${CURRENT_DIR}/logs/data_join_logs"
+data_center_log_dir="${CURRENT_DIR}/logs/data_center_logs"
 IFS='-' read -r -a array <<< "$RANK_UUID"
 export INDEX="${array[1]}"
 
@@ -34,6 +34,12 @@ mkdir_http_server_log_dir() {
 mkdir_data_join_log_dir() {
     if [[ ! -d $data_join_log_dir ]]; then
         mkdir -p $data_join_log_dir
+    fi
+}
+
+mkdir_data_center_log_dir() {
+    if [[ ! -d $data_center_log_dir ]]; then
+        mkdir -p $data_center_log_dir
     fi
 }
 
@@ -94,14 +100,32 @@ data_join_server_start() {
 }
 
 
+data_center_server_start() {
+    mkdir_data_center_log_dir
+    python $CURRENT_DIR/data_center/data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
+    if [[ $? -eq 0 ]]; then
+        echo "data center service start successfully"
+    else
+        echo "data center service start failed"
+    fi
+}
+
+
+
 case "$1" in
-    start)
+    join)
         start_http_server
         data_join_server_start
         http_server_status
         data_join_server_status
         ;;
+    center)
+        start_http_server
+        data_center_server_start
+        http_server_status
+        ;;
+
     *)
-        echo "usage: $0 {start}"
+        echo "usage: $0 {join|center}"
         exit -1
 esac

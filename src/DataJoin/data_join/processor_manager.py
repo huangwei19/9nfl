@@ -4,6 +4,7 @@ import threading
 import logging
 import time
 import traceback
+import sys
 
 
 class ProcessorManager(object):
@@ -94,7 +95,7 @@ class ProcessorManager(object):
             except Exception as e:
                 logging.error("processor: %s implement %d rounds with exception",
                               self._impl_processor_name, impl_count)
-                traceback.print_exc()
+                traceback.print_exc(file=sys.stdout)
             else:
                 logging.info("processor: %s implement %d round", self._impl_processor_name, impl_count)
             impl_count += 1

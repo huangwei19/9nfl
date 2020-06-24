@@ -3,6 +3,7 @@ from DataJoin.settings import REDIS, db_index
 import redis
 import logging
 import traceback
+import sys
 
 
 def singleton(cls, *args, **kw):
@@ -41,7 +42,7 @@ class RedisManage(object):
                 return False, value
         except Exception as e:
             logging.error('get value from redis failed')
-            traceback.print_exc(str(e))
+            traceback.print_exc(file=sys.stdout)
             return None
 
     def set(self, key, value, expire_seconds=108000 * 24 * 5):
@@ -51,7 +52,7 @@ class RedisManage(object):
             logging.info('set {}:{} {} into redis.'.format(key, value, expire_seconds))
         except Exception as e:
             logging.info('set {}:{} {} into redis failed.'.format(key, value, expire_seconds))
-            traceback.print_exc(str(e))
+            traceback.print_exc(file=sys.stdout)
 
     def delete(self, *key):
         try:
@@ -60,4 +61,4 @@ class RedisManage(object):
             logging.info('del {} from redis.'.format(*key))
         except Exception as e:
             logging.info('del {} from redis failed.'.format(*key))
-            traceback.print_exc(str(e))
+            traceback.print_exc(file=sys.stdout)

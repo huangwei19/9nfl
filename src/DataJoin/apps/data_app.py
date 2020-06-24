@@ -1,4 +1,3 @@
-
 from flask import Flask, request
 import logging
 from DataJoin.utils import data_process
@@ -27,7 +26,8 @@ def query_data_block_meta():
     data_block_metas = data_process.query_data_block_meta(**request.json)
     if not data_block_metas:
         return get_json_result(retcode=101, retmsg='find data block meta failed')
-    return get_json_result(retcode=0, retmsg='success', data=[task.to_json() for task in data_block_metas])
+    return get_json_result(retcode=0, retmsg='success',
+                           data=[meta.to_json() for meta in data_block_metas])
 
 
 @manager.route('/query/data/source/meta', methods=['POST'])

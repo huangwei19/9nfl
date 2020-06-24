@@ -35,5 +35,6 @@ db_index = 0
 
 PROXY_DATA_HOST = "localhost"
 PROXY_DATA_PORT = 9400
+DATA_CENTER_PORT = 50052
 
 
