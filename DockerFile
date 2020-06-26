@@ -18,7 +18,17 @@ RUN pip install tensorflow==1.15.0
 RUN mkdir /workspace
 WORKDIR /workspace
 
-COPY example /workspace/example
-COPY fl_comm_libs /workspace/fl_comm_libs
+# 以下COPY命令需保证example和fl_comm_libs与DockerFile在同一目录
+COPY src/Trainer/example /workspace/example
+COPY src/Trainer/fl_comm_libs /workspace/fl_comm_libs
 
-CMD sleep 1d
+#DataCenter以及Trianer的镜像只将以下CMD修改为对应的启动命令
+# demo leader
+# CMD python /workspace/example/mnist_demo/mnist_leader.py
+# demo follower
+# CMD python /workspace/example/mnist_demo/mnist_follower.py
+# demo leader DataCenter
+# CMD python /workspace/example/mnist_demo/dc_leader.py
+# demo follower DataCenter
+# CMD python /workspace/example/mnist_demo/mnist_follower.py
+CMD []
