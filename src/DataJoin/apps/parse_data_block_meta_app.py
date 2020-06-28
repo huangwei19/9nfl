@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from DataJoin.utils.api import get_json_result
+from DataJoin.utils.api import get_result
 from DataJoin.controller.parse_data_block_meta import StartParseDataBlockMeta
 import sys
 import subprocess
@@ -13,7 +13,7 @@ manager = Flask(__name__)
 @manager.errorhandler(500)
 def internal_server_error(e):
     logging.error(e)
-    return get_json_result(retcode=100, retmsg=str(e))
+    return get_result(retcode=100, retmsg=str(e))
 
 
 def run_subprocess(process_cmd):
@@ -36,7 +36,7 @@ def parse_data_block_meta():
     dfs_data_block_meta = data_block_meta_hdfs_dir.get('dfs_data_block_meta', '')
     dfs_data_block = data_block_meta_hdfs_dir.get('dfs_data_block', '')
     if not dfs_data_block_dir and not dfs_data_block_meta and not dfs_data_block:
-        return get_json_result(retcode=999, retmsg='args is null')
+        return get_result(retcode=999, retmsg='args is null')
     parse_data_block_meta_pid = run_subprocess(
         [
             'python', sys.modules[StartParseDataBlockMeta.__module__].__file__,
@@ -44,4 +44,4 @@ def parse_data_block_meta():
             '-mt', dfs_data_block_meta,
             '-db', dfs_data_block
         ])
-    return get_json_result(retcode=0, retmsg='success')
+    return get_result(retcode=0, retmsg='success')

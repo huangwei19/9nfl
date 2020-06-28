@@ -9,7 +9,7 @@ import grpc
 from DataJoin.common import common_pb2 as common_pb
 from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
 from DataJoin.common import data_join_service_pb2 as dj_pb
-from DataJoin.proxy.channel import make_insecure_channel, ChannelType
+from DataJoin.proxy.channel import create_data_join_channel, ModeType
 from DataJoin.data_join.raw_data_loader import RawDataLoader
 
 import multiprocessing
@@ -181,7 +181,7 @@ class DataJoinService(object):
         self._data_source_name = data_source.data_source_name
         self._port = port
         self._worker_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        peer_channel = make_insecure_channel(peer_address, ChannelType.REMOTE)
+        peer_channel = create_data_join_channel(peer_address, ModeType.REMOTE)
         peer_client = dj_grpc.DataJoinServiceStub(peer_channel)
         self._data_join_worker = DataJoin(
             peer_client, rank_id, options_args, data_source

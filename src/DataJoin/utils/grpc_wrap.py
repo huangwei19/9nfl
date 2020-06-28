@@ -10,13 +10,13 @@ def get_url(_suffix):
     return "http://{0}:{1}/{2}".format('0.0.0.0', 9380, _suffix.lstrip('/'))
 
 
-def get_grpc_proxy_data_channel():
+def get_proxy_data_stub():
     channel = grpc.insecure_channel('{}:{}'.format("localhost", "9400"))
     stub = proxy_data_pb2_grpc.ProxyDataServiceStub(channel)
     return channel, stub
 
 
-def wrap_grpc_proxy_data_packet(_json_body, _method, _url):
+def proxy_data_packet_wrap(_json_body, _method, _url):
     _data = proxy_data_pb2.Data(key=_url, value=bytes(json.dumps(_json_body), 'utf-8'))
     _header = proxy_data_pb2.HeaderData(operator=_method)
     return proxy_data_pb2.Packet(header=_header, body=_data)
@@ -41,4 +41,4 @@ class ProxyDataService(proxy_data_pb2_grpc.ProxyDataServiceServicer):
         else:
             pass
         resp_json = resp.json()
-        return wrap_grpc_proxy_data_packet(resp_json, method, _suffix)
+        return proxy_data_packet_wrap(resp_json, method, _suffix)

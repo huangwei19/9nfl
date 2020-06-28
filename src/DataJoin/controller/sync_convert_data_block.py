@@ -3,7 +3,7 @@ import os
 from DataJoin.common import data_join_service_pb2
 from google.protobuf import text_format
 import logging
-from DataJoin.utils.api import proxy_data_api
+from DataJoin.utils.api import wrap_proxy_data_api
 from DataJoin.utils.base import get_host_ip
 
 EXAMPLE_ID = "example_id"
@@ -100,7 +100,7 @@ class SyncConvertDataBlock(object):
                          data_source_name=self.data_source_name
                          )
         # create datablock
-        response_json = proxy_data_api(
+        response_json = wrap_proxy_data_api(
             method='POST',
             endpoint='/v1/data/{0}/{1}/{2}/create/data/block'.format(
                 meta_info.block_id,

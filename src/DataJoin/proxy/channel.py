@@ -10,7 +10,7 @@ import grpc
 INTERNAL_PROXY = os.environ.get('INTERNAL_PROXY', None)
 
 
-class ChannelType(Enum):
+class ModeType(Enum):
     UNKNOWN = 0
     REMOTE = 1
 
@@ -59,7 +59,7 @@ class _ClientCallDetails(
     pass
 
 
-def header_adder_interceptor(header, value):
+def add_header_interceptor(header, value):
     def intercept_call(client_call_details, request_iterator,
                        request_streaming, response_streaming):
         metadata = []
@@ -77,7 +77,7 @@ def header_adder_interceptor(header, value):
     return _GenericClientInterceptor(intercept_call)
 
 
-def check_address_valid(address):
+def address_valid_checker(address):
     try:
         (ip, port_str) = address.split(':')
         if ip == 'localhost' or (socket.inet_aton(ip) and ip.count('.') == 3):
@@ -85,25 +85,24 @@ def check_address_valid(address):
             if 0 <= port <= 65535:
                 return True
         return False
-    except Exception as e:  # pylint: disable=broad-except
-        logging.debug('%s is not valid address. detail is %s.', address,
+    except Exception as e:
+        logging.info('%s is not valid address. detail is %s.', address,
                       repr(e))
     return False
 
 
-def make_insecure_channel(uuid,
-                          mode=ChannelType.REMOTE,
-                          options=None,
-                          compression=None):
-    if check_address_valid(uuid):
+def create_data_join_channel(uuid,
+                             mode=ModeType.REMOTE,
+                             options=None,
+                             compression=None):
+    if address_valid_checker(uuid):
         return grpc.insecure_channel(uuid, options, compression)
 
-    if mode == ChannelType.REMOTE:
-        header_adder = header_adder_interceptor('uuid', uuid)
+    if mode == ModeType.REMOTE:
+        header_adder = add_header_interceptor('uuid', uuid)
         if not INTERNAL_PROXY:
-            raise Exception("INTERNAL_PROXY is None,"
-                            "not found in environment variable.")
+            raise Exception("INTERNAL_PROXY is None,Not Found Env")
         logging.debug("INTERNAL_PROXY is [%s]", INTERNAL_PROXY)
         channel = grpc.insecure_channel(INTERNAL_PROXY, options, compression)
         return grpc.intercept_channel(channel, header_adder)
-    raise Exception("UNKNOWN Channel by uuid %s" % uuid)
+    raise Exception("uuid mode type is UnKnown %s" % uuid)

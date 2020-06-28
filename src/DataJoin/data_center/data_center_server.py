@@ -4,7 +4,7 @@ from DataJoin.common import data_center_service_pb2_grpc
 from concurrent import futures
 import time
 import json
-from DataJoin.utils.api import proxy_data_api
+from DataJoin.utils.api import wrap_proxy_data_api
 import logging
 import os
 from DataJoin.data_center.counter import Counter
@@ -132,7 +132,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                 redis_handle = ReidsHandle()
                 if num == 1:
                     logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
-                    data_block_result = proxy_data_api("POST", endpoint, json_body)
+                    data_block_result = wrap_proxy_data_api("POST", endpoint, json_body)
                     data_block_check_null_status = DataBlockMetaManage().check_result_null(**data_block_result)
                     if data_block_check_null_status:
                         return data_block_check_null_status
@@ -183,7 +183,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                     return data_response
                 json_body = {"block_id": block_id}
                 logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
-                data_block_result = proxy_data_api("POST", endpoint, json_body)
+                data_block_result = wrap_proxy_data_api("POST", endpoint, json_body)
                 data_block_check_null_status = DataBlockMetaManage().check_result_null(**data_block_result)
                 if data_block_check_null_status:
                     return data_block_check_null_status

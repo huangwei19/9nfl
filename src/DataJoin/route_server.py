@@ -13,7 +13,7 @@ from flask import Flask
 from DataJoin.apps.data_app import manager as data_app_manager
 from DataJoin.apps.parse_data_block_meta_app import manager as parse_data_block_meta_app_manager
 from DataJoin.db.db_models import init_db
-from DataJoin.utils.api import get_json_result
+from DataJoin.utils.api import get_result
 from DataJoin.common import proxy_data_pb2_grpc
 from DataJoin.settings import _ONE_DAY_IN_SECONDS, api_version, IP, HTTP_PORT, \
     PROXY_DATA_HOST, PROXY_DATA_PORT
@@ -32,7 +32,7 @@ manager = Flask(__name__)
 @manager.errorhandler(500)
 def internal_server_error(e):
     logging.error(str(e))
-    return get_json_result(retcode=100, retmsg=str(e))
+    return get_result(retcode=100, retmsg=str(e))
 
 
 if __name__ == '__main__':
