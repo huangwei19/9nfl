@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/apps/data_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/apps/data_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/apps/parse_data_block_meta_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/apps/parse_data_block_meta_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_center/data_center_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_center/data_center_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/prepare_register_uuid.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/prepare_register_uuid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/proxy/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/proxy/channel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/route_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/route_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/utils/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/utils/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" afterDir="false" />
-    </list>
+    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +95,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/data_center_server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4300">
+            <state relative-caret-position="-86">
               <caret line="224" column="69" lean-forward="true" selection-start-line="224" selection-start-column="69" selection-end-line="224" selection-end-column="69" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -355,34 +343,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
-              <item name="data_center" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
-              <item name="proxy" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -436,7 +396,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21422797" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -804,7 +763,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/data_center_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4300">
+        <state relative-caret-position="-86">
           <caret line="224" column="69" lean-forward="true" selection-start-line="224" selection-start-column="69" selection-end-line="224" selection-end-column="69" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
