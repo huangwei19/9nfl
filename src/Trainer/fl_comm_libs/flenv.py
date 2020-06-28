@@ -112,13 +112,70 @@ class FLEnv(object):
 
         return func
 
+    def _parse_tf_config(self, mconfig):
+        """
+        parse envirment variable TF_CONFIG
+        """
+        tf_config = os.environ.get('TF_CONFIG')
+        if not tf_config:
+            logging.info('No TF_CONFIG')
+            mconfig['worker_replicas'] = 1
+            mconfig['worker_id'] = 0
+            mconfig['is_local'] = True
+            return
+
+        logging.info('TF_CONFIG: %s' % str(tf_config))
+        tf_config_json = json.loads(tf_config)
+        cluster = tf_config_json.get('cluster')
+        job_name = tf_config_json.get('task', {}).get('type')
+        task_index = tf_config_json.get('task', {}).get('index')
+        
+        if job_name is None or task_index is None:
+            logging.info('job_name or task_index is None')
+            mconfig['worker_replicas'] = 1
+            mconfig['worker_id'] = 0
+            mconfig['is_local'] = True
+            return
+
+        cluster_spec = tf.train.ClusterSpec(cluster)
+
+        n_worker = len(cluster_spec.as_dict().get('worker', []))
+        n_master = len(cluster_spec.as_dict().get('master', []))
+        n_chief = len(cluster_spec.as_dict().get('chief', []))
+        ps_tasks = len(cluster_spec.as_dict().get('ps', []))
+        worker_replicas = n_worker + n_master + n_chief
+
+        if worker_replicas > 1 and ps_tasks < 1:
+            raise ValueError('At least 1 ps task is needed for distributed training.')
+        elif worker_replicas >= 1 and ps_tasks > 0:
+            mconfig['is_local'] = False
+        else:
+            mconfig['is_local'] = True
+
+        mconfig['worker_replicas'] = worker_replicas
+        mconfig['ps_tasks'] = ps_tasks
+        mconfig['job_name'] = job_name
+        mconfig['task_index'] = task_index
+        mconfig['cluster'] = cluster
+
+        if job_name == 'master':
+            mconfig['worker_id'] = task_index
+        elif job_name == 'chief':
+            mconfig['worker_id'] = n_master + task_index
+        elif job_name == 'worker':
+            mconfig['worker_id'] = n_chief + n_master + task_index
+
+
     def _parse_mconfig(self, FLAGS):
         """
         get runtime config, env variable first
         """
         self.local_debug = FLAGS.local_debug == 1
-
         mconfig = {}
+
+        # worker id 
+        self._parse_tf_config(mconfig)
+
         mconfig['role'] = FLAGS.role
         # App ID
         mconfig['appli_id'] = FLAGS.appli_id
@@ -126,12 +183,6 @@ class FLEnv(object):
         if env_appli_id is not None:
             mconfig['appli_id'] = env_appli_id
 
-        # worker id 
-        mconfig['worker_id'] = FLAGS.worker_id
-        env_worker_id = os.environ.get('worker_id')
-        if env_worker_id is not None:
-            mconfig['worker_id'] = env_worker_id
-        
         # channel for coordinator
         # for registration and making pairs
         channel_appli_id = '%s_TrainerWorkerService_%s' % (
@@ -206,52 +257,29 @@ class FLEnv(object):
         """
         fl_run = self.fl_run_generator(fl_run)
 
-        tf_config = os.environ.get('TF_CONFIG')
         mconfig = self.mconfig
 
         # Run local.
-        if not tf_config:
-            logging.info('Start local training')
-            mconfig['worker_replicas'] = 1
-            return fl_run(is_chief=True, run_config=mconfig)
-
-        logging.info('TF_CONFIG: %s' % str(tf_config))
-        tf_config_json = json.loads(tf_config)
-        cluster = tf_config_json.get('cluster')
-        job_name = tf_config_json.get('task', {}).get('type')
-        task_index = tf_config_json.get('task', {}).get('index')
-
-        cluster_spec = tf.train.ClusterSpec(cluster)
-        worker_replicas = (len(cluster_spec.as_dict().get('worker', [])) +
-            len(cluster_spec.as_dict().get('chief', [])) + 
-            len(cluster_spec.as_dict().get('master', [])))
-        mconfig['worker_replicas'] = worker_replicas
-        ps_tasks = len(cluster_spec.as_dict().get('ps', []))
-
-        # Run local.
-        if job_name is None or task_index is None:
+        if mconfig['is_local']:
             logging.info('Start local training')
             return fl_run(is_chief=True, run_config=mconfig)
 
-        if worker_replicas > 1 and ps_tasks < 1:
-            raise ValueError('At least 1 ps task is needed for distributed training.')
+        job_name = mconfig['job_name']
+        task_index = mconfig['task_index']
+        cluster = mconfig['cluster']
 
-        if worker_replicas >= 1 and ps_tasks > 0:
-            if job_name == 'ps':
-                logging.info('Start PS')
-                #cluster_spec = tf.train.ClusterSpec(cluster)
-                server = tf.train.Server(cluster_spec,
-                    job_name=job_name, task_index=task_index)
-                server.join()
-                return
-            elif job_name in ['master', 'worker', 'chief']:
-                logging.info('Start %s', job_name)
-                return fl_run(is_chief=(job_name != 'worker'), 
-                    run_config=mconfig, cluster=cluster, 
-                    job_name=job_name, task_index=task_index)
-        else:
-            logging.info('Start local training')
-            return fl_run(is_chief=True, run_config=mconfig)
+        if job_name == 'ps':
+            logging.info('Start PS')
+            cluster_spec = tf.train.ClusterSpec(cluster)
+            server = tf.train.Server(cluster_spec,
+                job_name=job_name, task_index=task_index)
+            server.join()
+            return
+        elif job_name in ['master', 'worker', 'chief']:
+            logging.info('Start %s', job_name)
+            return fl_run(is_chief=(job_name != 'worker'), 
+                run_config=mconfig, cluster=cluster, 
+                job_name=job_name, task_index=task_index)
 
     def get_mconfig(self):
         return self.mconfig
