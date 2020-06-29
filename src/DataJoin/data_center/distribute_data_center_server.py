@@ -62,37 +62,7 @@ class DataBlockMeta(object):
 
 class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceServicer):
     def __init__(self, data_center_mode: str = None, data_bloc_dir: str = None):
-        self.data_center_mode = data_center_mode
-        if self.data_center_mode == "local":
-            self._data_center_queue = queue.Queue()
-            self.data_bloc_dir = data_bloc_dir
-            self._block_id_map = dict()
-            self.file_path_list = list()
-            assert self.data_bloc_dir is not None, \
-                "data_bloc_dir should not be None if mode is local"
-            self.dir_path_list = [path.join(self.data_bloc_dir, f)
-                                  for f in gfile.ListDirectory(self.data_bloc_dir)
-                                  if gfile.IsDirectory(path.join(self.data_bloc_dir, f))]
-            for dir_path in self.dir_path_list:
-                self.file_path_list += [path.join(dir_path, f)
-                                        for f in gfile.ListDirectory(dir_path)
-                                        if f.split(".")[-1] == "data" and
-                                        not gfile.IsDirectory(path.join(dir_path, f))]
-            self.file_path_list.sort()
-            self.encode_leader_data_block_info()
-            self.encode_follower_data_block_info()
-
-    def encode_leader_data_block_info(self):
-        for i in range(data_num_epoch):
-            for file_path in self.file_path_list:
-                block_id = (file_path.split('/')[-1]).replace(".data", "")
-                self._data_center_queue.put((block_id, file_path))
-                logging.info("block_id:{}, data_block_path: {}".format(block_id, file_path))
-
-    def encode_follower_data_block_info(self):
-        for file_path in self.file_path_list:
-            block_id = (file_path.split('/')[-1]).replace(".data", "")
-            self._block_id_map[block_id] = file_path
+        pass
 
     def QueryDataBlock(self, request, context):
         logging.info('server received :%s from client QueryDataBlock ' % request)
@@ -103,22 +73,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
         try:
 
             if not block_id:
-                if self.data_center_mode == "local":
-                    if not self._data_center_queue.empty():
-                        data_block_queue = self._data_center_queue.get()
-                        data_block_info = data_center_service_pb2.DataBlockInfo(
-                            block_id=data_block_queue[0],
-                            dfs_data_block_dir=data_block_queue[1])
-                        data_response = data_center_service_pb2.DataBlockResponse(
-                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("OK"),
-                            error_message="trainer request server query block success",
-                            data_block_info=data_block_info)
-                        return data_response
-                    else:
-                        return data_center_service_pb2.DataBlockResponse(
-                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("FINISHED"),
-                            error_message="trainer request server query block finished")
-
                 json_body = {}
                 if train_data_start and train_data_end:
                     json_body["start_time"] = train_data_start
@@ -167,20 +121,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                         return data_block_check_ready_status
 
             else:
-                if self.data_center_mode == "local":
-                    if self._block_id_map.get(block_id, None):
-                        data_block_info = data_center_service_pb2.DataBlockInfo(
-                            block_id=block_id,
-                            dfs_data_block_dir=self._block_id_map[block_id])
-                        data_response = data_center_service_pb2.DataBlockResponse(
-                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("OK"),
-                            error_message="trainer request server query block success",
-                            data_block_info=data_block_info)
-                    else:
-                        data_response = data_center_service_pb2.DataBlockResponse(
-                            data_block_status=data_center_service_pb2.DataBlockStatus.Value("NOT_FOUND"),
-                            error_message="Not Found Data Block")
-                    return data_response
                 json_body = {"block_id": block_id}
                 logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
                 data_block_result = wrap_proxy_data_api("POST", endpoint, json_body)

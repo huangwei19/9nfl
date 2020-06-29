@@ -7,6 +7,7 @@ data_center_log_dir="${CURRENT_DIR}/logs/data_center_logs"
 IFS='-' read -r -a array <<< "$RANK_UUID"
 export INDEX="${array[1]}"
 
+
 get_http_server_pid() {
     http_server_pid=`ps aux | grep "python $CURRENT_DIR/route_server.py" | grep -v grep | awk '{print $2}'`
     if [[ -n ${http_server_pid} ]]; then
@@ -100,13 +101,23 @@ data_join_server_start() {
 }
 
 
-data_center_server_start() {
+local_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
+    python $CURRENT_DIR/data_center/local_data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
     if [[ $? -eq 0 ]]; then
-        echo "data center service start successfully"
+        echo "local data center service start successfully"
     else
-        echo "data center service start failed"
+        echo "local data center service start failed"
+    fi
+}
+
+distribute_data_center_server_start() {
+    mkdir_data_center_log_dir
+    python $CURRENT_DIR/data_center/distribute_data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
+    if [[ $? -eq 0 ]]; then
+        echo "distribute data center service start successfully"
+    else
+        echo "distribute data center service start failed"
     fi
 }
 
@@ -114,15 +125,21 @@ data_center_server_start() {
 
 case "$1" in
     join)
-        start_http_server
+        if [[ $MODE -eq "distribute" ]]; then
+            start_http_server
+            http_server_status
+        fi
         data_join_server_start
-        http_server_status
         data_join_server_status
         ;;
     center)
-        start_http_server
-        data_center_server_start
-        http_server_status
+        if [[ $MODE -eq "distribute" ]]; then
+            start_http_server
+            distribute_data_center_server_start
+            http_server_status
+        else
+            local_data_center_server_start
+        fi
         ;;
 
     *)
