@@ -26,9 +26,9 @@ DATABASE = {
     'stale_timeout': 30,
 }
 REDIS = {
-    'host': "ap2.jd.local",
-    'port': 5360,
-    'password': "jim://2834234004239665491/1078",
+    'host': "10.186.8.219",
+    'port': 6379,
+    'password': "",
     'max_connections': 500
 }
 db_index = 0
