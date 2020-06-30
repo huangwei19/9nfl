@@ -1,0 +1,168 @@
+diff -uprN tensorflow/core/BUILD ../orig/tensorflow-1.15.0/tensorflow/core/BUILD
+--- tensorflow/core/BUILD	2020-06-12 12:00:18.648143220 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/BUILD	2019-10-15 05:08:43.000000000 +0800
+@@ -3189,15 +3189,6 @@ CORE_CPU_LIB_HEADERS = CORE_CPU_BASE_HDR
+     "graph/quantize_training.h",
+ ] + if_mkl(["graph/mkl_graph_util.h"])
+ 
+-cc_library(
+-    name = "tf_core_inc",
+-    hdrs = CORE_CPU_LIB_HEADERS,
+-    visibility = ["//visibility:public"],
+-    deps = [
+-
+-    ],
+-)
+-
+ tf_cuda_library(
+     name = "core_cpu_impl",
+     srcs = [
+diff -uprN tensorflow/core/distributed_runtime/BUILD ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/BUILD
+--- tensorflow/core/distributed_runtime/BUILD	2020-06-23 17:10:01.803973371 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/BUILD	2019-10-15 05:08:43.000000000 +0800
+@@ -220,17 +220,6 @@ cc_library(
+     ],
+ )
+ 
+-cc_library(
+-    name = "tf_call_options_inc",
+-    srcs = [],
+-    hdrs = [
+-      "call_options.h",
+-      #"tensor_coding.h",  
+-    ],
+-    deps = [
+-    ],
+-)
+-
+ tf_cc_test(
+     name = "call_options_test",
+     size = "small",
+diff -uprN tensorflow/core/distributed_runtime/rpc/BUILD ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/BUILD
+--- tensorflow/core/distributed_runtime/rpc/BUILD	2020-06-12 12:01:01.143027040 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/BUILD	2019-10-15 05:08:43.000000000 +0800
+@@ -36,21 +36,6 @@ filegroup(
+ )
+ 
+ cc_library(
+-    name = "tf_rpc_inc",
+-    srcs = [],
+-    hdrs = [
+-      "async_service_interface.h",
+-      "grpc_channel.h",
+-      "grpc_call.h",
+-      #"grpc_tensor_coding.h",
+-      "grpc_util.h",
+-      "grpc_state.h",
+-      "grpc_client_cq_tag.h",
+-    ],
+-    deps = [],
+-)
+-
+-cc_library(
+     name = "grpc_util",
+     srcs = ["grpc_util.cc"],
+     hdrs = ["grpc_util.h"],
+diff -uprN tensorflow/core/distributed_runtime/rpc/grpc_state.h ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_state.h
+--- tensorflow/core/distributed_runtime/rpc/grpc_state.h	2020-06-12 12:09:06.003701446 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_state.h	2019-10-15 05:08:43.000000000 +0800
+@@ -24,9 +24,7 @@ limitations under the License.
+ #include "tensorflow/core/distributed_runtime/call_options.h"
+ #include "tensorflow/core/distributed_runtime/rpc/grpc_client_cq_tag.h"
+ #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
+-#ifndef JD9N_BUILD
+ #include "tensorflow/core/distributed_runtime/tensor_coding.h"
+-#endif
+ #include "tensorflow/core/lib/core/refcount.h"
+ #include "tensorflow/core/lib/core/status.h"
+ #include "tensorflow/core/lib/core/threadpool.h"
+diff -uprN tensorflow/core/distributed_runtime/rpc/grpc_util.cc ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_util.cc
+--- tensorflow/core/distributed_runtime/rpc/grpc_util.cc	2020-06-12 12:02:46.543738878 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_util.cc	2019-10-15 05:08:43.000000000 +0800
+@@ -14,9 +14,7 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
+-#ifndef JD9N_BUILD
+ #include "tensorflow/core/distributed_runtime/tensor_coding.h"
+-#endif
+ #include "tensorflow/core/lib/random/random.h"
+ 
+ namespace tensorflow {
+diff -uprN tensorflow/core/distributed_runtime/rpc/grpc_util.h ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_util.h
+--- tensorflow/core/distributed_runtime/rpc/grpc_util.h	2020-06-12 12:03:44.267581063 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/rpc/grpc_util.h	2019-10-15 05:08:43.000000000 +0800
+@@ -21,9 +21,7 @@ limitations under the License.
+ #include "grpcpp/grpcpp.h"
+ #include "grpcpp/impl/codegen/proto_utils.h"
+ #include "grpcpp/support/byte_buffer.h"
+-#ifndef JD9N_BUILD
+ #include "tensorflow/core/distributed_runtime/tensor_coding.h"
+-#endif
+ #include "tensorflow/core/lib/core/status.h"
+ #include "tensorflow/core/lib/strings/stringprintf.h"
+ #include "tensorflow/core/platform/mutex.h"
+@@ -39,7 +37,7 @@ namespace tensorflow {
+ int64 ComputeBackoffMicroseconds(int current_retry_attempt,
+                                  int64 min_delay = 1000,
+                                  int64 max_delay = 10000000);
+-#ifndef JD9N_BUILD
++
+ // Thin wrapper around ::grpc::ProtoBufferReader to give TensorResponse an
+ // efficient byte reader from which to decode a RecvTensorResponse.
+ class GrpcByteSource : public TensorResponse::Source {
+@@ -66,7 +64,6 @@ class GrpcByteSource : public TensorResp
+   Reader* stream_ = nullptr;    // Points into space_ if non-nullptr
+   char space_[sizeof(Reader)];
+ };
+-#endif
+ 
+ constexpr char kStreamRemovedMessage[] = "Stream removed";
+ 
+@@ -124,10 +121,8 @@ inline string GrpcIdKey() { return "tf-r
+ // Parse contents of src and initialize *dst with them.
+ bool GrpcMaybeParseProto(::grpc::ByteBuffer* src, protobuf::Message* dst);
+ 
+-#ifndef JD9N_BUILD
+ // Specialization for TensorResponse
+ bool GrpcMaybeParseProto(::grpc::ByteBuffer* src, TensorResponse* dst);
+-#endif
+ 
+ // Copy string src to grpc buffer *dst.
+ ::grpc::Status GrpcMaybeUnparseProto(const string& src,
+diff -uprN tensorflow/core/distributed_runtime/tensor_coding.h ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/tensor_coding.h
+--- tensorflow/core/distributed_runtime/tensor_coding.h	2020-06-12 12:04:22.290477109 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/distributed_runtime/tensor_coding.h	2019-10-15 05:08:43.000000000 +0800
+@@ -21,9 +21,7 @@ limitations under the License.
+ #include "tensorflow/core/lib/core/status.h"
+ #include "tensorflow/core/platform/protobuf.h"
+ #include "tensorflow/core/platform/types.h"
+-#ifndef JD9N_BUILD
+ #include "tensorflow/core/protobuf/worker.pb.h"
+-#endif
+ 
+ namespace tensorflow {
+ 
+diff -uprN tensorflow/core/kernels/data/BUILD ../orig/tensorflow-1.15.0/tensorflow/core/kernels/data/BUILD
+--- tensorflow/core/kernels/data/BUILD	2020-06-12 12:01:33.936937383 +0800
++++ ../orig/tensorflow-1.15.0/tensorflow/core/kernels/data/BUILD	2019-10-15 05:08:43.000000000 +0800
+@@ -88,19 +88,6 @@ cc_library(
+     ],
+ )
+ 
+-cc_library(
+-    name = "tf_name_utils_inc",
+-    srcs = [],
+-    hdrs = [
+-      "name_utils.h",
+-      "dataset_utils.h",
+-      "captured_function.h",
+-      "stats_utils.h",
+-    ],
+-    deps = [
+-    ],
+-)
+-
+ tf_cc_test(
+     name = "name_utils_test",
+     srcs = ["name_utils_test.cc"],
