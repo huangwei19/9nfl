@@ -72,8 +72,8 @@ def init_db():
 
 
 class DataBlockMeta(DataBaseModel):
-    block_id = CharField(max_length=100)
-    dfs_data_block_dir = CharField(max_length=100)
+    block_id = CharField(max_length=500)
+    dfs_data_block_dir = CharField(max_length=500)
     partition_id = IntegerField(null=True, default=0)
     file_version = IntegerField(null=True, default=0)
     start_time = BigIntegerField(null=True)

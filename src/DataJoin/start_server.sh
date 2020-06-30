@@ -122,12 +122,24 @@ distribute_data_center_server_start() {
 }
 
 
+register_uuid_server_start() {
+    python $CURRENT_DIR/prepare_register_uuid.py
+    if [[ $? -eq 0 ]]; then
+        echo "register uuid start successfully"
+    else
+        echo "register uuid start failed"
+    fi
+}
+
+
 
 case "$1" in
     join)
         if [[ "$MODE" == "distribute" ]]; then
             start_http_server
-            http_server_status
+            register_uuid_server_start
+            data_join_server_start
+            data_join_server_status
         else
             data_join_server_start
             data_join_server_status
