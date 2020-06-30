@@ -92,7 +92,9 @@ start_http_server() {
 
 data_join_server_start() {
     mkdir_data_join_log_dir
-    python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE
+    python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR \
+    $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE \
+    --example_joiner=$EXAMPLE_JOINER $EAGER_MODE >> "${data_join_log_dir}/console.log" 2>>"${data_join_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "data join service start successfully"
     else
@@ -103,7 +105,8 @@ data_join_server_start() {
 
 local_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/local_data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
+    python $CURRENT_DIR/data_center/local_data_center_server.py -m=$MODE \
+    --data_block_dir=$DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "local data center service start successfully"
     else
@@ -113,7 +116,8 @@ local_data_center_server_start() {
 
 distribute_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/distribute_data_center_server.py -m=$MODE --data_block_dir=$DATA_BLOCK_DIR
+    python $CURRENT_DIR/data_center/distribute_data_center_server.py -m=$MODE \
+    --data_block_dir=$DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "distribute data center service start successfully"
     else
