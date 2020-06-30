@@ -1,5 +1,3 @@
-import argparse
-import json
 import logging
 import os
 from DataJoin.db.redis_manager import RedisManage
