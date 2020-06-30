@@ -125,15 +125,16 @@ distribute_data_center_server_start() {
 
 case "$1" in
     join)
-        if [[ $MODE -eq "distribute" ]]; then
+        if [[ "$MODE" == "distribute" ]]; then
             start_http_server
             http_server_status
+        else
+            data_join_server_start
+            data_join_server_status
         fi
-        data_join_server_start
-        data_join_server_status
         ;;
     center)
-        if [[ $MODE -eq "distribute" ]]; then
+        if [[ "$MODE" == "distribute" ]]; then
             start_http_server
             distribute_data_center_server_start
             http_server_status
