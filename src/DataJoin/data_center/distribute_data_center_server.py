@@ -22,12 +22,13 @@ train_data_start = time_str_to_timestamp(str(os.environ.get("train_data_start", 
 train_data_end = time_str_to_timestamp(str(os.environ.get("train_data_end", '')))
 train_data_start = 150003072
 train_data_end = 150005119
-'''
+
 train_data_start = int(
     str(os.environ.get("train_data_start", 300000000)).replace("-", "").replace(":", "").replace(" ", ""))
 train_data_end = int(str(os.environ.get("train_data_end", 30000000)).replace("-", "").replace(":", "").replace(" ", ""))
 data_num_epoch = os.environ.get("data_num_epoch", 1)
 data_source_name = os.environ.get("data_source_name", "jd_bd_dsp_data_source")
+'''
 
 
 class DataBlockMeta(object):
@@ -61,8 +62,11 @@ class DataBlockMeta(object):
 
 
 class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceServicer):
-    def __init__(self, data_center_mode: str = None, data_bloc_dir: str = None):
-        pass
+    def __init__(self, train_data_start, train_data_end, data_source_name, data_num_epoch):
+        self.train_data_start = train_data_start
+        self.train_data_end = train_data_end
+        self.data_source_name = data_source_name
+        self.data_num_epoch = data_num_epoch
 
     def QueryDataBlock(self, request, context):
         logging.info('server received :%s from client QueryDataBlock ' % request)
@@ -74,15 +78,15 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 
             if not block_id:
                 json_body = {}
-                if train_data_start and train_data_end:
-                    json_body["start_time"] = train_data_start
-                    json_body["end_time"] = train_data_end
-                if data_source_name:
-                    json_body["data_source_name"] = data_source_name
+                if self.train_data_start and self.train_data_end:
+                    json_body["start_time"] = self.train_data_start
+                    json_body["end_time"] = self.train_data_end
+                if self.data_source_name:
+                    json_body["data_source_name"] = self.data_source_name
                 t = Counter()
                 num = t.run()
                 logging.info('execute query data block meta current num :%s' % num)
-                logging.info('data num epoch :%s' % data_num_epoch)
+                logging.info('data num epoch :%s' % self.data_num_epoch)
                 redis_handle = ReidsHandle()
                 if num == 1:
                     logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
@@ -93,7 +97,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                     data_block_result = data_block_result.get("data", [])
                     data_block_dict = data_block_result[0]
                     data_length = len(data_block_result)
-                    total_epoch_time = data_length * int(data_num_epoch)
+                    total_epoch_time = data_length * int(self.data_num_epoch)
                     data_block_redis = dict(data_block_result=data_block_result, total_epoch_time=total_epoch_time)
 
                     redis_handle.redis_set(json.dumps(data_block_redis))
@@ -105,7 +109,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                             return data_block_meta_status
                     data_block_result = (json.loads(data_block_redis)).get("data_block_result", [])
                     total_epoch_time = (json.loads(data_block_redis)).get("total_epoch_time", 0)
-                    data_length = total_epoch_time / int(data_num_epoch)
+                    data_length = total_epoch_time / int(self.data_num_epoch)
                     if num < total_epoch_time:
                         if num % data_length == 0:
                             data_block_dict = data_block_result[-1]
@@ -160,18 +164,26 @@ class StartDataCenterServer(object):
         import argparse
 
         parser = argparse.ArgumentParser()
-        parser.add_argument('--mode', '-m', type=str, default='local',
-                            help='local or distribute for data center service')
-        parser.add_argument('--data_block_dir', type=str, default='',
-                            help='data block dir is need if mode is local for data center service')
+        parser.add_argument('train_data_start', type=int,
+                            help='train start time of distribute data center service')
+        parser.add_argument('train_data_end', type=int,
+                            help='train end time of distribute data center service')
+        parser.add_argument('data_source_name', type=str,
+                            help='data source name of distribute data center service')
+        parser.add_argument('--data_num_epoch', '-d', type=int, default=1,
+                            help='data num epoch for distribute data center service')
         args = parser.parse_args()
+        train_data_start = int(
+            str(args.train_data_start).replace("-", "").replace(":", "").replace(" ", ""))
+        train_data_end = int(
+            str(args.train_data_end).replace("-", "").replace(":", "").replace(" ", ""))
+        data_source_name = args.data_source_name
+        data_num_epoch = args.data_num_epoch
         data_center_host = get_host_ip()
         data_center_port = DATA_CENTER_PORT
-        data_center_mode = args.mode
-        data_block_dir = args.data_block_dir
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         data_center_service_pb2_grpc.add_DataBlockQueryServiceServicer_to_server(
-            DataBlockQueryService(data_center_mode, data_block_dir), server)
+            DataBlockQueryService(train_data_start, train_data_end, data_source_name, data_num_epoch), server)
         server.add_insecure_port('{}:{}'.format(data_center_host, data_center_port))
         server.start()
         logging.info("start data center server successfully host:{},port:{}".format(data_center_host, data_center_port))

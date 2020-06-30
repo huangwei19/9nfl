@@ -105,8 +105,8 @@ data_join_server_start() {
 
 local_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/local_data_center_server.py -m=$MODE \
-    --data_block_dir=$DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
+    python $CURRENT_DIR/data_center/local_data_center_server.py -d=$DATA_NUM_EPOCH \
+    $LEADER_DATA_BLOCK_DIR $FOLLOWER_DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "local data center service start successfully"
     else
@@ -116,8 +116,8 @@ local_data_center_server_start() {
 
 distribute_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/distribute_data_center_server.py -m=$MODE \
-    --data_block_dir=$DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
+    python $CURRENT_DIR/data_center/distribute_data_center_server.py $train_data_start $train_data_end $data_source_name \
+    -d=$data_num_epoch >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "distribute data center service start successfully"
     else

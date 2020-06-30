@@ -14,14 +14,13 @@ from tensorflow.compat.v1 import gfile
 from os import path
 from DataJoin.utils.base import get_host_ip
 
-data_num_epoch = os.environ.get("data_num_epoch", 1)
-leader_data_block_dir = os.environ.get("LEADER_DATA_BLOCK_DIR", "")
-follower_data_block_dir = os.environ.get("FOLLOWER_DATA_BLOCK_DIR", "")
-
 
 class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceServicer):
-    def __init__(self):
+    def __init__(self, data_num_epoch, leader_data_block_dir, follower_data_block_dir):
         self.counter = 0
+        self.data_num_epoch = data_num_epoch
+        self.leader_data_block_dir = leader_data_block_dir
+        self.follower_data_block_dir = follower_data_block_dir
         self._data_center_queue = queue.Queue()
         self._block_id_map = dict()
         self.leader_file_path_list = list()
@@ -49,7 +48,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
     def encode_leader_data_block_info(self, data_block_dir):
         self.counter += 1
         self.parse_data_block_dir(data_block_dir)
-        for i in range(int(data_num_epoch)):
+        for i in range(int(self.data_num_epoch)):
             for file_path in self.leader_file_path_list:
                 block_id = (file_path.split('/')[-1]).replace(".data", "")
                 self._data_center_queue.put((block_id, file_path))
@@ -69,7 +68,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 
             if not block_id:
                 if not self.counter:
-                    self.encode_leader_data_block_info(leader_data_block_dir)
+                    self.encode_leader_data_block_info(self.leader_data_block_dir)
                 if not self._data_center_queue.empty():
                     data_block_queue = self._data_center_queue.get()
                     data_block_info = data_center_service_pb2.DataBlockInfo(
@@ -87,7 +86,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 
             else:
                 if not self._block_id_map:
-                    self.encode_follower_data_block_info(follower_data_block_dir)
+                    self.encode_follower_data_block_info(self.follower_data_block_dir)
                 if self._block_id_map.get(block_id, None):
                     data_block_info = data_center_service_pb2.DataBlockInfo(
                         block_id=block_id,
@@ -114,11 +113,22 @@ class StartDataCenterServer(object):
     def run_server():
         # 启动 rpc 服务
         import argparse
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--data_num_epoch', '-d', type=int, default=1,
+                            help='data num epoch for local data center service')
+        parser.add_argument('leader_data_block_dir', type=str,
+                            help='leader data block dir of local data center service')
+        parser.add_argument('follower_data_block_dir', type=str,
+                            help='follower data block dir of local data center service')
+        args = parser.parse_args()
+        data_num_epoch = args.data_num_epoch
+        leader_data_block_dir = args.leader_data_block_dir
+        follower_data_block_dir = args.follower_data_block_dir
         data_center_host = get_host_ip()
         data_center_port = DATA_CENTER_PORT
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         data_center_service_pb2_grpc.add_DataBlockQueryServiceServicer_to_server(
-            DataBlockQueryService(), server)
+            DataBlockQueryService(data_num_epoch, leader_data_block_dir, follower_data_block_dir), server)
         server.add_insecure_port('{}:{}'.format(data_center_host, data_center_port))
         server.start()
         logging.info("start data center server successfully host:{},port:{}".format(data_center_host, data_center_port))
