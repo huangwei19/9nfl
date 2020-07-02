@@ -50,7 +50,7 @@ cc_library(
 )
 
 tf_custom_op_library(
-    name = "_fl.so",
+    name = "_fl_ops.so",
     srcs = glob([
         "kernels/**/*.cc",
         "ops/**/*.cc",

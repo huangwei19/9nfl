@@ -5,7 +5,7 @@ BAZEL_FLAGS="--copt=-DEIGEN_USE_VML  --copt=-DJD9N_BUILD --config=opt --cxxopt=-
 
 tf_config() {
     export PYTHONDONTWRITEBYTECODE=1
-    export PYTHON_BIN_PATH=$(which python)
+    export PYTHON_BIN_PATH=$(which python3)
     export PYTHON_LIB_PATH="$($PYTHON_BIN_PATH -c 'import site; print(site.getsitepackages()[0])')"
 
     export TF_NEED_GCP=1
@@ -39,6 +39,6 @@ tf_config() {
 
 tf_config
 
-bazel build ${BAZEL_FLAGS} //tensorflow/contrib/jdfl:_fl_ops.so --verbose_failures
+bazel build ${BAZEL_FLAGS} --jobs 4 //tensorflow/contrib/jdfl:_fl_ops.so --verbose_failures
 
 exit 0
