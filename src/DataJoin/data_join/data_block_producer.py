@@ -182,6 +182,7 @@ class DataBlockProducer(object):
         str_data_block_meta = dj_pb.SyncContent(data_block_meta=meta).SerializeToString()
         request = dj_pb.SyncPartitionRequest(
             rank_id=self._rank_id,
+            partition_id=self._partition_id,
             content_bytes=str_data_block_meta,
             compressed=False
         )

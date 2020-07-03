@@ -96,8 +96,8 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
         if self._role == common_pb.FLRole.Leader:
             self._consumer_process.stop_processors()
 
-    @partition_id_wrap
     @rank_id_wrap
+    @partition_id_wrap
     def SyncPartition(self, request, context):
         logging.info("Sync Partition Req:{0}".format(request.partition_id))
         response = common_pb.Status()
@@ -112,8 +112,8 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
             response.error_message = "not need example items"
         return response
 
-    @partition_id_wrap
     @rank_id_wrap
+    @partition_id_wrap
     def StartPartition(self, request, context):
         logging.info("Start Partition Req:{0}".format(request.partition_id))
         response = dj_pb.StartPartitionResponse()
@@ -129,8 +129,8 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
                 self._consumer_process.partition_syncer_to_consumer(peer_partition_id)
         return response
 
-    @partition_id_wrap
     @rank_id_wrap
+    @partition_id_wrap
     def FinishPartition(self, request, context):
         logging.info("Finish Partition Req:{0}".format(request.partition_id))
         response = dj_pb.FinishPartitionResponse()

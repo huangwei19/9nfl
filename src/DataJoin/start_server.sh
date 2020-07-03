@@ -56,6 +56,7 @@ http_server_status() {
     fi
 }
 
+
 data_join_server_status() {
     get_data_join_server_pid
     if [[ -n ${data_join_server_pid} ]]; then
@@ -73,6 +74,7 @@ start_http_server() {
     if [[ $? -eq 1 ]]; then
         mkdir_http_server_log_dir
         nohup python $CURRENT_DIR/route_server.py >> "${http_server_log_dir}/console.log" 2>>"${http_server_log_dir}/error.log" &
+        #python $CURRENT_DIR/route_server.py
         if [[ $? -eq 0 ]]; then
             sleep 2
             get_http_server_pid
@@ -92,9 +94,7 @@ start_http_server() {
 
 data_join_server_start() {
     mkdir_data_join_log_dir
-    python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR \
-    $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE \
-    --example_joiner=$EXAMPLE_JOINER $EAGER_MODE >> "${data_join_log_dir}/console.log" 2>>"${data_join_log_dir}/error.log" &
+    nohup python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE >> "${data_join_log_dir}/console.log" 2>>"${data_join_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "data join service start successfully"
     else
@@ -105,8 +105,7 @@ data_join_server_start() {
 
 local_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/local_data_center_server.py -d=$DATA_NUM_EPOCH \
-    $LEADER_DATA_BLOCK_DIR $FOLLOWER_DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
+    nohup python $CURRENT_DIR/data_center/local_data_center_server.py -d=$DATA_NUM_EPOCH $LEADER_DATA_BLOCK_DIR $FOLLOWER_DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "local data center service start successfully"
     else
@@ -116,8 +115,7 @@ local_data_center_server_start() {
 
 distribute_data_center_server_start() {
     mkdir_data_center_log_dir
-    python $CURRENT_DIR/data_center/distribute_data_center_server.py $train_data_start $train_data_end $data_source_name \
-    -d=$data_num_epoch >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
+    nohup python $CURRENT_DIR/data_center/distribute_data_center_server.py $train_data_start $train_data_end $data_source_name -d=$data_num_epoch >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "distribute data center service start successfully"
     else
@@ -127,7 +125,8 @@ distribute_data_center_server_start() {
 
 
 register_uuid_server_start() {
-    python $CURRENT_DIR/prepare_register_uuid.py
+    mkdir_data_join_log_dir
+    nohup python $CURRENT_DIR/prepare_register_uuid.py >> "${data_join_log_dir}/console.log" 2>>"${data_join_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "register uuid start successfully"
     else
@@ -135,25 +134,20 @@ register_uuid_server_start() {
     fi
 }
 
-
-
 case "$1" in
     join)
         if [[ "$MODE" == "distribute" ]]; then
             start_http_server
             register_uuid_server_start
             data_join_server_start
-            data_join_server_status
         else
             data_join_server_start
-            data_join_server_status
         fi
         ;;
     center)
         if [[ "$MODE" == "distribute" ]]; then
             start_http_server
             distribute_data_center_server_start
-            http_server_status
         else
             local_data_center_server_start
         fi
@@ -163,3 +157,4 @@ case "$1" in
         echo "usage: $0 {join|center}"
         exit -1
 esac
+
