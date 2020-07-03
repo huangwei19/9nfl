@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DISABLE="--config=noaws --config=nogcp --config=noignite --config=nokafka --config=nonccl"
-BAZEL_FLAGS="--copt=-DEIGEN_USE_VML  --copt=-DJD9N_BUILD --config=opt --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 ${DISABLE}"
+BAZEL_FLAGS="--config=opt --cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0 ${DISABLE}"
 
 tf_config() {
     export PYTHONDONTWRITEBYTECODE=1
