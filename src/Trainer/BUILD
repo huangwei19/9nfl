@@ -20,12 +20,25 @@ load(
     "tf_kernel_tests_linkstatic",
 )
 
-FL_INCS = [
-]
-
-COMMON_OPTS = [
-    "-fexceptions",
-] + FL_INCS
+cc_library(
+    name = "jdfl_hdrs",
+    srcs = [
+      '//tensorflow/core/kernels/data:name_utils.h',
+      '//tensorflow/core/kernels/data:dataset_utils.h',
+      '//tensorflow/core/kernels/data:captured_function.h',
+      '//tensorflow/core/kernels/data:stats_utils.h',
+      "//tensorflow/core/distributed_runtime:call_options.h",
+      "//tensorflow/core/distributed_runtime/rpc:async_service_interface.h",
+      "//tensorflow/core/distributed_runtime/rpc:grpc_channel.h",
+      "//tensorflow/core/distributed_runtime/rpc:grpc_call.h",
+      "//tensorflow/core/distributed_runtime/rpc:grpc_util.h",
+      "//tensorflow/core/distributed_runtime/rpc:grpc_state.h",
+      "//tensorflow/core/distributed_runtime/rpc:grpc_client_cq_tag.h",
+    ],
+    hdrs = glob([
+    ]),
+    visibility = ["//visibility:public"],
+)
 
 tf_proto_library(
     name = "jdfl_rpc_proto",
@@ -41,7 +54,7 @@ tf_proto_library(
 )
 
 cc_library(
-    name = "jdfl_rpc_hdrs",
+    name = "dataset_kernels_hdrs",
     hdrs = glob([
         "kernels/**/*.h",
         "ops/**/*.h",
@@ -49,27 +62,36 @@ cc_library(
     ]),
 )
 
-tf_custom_op_library(
-    name = "_fl_ops.so",
+cc_library(
+    name = "dataset_kernels",
     srcs = glob([
         "kernels/**/*.cc",
-        "ops/**/*.cc",
         "rpc/**/*.cc",
-    ],
-    exclude = [
-
     ]),
     deps = [
         ":jdfl_rpc_proto_cc",
-        ":jdfl_rpc_hdrs",
-        "//tensorflow/core:tf_core_inc",
-        "//tensorflow/core/kernels/data:tf_name_utils_inc",
-        "//tensorflow/core/distributed_runtime/rpc:tf_rpc_inc",
+        ":dataset_kernels_hdrs",
+        ":jdfl_hdrs",
+        "//tensorflow/core:framework_headers_lib",
         "//tensorflow/core/distributed_runtime/rpc:async_service_interface",
-        "//tensorflow/core/distributed_runtime:tf_call_options_inc",
+        "//tensorflow/core/distributed_runtime:tensor_coding",
+        "@com_google_absl//absl/base",
+        "@com_google_absl//absl/strings",
+        "@com_google_absl//absl/types:span",
+        "@com_google_absl//absl/algorithm:container",
         "@grpc//:grpc++",
     ],
-    copts = COMMON_OPTS,
+    alwayslink = 1,
+)
+
+tf_custom_op_library(
+    name = "_fl_ops.so",
+    srcs = glob([
+      "ops/**/*.cc",
+    ]),
+    deps = [
+        ":dataset_kernels",
+    ],
 )
 
 

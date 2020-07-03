@@ -3,8 +3,6 @@
 ## 编译流程：
 
 ### 下载TF-V1.15.X源码
-### 导出为了编译用的头文件:
-     patch -p1 < 9nfl_build.patch
 ### 拷贝9NFL Trainer源码到tensorflow/contrib/jdfl, 代码目录结构：
      tensorflow/contrib/jdfl/
       ├── BUILD
