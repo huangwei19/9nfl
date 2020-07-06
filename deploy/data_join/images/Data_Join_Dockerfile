@@ -1,0 +1,27 @@
+FROM FROM mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1
+
+USER root
+RUN echo "/workspace/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth && \
+    pip install redis==3.0.1 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install yappi --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install grpcio --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install protobuf --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install grpcio-tools --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install Flask==1.0.2 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install requests --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install peewee==3.9.3 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install PyMySQL==0.9.3 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install Flask-SocketIO==3.0.2 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install apsw==3.9.2.post1 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    pip install cachetools --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130 && \
+    #pip uninstall werkzeug -y && \
+    pip install Werkzeug==0.15.3 --trusted-host pypi.douban.com -i http://pypi.douban.com/simple --proxy=http://10.181.54.64:9130
+ADD ./9nfl_opensource.tar.gz /workspace
+RUN cd /workspace/9nfl_opensource/src && \
+    python -m grpc_tools.protoc  -I protocols  --python_out=. --grpc_python_out=. protocols/DataJoin/common/*.proto
+EXPOSE 50052
+RUN chmod +x /workspace/9nfl_opensource/src/DataJoin/start_server.sh
+RUN chmod 777 -R /workspace/9nfl_opensource/src/DataJoin
+WORKDIR /workspace/9nfl_opensource/src/DataJoin
+
+CMD source /root/.bashrc && /bin/sh start_server.sh join && sleep 9999d
