@@ -27,6 +27,7 @@ import sys
 import time
 import logging
 
+sys.path.insert(0, '/export/weiyanwei/tf/pip/')
 sys.path.insert(0, './')
 sys.path.insert(0, '../')
 sys.path.insert(0, './fl_comm_libs/')
@@ -79,13 +80,13 @@ def serving_input_receiver_fn():
     """
     用于导模型
     """
-    feature_map = { 
-        "x": tf.FixedLenFeature([28 * 28 // 2], tf.float32),
+    feature_map = {
+      "x": tf.FixedLenFeature([28 * 28 // 2], tf.float32),
     }
+
     records = tf.placeholder(dtype=tf.string, name='records')
-
+    features = tf.parse_example(records, features=feature_map)
     receiver_tensors = {'records': records}
-
     return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
 
 
