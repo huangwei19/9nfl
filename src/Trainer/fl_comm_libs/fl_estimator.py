@@ -77,11 +77,11 @@ class FLEstimator(object):
         if 'ts' in e:
           self._timeline_trace['traceEvents'].append(e)
 
-  def _save_timeline(self, checkpoint_path):
-    """ save to checkpoint_path/timeline_step_role_taskindex.json"""
-    tf.logging.info('*** Dump timeline path: %s', checkpoint_path)
+  def _save_timeline(self, timeline_path):
+    """ save to timeline_path/timeline_step_role_taskindex.json"""
+    tf.logging.info('*** Dump timeline path: %s', timeline_path)
     f_name = '{}/timeline_step_{}_{}.json'.format(
-            checkpoint_path, self._role, str(self._rank_id))
+            timeline_path, self._role, str(self._rank_id))
     with open(f_name, 'w') as f:
       json.dump(self._timeline_trace, f)
 
@@ -269,7 +269,6 @@ class FLEstimator(object):
             break
 
         run_steps = 1
-        fetch_steps = 10
         tf.logging.info("*** Start train ...")
         start_tm = datetime.now()
         while not sess.should_stop():
@@ -277,14 +276,7 @@ class FLEstimator(object):
               step_context.session.run(train_start_op,
               feed_dict={train_start_placeholder:'/FlTrainStart'}))
           if mode == ModeKeys.TRAIN: 
-            if run_steps <= fetch_steps:
-              sess.run(model_spec.train_op, feed_dict={},
-                options=self._run_options, run_metadata=self._run_metadata)
-              self._update_timeline() 
-              if run_steps == fetch_steps:
-                self._save_timeline(checkpoint_path)
-            else:
-              sess.run(model_spec.train_op, feed_dict={})
+            sess.run(model_spec.train_op, feed_dict={})
           elif mode == ModeKeys.EVAL:
             sess.run([model_spec.loss, eval_op], feed_dict={})
           
