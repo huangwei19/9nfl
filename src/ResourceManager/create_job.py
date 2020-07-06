@@ -57,7 +57,7 @@ def create_context(args,config):
     else:
         ctx['trainer_image'] = config.get('image','follower_trainer_image')
         ctx['dc_image'] = config.get('image','follower_datacenter_image')
-        ctx['data_dir'] = config.get('share_volume','leader_data_dir') 
+        ctx['data_dir'] = config.get('share_volume','follower_data_dir') 
         ctx['models_dir'] = config.get('share_volume','follower_models_dir') 
         ctx['namespace'] = 'fl-follower'
     ctx['train_cmd'] = config.get('train','entrance_file') 
