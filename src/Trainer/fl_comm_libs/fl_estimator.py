@@ -7,7 +7,6 @@ import time
 import json
 from datetime import datetime
 
-sys.path.insert(0, '/export/weiyanwei/tf/pip/')
 import tensorflow.compat.v1 as tf
 from tensorflow_estimator.python.estimator import model_fn as model_fn_lib
 from tensorflow.estimator import ModeKeys
