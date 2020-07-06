@@ -15,9 +15,8 @@ spec:
           containers:
           - name: tensorflow
             image: {{ trainer_image }}
-            command:
-              - python
-              - {{ train_cmd }}
+            command: ["/bin/bash"]
+            args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
@@ -56,9 +55,8 @@ spec:
           containers:
           - name: tensorflow
             image: {{ trainer_image }}
-            command:
-              - python
-              - {{ train_cmd }}
+            command: ["/bin/bash"]
+            args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
@@ -101,9 +99,8 @@ spec:
           containers:
           - name: tensorflow
             image: {{ trainer_image }}
-            command:
-              - python
-              - {{ train_cmd }}
+            command: ["/bin/bash"]
+            args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
