@@ -51,14 +51,14 @@ def create_context(args,config):
     if args.role == '1':
         ctx['trainer_image'] = config.get('image','leader_trainer_image')
         ctx['dc_image'] = config.get('image','leader_datacenter_image')
-        ctx['data_dir'] = config.get('share_volume','leader_data_dir') 
-        ctx['models_dir'] = config.get('share_volume','leader_models_dir') 
+        ctx['model_dir'] = config.get('save','leader_model_dir') 
+        ctx['export_dir'] = config.get('save','leader_export_dir') 
         ctx['namespace'] = 'fl-leader'
     else:
         ctx['trainer_image'] = config.get('image','follower_trainer_image')
         ctx['dc_image'] = config.get('image','follower_datacenter_image')
-        ctx['data_dir'] = config.get('share_volume','follower_data_dir') 
-        ctx['models_dir'] = config.get('share_volume','follower_models_dir') 
+        ctx['model_dir'] = config.get('save','follower_model_dir') 
+        ctx['export_dir'] = config.get('save','follower_export_dir') 
         ctx['namespace'] = 'fl-follower'
     ctx['train_cmd'] = config.get('train','entrance_file') 
     return ctx

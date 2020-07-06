@@ -18,6 +18,10 @@ spec:
             command: ["/bin/bash"]
             args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
+            - name: model_dir
+              value: "{{ model_dir }}"
+            - name: export_dir
+              value: "{{ export_dir }}"
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
             - name: coordinator_port
@@ -35,18 +39,6 @@ spec:
                   fieldPath: status.podIP
             - name: worker_port
               value: "40001" 
-            volumeMounts:
-            - mountPath: /workspace/data
-              name: data-dir
-            - mountPath: /workspace/models
-              name: models-dir
-          volumes:
-          - hostPath:
-              path: {{data_dir}}
-            name: data-dir
-          - hostPath:
-              path: {{models_dir}}
-            name: models-dir
     Chief:
       replicas: 1
       restartPolicy: Never
@@ -58,6 +50,10 @@ spec:
             command: ["/bin/bash"]
             args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
+            - name: model_dir
+              value: "{{ model_dir }}"
+            - name: export_dir
+              value: "{{ export_dir }}"
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
             - name: coordinator_port
@@ -79,18 +75,6 @@ spec:
                   fieldPath: status.podIP
             - name: worker_port
               value: "40001"
-            volumeMounts:
-            - mountPath: /workspace/data
-              name: data-dir
-            - mountPath: /workspace/models
-              name: models-dir
-          volumes:
-          - hostPath:
-              path: {{data_dir}}
-            name: data-dir
-          - hostPath:
-              path: {{models_dir}}
-            name: models_dir
     Worker:
       replicas: 1
       restartPolicy: Never
@@ -102,6 +86,10 @@ spec:
             command: ["/bin/bash"]
             args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
+            - name: model_dir
+              value: "{{ model_dir }}"
+            - name: export_dir
+              value: "{{ export_dir }}"
             - name: coordinator_ip
               value: "{{ coordinator_ip }}"
             - name: coordinator_port
@@ -123,15 +111,3 @@ spec:
                   fieldPath: status.podIP
             - name: worker_port
               value: "40001"
-            volumeMounts:
-            - mountPath: /workspace/data
-              name: data-dir
-            - mountPath: /workspace/models
-              name: models-dir
-          volumes:
-          - hostPath:
-              path: {{data_dir}}
-            name: data-dir
-          - hostPath:
-              path: {{models_dir}}
-            name: models-dir
