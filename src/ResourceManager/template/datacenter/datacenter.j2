@@ -37,15 +37,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
-        volumeMounts:
-        - mountPath: /workspace/data
-          name: data-dir
         resources:
           limits:
             cpu: "2"
             memory: 1Gi
-      volumes:
-      - hostPath:
-          path: {{data_dir}}
-        name: data-dir
 
