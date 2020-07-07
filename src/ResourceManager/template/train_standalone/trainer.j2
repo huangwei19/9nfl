@@ -15,6 +15,7 @@ spec:
           containers:
           - name: tensorflow
             image: {{ trainer_image }}
+            imagePullPolicy: Always
             command: ["/bin/bash"]
             args: [ "-c" ,"source /root/.bashrc && python {{ train_cmd }}" ]
             env:
