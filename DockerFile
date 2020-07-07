@@ -25,6 +25,8 @@ COPY src/Trainer/fl_comm_libs /workspace/fl_comm_libs
 
 RUN mv /workspace/fl_comm_libs/pywrap_dlopen_global_flags.py  /usr/local/lib64/python3.6/site-packages/tensorflow_core/python/
 
+# Trainer镜像此处还需添加hdfs访问相关软件和环境变量配置
+
 #DataCenter以及Trianer的镜像只将以下CMD修改为对应的启动命令
 # demo leader
 # CMD python /workspace/example/mnist_demo/mnist_leader.py
