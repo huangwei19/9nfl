@@ -6,28 +6,21 @@ RUN ln -s /usr/bin/python3.6 /usr/bin/python &&\
     pip3.6 install --upgrade pip &&\
     ln -s /usr/bin/pip3.6 /usr/bin/pip
 
-# temp
-#RUN wget http://storage.jd.local/pinoctl/MachineLearning/tensorFlow/tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl &&\
-#    pip install --ignore-installed tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl &&\
-#    rm -rf tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl &&\
-#    #pip install tensorflow==1.15.0 &&\
-#    wget https://github.com/tensorflow/tensorflow/blob/r1.15/tensorflow/python/pywrap_dlopen_global_flags.py -O /usr/local/lib64/python3.6/site-packages/tensorflow_core/python/pywrap_dlopen_global_flags.py
-
 RUN pip install tensorflow==1.15.0 &&\
     pip install protobuf==3.8.0
 
 RUN mkdir /workspace
 WORKDIR /workspace
 
-# 以下COPY命令需保证example和fl_comm_libs与DockerFile在同一目录
+# The COPY command needs to ensure that example and fl_comm_libs 
+# are in the same directory as DockerFile
 COPY src/Trainer/example /workspace/example
 COPY src/Trainer/fl_comm_libs /workspace/fl_comm_libs
 
 RUN mv /workspace/fl_comm_libs/pywrap_dlopen_global_flags.py  /usr/local/lib64/python3.6/site-packages/tensorflow_core/python/
 
-# Trainer镜像此处还需添加hdfs访问相关软件和环境变量配置
+# Add related software and environment configuration to access HDFS in trainer image here
 
-#DataCenter以及Trianer的镜像只将以下CMD修改为对应的启动命令
 # demo leader
 # CMD python /workspace/example/mnist_demo/mnist_leader.py
 # demo follower

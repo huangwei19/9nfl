@@ -1,14 +1,14 @@
 # K8S conf for deploy Fedlearner
-k8s.conf用于将京东联邦学习系统部署在kubernetes集群中。京东联邦学习分为leader以及leader两侧，两侧的k8s.conf应不相同。
-配置文件分为4个模块：
+k8s.conf is used to deploy the JD Federal Learning System in the kubernetes cluster. JD Federation Learning is divided into leader and follower sides, and the k8s.conf on both sides should be different.
+The configuration file is divided into 4 modules：
 + coordinator
-配置为对应侧的coordinator的Ip以及Port。
+Ip and Port configured as the coordinator on the corresponding side。
 + proxy
-配置为对应侧的proxy的Ip以及Port。
+Ip and Port configured as the proxy on the corresponding side。
 + image
-用于配置DataCenter以及Trainer模块的镜像。
+Image for DataCenter and Trainer。
 + train
-用于配置训练器的启动命令。
+Start command for trainer。
 + save
-京东联邦学习使用hdfs来保存模型。本模块用于配置两侧模型的checkpoint以及模型保存路径。
-其中{leader/follower}_model_dir用于保存checkpoint。{leader/follower}_export_dir用于最终导出模型。四个目录不能为相同目录。
+JD Federation Learning use hdfs to save the model. This module is used to configure the path for checkpoint and models on both sides.
+{leader/follower}_model_dir is used to save checkpoint. {leader/follower}_export_dir is used to finally export the model. The four directories cannot be the same.
