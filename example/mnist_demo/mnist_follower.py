@@ -56,7 +56,7 @@ def input_fn(fl_bridge, role):
     leader的输入函数
     """
     grpc_ds = jdfl_ops.FlGrpcFetchDataset(role)
-    grpc_ds = grpc_ds.prefetch(16)
+    grpc_ds = grpc_ds.prefetch(3)
     compression_type = ''
     buffer_size = 0 
 
@@ -79,13 +79,13 @@ def serving_input_receiver_fn():
     """
     用于导模型
     """
-    feature_map = { 
+    feature_map = {
         "x": tf.FixedLenFeature([28 * 28 // 2], tf.float32),
     }
+
     records = tf.placeholder(dtype=tf.string, name='records')
-
+    features = tf.parse_example(records, features=feature_map)
     receiver_tensors = {'records': records}
-
     return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
 
 
