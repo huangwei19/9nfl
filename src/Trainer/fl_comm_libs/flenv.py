@@ -93,8 +93,9 @@ class FLEnv(object):
             logging.info("run_config: %s" % run_config)
 
             util.rm_dir('_tmp/')
-            util.mk_dir(run_config['model_dir'])
-            util.rm_dir(run_config['export_dir'])
+            if is_chief:
+                util.rm_dir(run_config['model_dir'])
+                util.rm_dir(run_config['export_dir'])
 
             # download checkpoint when needed
             if run_config["checkpoint_hdfs_path"]:
@@ -157,6 +158,7 @@ class FLEnv(object):
         mconfig['job_name'] = job_name
         mconfig['task_index'] = task_index
         mconfig['cluster'] = cluster
+        mconfig['worker_id'] = 0
 
         if job_name == 'master':
             mconfig['worker_id'] = task_index
@@ -240,8 +242,12 @@ class FLEnv(object):
         if env_dc_ip is not None and env_dc_port is not None:
             mconfig['dc_addr'] = str(env_dc_ip) + ':' + str(env_dc_port)
 
-        mconfig['model_dir'] = FLAGS.model_dir
-        mconfig['export_dir'] = FLAGS.export_dir
+        mconfig['model_dir'] = os.environ.get('model_dir')
+        if mconfig['model_dir'] is None:
+            mconfig['model_dir'] = FLAGS.model_dir
+        mconfig['export_dir'] = os.environ.get('export_dir')
+        if mconfig['export_dir'] is None:
+            mconfig['export_dir'] = FLAGS.export_dir
         mconfig['local_debug'] = FLAGS.local_debug
         mconfig['log_dir'] = FLAGS.local_debug or 'logs'
         

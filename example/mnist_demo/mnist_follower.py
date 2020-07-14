@@ -56,7 +56,7 @@ def input_fn(fl_bridge, role):
     leader的输入函数
     """
     grpc_ds = jdfl_ops.FlGrpcFetchDataset(role)
-    grpc_ds = grpc_ds.prefetch(16)
+    grpc_ds = grpc_ds.prefetch(3)
     compression_type = ''
     buffer_size = 0 
 
