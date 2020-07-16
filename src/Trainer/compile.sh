@@ -1,4 +1,3 @@
-set -x
 
 copy_file(){
 
@@ -10,18 +9,22 @@ copy_file(){
     cp -r ops ${JDFL}
     cp -r rpc ${JDFL}
 
-    cp build/flops_build_.sh ${TENSORFLOW}/
-    cp build/9nfl_build.patch ${TENSORFLOW}/tensorflow/
-    cd ${TENSORFLOW}/tensorflow
-    patch -p1 <9nfl_build.patch 
-    cd -
+    cp build/flops_build.sh ${TENSORFLOW}/
 }
 
 
-TENSORFLOW=/export/huangwei19/proj/tensorflow
+TENSORFLOW=$1
+if [ -z ${TENSORFLOW} ];then
+    echo "usage: bash $0 tensorflow_dir"
+    exit -1
+fi
+
+set -x
 copy_file ${TENSORFLOW}
 cd ${TENSORFLOW}
-bash flops_build_.sh
+bash flops_build.sh
+cd -
+cp ${TENSORFLOW}/bazel-bin/tensorflow/contrib/jdfl/_fl_ops.so .
 
 
 #~/anaconda3/bin/python setup.py sdist

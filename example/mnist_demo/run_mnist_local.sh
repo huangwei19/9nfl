@@ -4,6 +4,10 @@ MNIST_DIR=`readlink -f "${WORK_DIR}"`
 DATA_DIR=$1
 PYTHON=$2
 
+if [ -z ${DATA_DIR} ];then
+    DATA_DIR='../mnist_data'
+fi
+
 if [ -z $PYTHON ];then
     PYTHON=python
 fi
