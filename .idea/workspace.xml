@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install/DataJoin/distributer_install.md" beforeDir="false" afterPath="$PROJECT_DIR$/install/DataJoin/distributer_install.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install/DataJoin/simpleness_install.md" beforeDir="false" afterPath="$PROJECT_DIR$/install/DataJoin/simpleness_install.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Trainer/BUILD" beforeDir="false" />
-    </list>
+    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +68,7 @@
           <entry key="Data_Center_Dockerfile" value="2" />
           <entry key="Data_Join_Dockerfile" value="4" />
           <entry key="Dockerfile" value="1" />
-          <entry key="md" value="14" />
+          <entry key="md" value="19" />
           <entry key="proto" value="10" />
           <entry key="py" value="329" />
           <entry key="sh" value="7" />
@@ -83,7 +78,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Markdown" value="14" />
+          <entry key="Markdown" value="19" />
           <entry key="PLAIN_TEXT" value="31" />
           <entry key="Python" value="329" />
           <entry key="YAML" value="3" />
@@ -115,18 +110,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/docs/data_join.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="122">
-                <caret line="101" lean-forward="true" selection-start-line="73" selection-end-line="101" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/install/DataJoin/distributer_install.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -151,22 +134,23 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/docs/data_center.md">
+        <entry file="file://$PROJECT_DIR$/install/DataCenter/distributer_install.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="200">
-                <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-              </first_editor>
+            <state split_layout="SPLIT">
+              <first_editor />
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/install/DataCenter/simpleness_install.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="-492">
+                <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -292,8 +276,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_visitor.py" />
-        <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_sync_leader.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_factory/stream_joiner.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/stream_joiner.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_iterator_builder/tf_record_iter.py" />
@@ -343,6 +325,8 @@
         <option value="$PROJECT_DIR$/docs/data_center.md" />
         <option value="$PROJECT_DIR$/install/DataJoin/simpleness_install.md" />
         <option value="$PROJECT_DIR$/install/DataJoin/distributer_install.md" />
+        <option value="$PROJECT_DIR$/install/DataCenter/simpleness_install.md" />
+        <option value="$PROJECT_DIR$/install/DataCenter/distributer_install.md" />
       </list>
     </option>
   </component>
@@ -367,17 +351,19 @@
             <path>
               <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
               <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="deploy" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
-              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="install" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
               <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
               <item name="install" type="462c0819:PsiDirectoryNode" />
+              <item name="DataCenter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="install" type="462c0819:PsiDirectoryNode" />
+              <item name="DataJoin" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -391,18 +377,18 @@
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join\images" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\docs" />
-      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\data_join\joiner_impl" />
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\master_data_join" />
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols\data_join" />
       <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\install" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join\images" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\docs" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -432,6 +418,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25464836" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -469,20 +456,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/apps/data_app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="39" lean-forward="true" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/queue.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protocols/DataJoin/common/data_join_service.proto">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
@@ -748,13 +721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="354">
@@ -793,23 +759,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/install/DataJoin/simpleness_install.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1440">
-            <caret line="72" selection-start-line="72" selection-end-line="72" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/data_center.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="200">
-            <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -823,11 +776,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/data_center.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="308">
+            <caret line="59" lean-forward="true" selection-start-line="48" selection-end-line="59" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/install/DataJoin/distributer_install.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="308">
             <caret line="28" selection-start-line="28" selection-end-line="28" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataJoin/simpleness_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="1440">
+            <caret line="72" selection-start-line="72" selection-end-line="72" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataCenter/distributer_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataCenter/simpleness_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="-492">
+            <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
           </first_editor>
           <second_editor />
         </state>
