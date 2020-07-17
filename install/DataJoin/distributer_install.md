@@ -1,11 +1,28 @@
-# deploy 
-- 填写相关的开源依赖以及版本，包含简单的安装（使用英文）
+二. Cluster Deployment Guide:
 
-# conf
-- 填写相关的配置项目
+1. Make Base Image
 
-# install
-- 本软件的安装
+`cd /app/9nfl_opensource/deploy/data_join/images` 
 
-# run
-- 本软件的启动
+`docker build -t  FROM mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1 . -f Base_Dockerfile`
+
+please replace "mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1"  with your base image name 
+
+2. Make  Data Join Image
+
+`cd /app/9nfl_opensource/deploy/data_join/images`
+
+`docker build -t  mirror.jd.com/pino/fl:data_join_leader_opensource_v1.0 . -f Base_Dockerfile`
+
+please replace "mirror.jd.com/pino/fl:data_join_leader_opensource_v1.0"  with your data join image name 
+
+Making leader data join image  and follower data join image is the same  as the second step
+
+3. deploy
+
+`cd /app/9nfl_opensource/deploy/data_join/k8s`
+
+After finished setting Environment variables, and replace the Environment variables of 
+the deployment_worker.yaml with real value;
+
+`deployment_worker.yaml | kubectl --namespace=${NAMESPACE} create -f -`

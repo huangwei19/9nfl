@@ -4,7 +4,7 @@
 1. DownLoad 
 Download package from git address https://git.jd.com/ads-conversion/9nfl_opensource.git
 `git clone https://git.jd.com/ads-conversion/9nfl_opensource.git`
-   
+
 2. Set Environment
 copy or move 9nfl_opensource into /app (you can change the root dir /app into yours directory);
 if root dir /app does not exists,please mkdir /app
@@ -18,8 +18,7 @@ if python3.6 is not installed  by anaconda3
 
 please change user role from root into your current user role ,for example:
  `su ads_9ncloud`
- 
- 
+
 3. Install Requirements
 `cd /app/9nfl_opensource/src/DataJoin/`
 `pip install -r requirements.txt`
@@ -34,40 +33,14 @@ please change user role from root into your current user role ,for example:
         --python_out=. \
         --grpc_python_out=. \
         protocols/DataJoin/common/*.proto`
+        
+5. Execute Data Center Server
 
-5. Set Leader Environment
-
-for example:
-export ROLE=leader
-export PARTITION_ID=0
-export DATA_SOURCE_NAME=test_data_join
+export LEADER_DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_leader
+export FOLLOWER_DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_follower
+export DATA_NUM_EPOCH=1
 export MODE=local
-export RAW_DATA_DIR=/app/9nfl_opensource/src/DataJoin/leader_train
-export DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_leader
-export PORT0="6001"
-export REMOTE_IP="10.170.95.39:5001"
-export RANK_UUID=DataJoinWorker-0
-export RAW_DATA_ITER=TF_RECORD_ITERATOR
-export EXAMPLE_JOINER=MEMORY_JOINER
 
-`cd /app/9nfl_opensource/src/DataJoin/`
-`sh start_server join`
+`cd /app/9nfl_opensource/src/DataJoin`
 
-6. Set Follower Environment
-
-export ROLE=follower
-export PARTITION_ID=0
-export DATA_SOURCE_NAME=test_data_join
-export MODE=local
-export RAW_DATA_DIR=/app/9nfl_opensource/src/DataJoin/follower_train
-export DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_follower
-export PORT0="5001"
-export REMOTE_IP="10.170.95.39:6001"
-export RANK_UUID=DataJoinWorker-0
-export RAW_DATA_ITER=TF_RECORD_ITERATOR
-export EXAMPLE_JOINER=MEMORY_JOINER
-
-`cd /app/9nfl_opensource/src/DataJoin/`
-`sh start_server join`
-
-
+`sh start_server.sh center`

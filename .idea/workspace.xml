@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1026426350">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="json" value="2" />
+          <entry key="md" value="1" />
+          <entry key="proto" value="11" />
+          <entry key="py" value="222" />
+          <entry key="pylintrc" value="1" />
+          <entry key="sh" value="8" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JSON" value="2" />
+          <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="20" />
+          <entry key="Python" value="222" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dummy" value="20" />
+          <entry key="proto" value="188" />
+          <entry key="py" value="3136" />
+          <entry key="sh" value="55" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="263" />
+          <entry key="Python" value="3136" />
+        </counts>
+      </usages-collector>
+    </session>
+    <session id="1078848757">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="Base_Dockerfile" value="5" />
+          <entry key="Data_Center_Dockerfile" value="3" />
+          <entry key="Data_Join_Dockerfile" value="5" />
+          <entry key="Dockerfile" value="1" />
+          <entry key="md" value="19" />
+          <entry key="proto" value="10" />
+          <entry key="py" value="339" />
+          <entry key="sh" value="7" />
+          <entry key="txt" value="3" />
+          <entry key="yaml" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Markdown" value="19" />
+          <entry key="PLAIN_TEXT" value="34" />
+          <entry key="Python" value="339" />
+          <entry key="YAML" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="Data_Join_Dockerfile" value="34" />
+          <entry key="Python Console" value="33" />
+          <entry key="dummy" value="73" />
+          <entry key="md" value="1740" />
+          <entry key="proto" value="12" />
+          <entry key="py" value="4067" />
+          <entry key="sh" value="604" />
+          <entry key="txt" value="2" />
+          <entry key="yaml" value="13" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Markdown" value="1740" />
+          <entry key="PLAIN_TEXT" value="725" />
+          <entry key="Python" value="4100" />
+          <entry key="YAML" value="13" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/proxy/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/manager/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/driver/data_controller.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/driver/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/db/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataJoin/apps/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-107">
+              <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>DataBlockMetaManage</find>
+      <find>total_epcho_time</find>
+      <find>stat_logger</find>
+      <find>StartDataCenterServer</find>
+      <find>data_center_server</find>
+      <find>StartLeaderDataCenterServer</find>
+      <find>DATA_CENTER_PORT</find>
+      <find>data_intersection_leader_pb2</find>
+      <find>Calculate_Count</find>
+      <find>DataBlockInfo</find>
+      <find>query_data_source_meta</find>
+      <find>get_json_result</find>
+      <find>header_adder_interceptor</find>
+      <find>check_address_valid</find>
+      <find>make_insecure_channel</find>
+      <find>ChannelType</find>
+      <find>ChannelModeType</find>
+      <find>get_result</find>
+      <find>get_grpc_proxy_data_channel</find>
+      <find>wrap_grpc_proxy_data_packet</find>
+      <find>proxy_data_api_wrap</find>
+      <find>proxy_data_api</find>
+      <find>train_data_start</find>
+      <find>self.data_bloc_dir</find>
+      <find>data_bloc_dir</find>
+      <find>the request must has filed :data_block_meta for DataBlockConsumer</find>
+      <find>create_data_join_channel</find>
+      <find>_partition_id</find>
+      <find>StartPartition</find>
+      <find>------------Send Data Block Meta-----------</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>self._data_block_meta_cache</replace>
+      <replace>_acquire_data_block_meta_path</replace>
+      <replace>_data_block_dir_wrap</replace>
+      <replace>_create_data_block_dir_if_need</replace>
+      <replace>_remove_item_from_data_block_cache</replace>
+      <replace>self._data_block_meta_memory_buffer</replace>
+      <replace>_remove_item_from_data_block_memory_buffer</replace>
+      <replace>DataBlockController</replace>
+      <replace>acquire_data_block_meta_by_index</replace>
+      <replace>DataBlockManager</replace>
+      <replace>total_epoch_time</replace>
+      <replace>update_data_block_meta</replace>
+      <replace>StartLeaderDataCenterServer</replace>
+      <replace>leader_data_center_server</replace>
+      <replace>logging</replace>
+      <replace>data_center_service_pb2</replace>
+      <replace>StartDataCenterServer</replace>
+      <replace>Counter</replace>
+      <replace>get_result</replace>
+      <replace>add_header_interceptor</replace>
+      <replace>address_valid_checker</replace>
+      <replace>create_data_join_channel</replace>
+      <replace>ChannelModeType</replace>
+      <replace>ModeType</replace>
+      <replace>get_proxy_data_stub</replace>
+      <replace>proxy_data_packet_wrap</replace>
+      <replace>proxy_data_api_wrap</replace>
+      <replace>wrap_proxy_data_api</replace>
+      <replace>self.data_block_dir</replace>
+      <replace>data_block_dir</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin\data_join\joiner_impl</dir>
+      <dir>E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin\data_join\data_iterator_factory</dir>
+      <dir>E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin</dir>
+      <dir>E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\src\DataJoin\data_join\raw_data_iter_impl</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_producer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/example_id_consumer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_dumper.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_saver.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/utils/data_process.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/db/__init__.py" />
+        <option value="$PROJECT_DIR$/protocols/DataJoin/common/data_center_service.proto" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/data_block_manager.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/db/redis_manager.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/raw_data_loader.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/leader_data_center_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/route_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/tests/test_data_center.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/counter.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/apps/data_app.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/proxy/channel.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/utils/api.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/data_center_server.py" />
+        <option value="$PROJECT_DIR$/protocols/DataJoin/common/coordinator_data.proto" />
+        <option value="$PROJECT_DIR$/src/DataJoin/settings.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/prepare_register_uuid.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/db/db_models.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/local_data_center_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_center/distribute_data_center_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/start_server.sh" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/requirements.txt" />
+        <option value="$PROJECT_DIR$/docs/readme.md" />
+        <option value="$PROJECT_DIR$/deploy/data_join/__init__.py" />
+        <option value="$PROJECT_DIR$/deploy/data_join/images/Dockerfile" />
+        <option value="$PROJECT_DIR$/deploy/data_join/images/Base_Dockerfile" />
+        <option value="$PROJECT_DIR$/deploy/data_join/k8s/deployment_worker.yaml" />
+        <option value="$PROJECT_DIR$/deploy/data_center/images/Data_Join_Dockerfile" />
+        <option value="$PROJECT_DIR$/docs/data_join.md" />
+        <option value="$PROJECT_DIR$/docs/data_center.md" />
+        <option value="$PROJECT_DIR$/install/DataJoin/simpleness_install.md" />
+        <option value="$PROJECT_DIR$/install/DataJoin/distributer_install.md" />
+        <option value="$PROJECT_DIR$/install/DataCenter/simpleness_install.md" />
+        <option value="$PROJECT_DIR$/install/DataCenter/distributer_install.md" />
+        <option value="$PROJECT_DIR$/src/DataJoin/tests/__init__.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/proxy/__init__.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/manager/__init__.py" />
+        <option value="$PROJECT_DIR$/src/DataJoin/controller/__init__.py" />
+        <option value="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" />
+        <option value="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-18" />
+    <option name="y" value="-18" />
+    <option name="width" value="1944" />
+    <option name="height" value="1104" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+              <item name="data_center" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+              <item name="data_center" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+              <item name="data_join" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+              <item name="data_join" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="protocols" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../数据求交代码/new-2.0/bytefl-master" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\data_join\joiner_impl" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src\DataJoin\master_data_join" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\protocols\data_join" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl_opensource\src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\install" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join\images" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\deploy\data_join" />
+      <recent name="E:\联邦学习\联邦学习代码\data_join\data_join_open_source\9nfl\9nfl_opensource\docs" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="" />
+      <created>1591067679355</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591067679355</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25464836" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32899627" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.08364312" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32899627" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32899627" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.5762082" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" weight="0.32983023" />
+      <window_info anchor="right" id="R Packages" order="4" weight="0.18674211" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_consumer.py</url>
+          <line>2</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1140">
+          <caret line="96" column="71" lean-forward="true" selection-start-line="96" selection-start-column="71" selection-end-line="96" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protocols/DataJoin/common/proxy_data.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/db/db_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1026">
+          <caret line="74" column="40" lean-forward="true" selection-start-line="74" selection-start-column="40" selection-end-line="74" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/db/redis_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="26" column="51" selection-start-line="26" selection-start-column="51" selection-end-line="26" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/data_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1506">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/data_block_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-906" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/distribute_data_center_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3114">
+          <caret line="189" column="12" lean-forward="true" selection-start-line="189" selection-start-column="12" selection-end-line="189" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/parse_data_block_meta.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="94" column="59" lean-forward="true" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/route_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="43" column="60" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/utils/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="20" column="53" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/readme.md" />
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/images/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor>
+            <caret column="5" selection-start-column="5" selection-end-column="5" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/k8s/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_center/k8s/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/deploy/data_center/k8s/deployment.yaml" />
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/k8s/deployment_worker.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="52" column="39" selection-start-line="52" selection-start-column="39" selection-end-line="52" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/manager/data_managers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-820">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/proxy/channel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="108" lean-forward="true" selection-start-line="108" selection-end-line="108" />
+          <folding>
+            <element signature="e#17#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2286">
+          <caret line="84" column="62" selection-start-line="84" selection-start-column="62" selection-end-line="84" selection-end-column="62" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/data_joiner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="87" column="56" selection-start-line="87" selection-start-column="56" selection-end-line="87" selection-end-column="56" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_join_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1472">
+          <caret line="99" column="22" lean-forward="true" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/start_server.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2490">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
+          <folding>
+            <element signature="e#17#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/local_data_center_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-100">
+          <caret line="79" column="56" selection-start-line="79" selection-start-column="56" selection-end-line="79" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <marker date="1593514349198" expanded="true" signature="1017:2071" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_join/example_id_producer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1926">
+          <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+          <folding>
+            <element signature="e#17#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/data_join.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="122">
+            <caret line="101" lean-forward="true" selection-start-line="73" selection-end-line="101" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/data_center.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="308">
+            <caret line="59" lean-forward="true" selection-start-line="48" selection-end-line="59" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataCenter/distributer_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataCenter/simpleness_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="-492">
+            <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataJoin/distributer_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="308">
+            <caret line="28" selection-start-line="28" selection-end-line="28" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="28" lean-forward="true" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install/DataJoin/simpleness_install.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="1440">
+            <caret line="72" selection-start-line="72" selection-end-line="72" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/proxy/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/manager/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/driver/data_controller.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/driver/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/db/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/data_center/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/controller/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataJoin/apps/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/images/Base_Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="933">
+          <caret line="53" column="16" lean-forward="true" selection-start-line="53" selection-start-column="16" selection-end-line="53" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-107">
+          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
