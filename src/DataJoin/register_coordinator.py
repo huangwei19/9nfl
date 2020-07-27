@@ -30,7 +30,6 @@ if __name__ == "__main__":
         ip_port = "{0}:{1}".format(host_ip, os.environ.get("PORT0", None))
         request = coordinator_data_pb2.Request(ip_port=ip_port)
         request.uuid.append(remote_ip)
-        print(11111111111, request)
         res_status = coord_stub.RegisterUUID(request)
         logging.info('Register Coordinator status: {0}'.format(res_status.status))
         if res_status.status:

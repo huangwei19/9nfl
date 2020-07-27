@@ -3,12 +3,10 @@ from DataJoin.common import data_center_service_pb2
 from DataJoin.common import data_center_service_pb2_grpc
 from concurrent import futures
 import time
-import json
 import logging
-import os
 import traceback
 import sys
-from DataJoin.settings import api_version, DATA_CENTER_PORT
+from DataJoin.config import api_version, DATA_CENTER_PORT
 import queue
 from tensorflow.compat.v1 import gfile
 from os import path

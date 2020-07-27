@@ -3,7 +3,7 @@ import os
 from DataJoin.common import data_join_service_pb2
 from google.protobuf import text_format
 import logging
-from DataJoin.utils.api import wrap_proxy_data_api
+from DataJoin.utils.api import wrap_data_transfer_api
 from DataJoin.utils.base import get_host_ip
 
 EXAMPLE_ID = "example_id"
@@ -14,12 +14,10 @@ DEFATLT_LABEL = "0 0"
 import codecs
 
 http_server_ip = get_host_ip()
-data_path_vw_bas_dir = os.environ.get("data_path_vw_bas_dir",None)
+data_path_vw_bas_dir = os.environ.get("data_path_vw_bas_dir", None)
+
 
 def map_fn(proto):
-    """
-    将tfexample_pbstr转成vw
-    """
     example = tf.train.Example.FromString(proto)
     f_dict = {}
     feature_map = example.features.feature
@@ -29,7 +27,7 @@ def map_fn(proto):
         elif feat == EXAMPLE_ID:
             f_dict[EXAMPLE_ID_NS] = feature_map[feat].bytes_list.value
         else:
-            f_dict[feat] = feature_map[feat].bytes_list.value 
+            f_dict[feat] = feature_map[feat].bytes_list.value
     if LABEL in f_dict:
         label = str(f_dict.pop(LABEL)[0], encoding='utf-8')
     else:
@@ -76,16 +74,11 @@ class SyncConvertDataBlock(object):
         self.tmp_path = "/tmp"
 
     def sync_convert_data_block(self):
-        logging.info("----------meta path--------:%s" % self.meta_path)
-        logging.info("----------data path--------:%s" % self.data_path)
         meta_iter = self.tf_read(self.meta_path)
         meta_info = text_format.Parse(next(meta_iter),
                                       data_join_service_pb2.DataBlockMeta())
         logging.info('meta info block_id: {0}'.format(meta_info.block_id))
         logging.info('meta info partition_id: {0}'.format(meta_info.partition_id))
-        logging.info('meta info leader_start_index: {0}'.format(meta_info.leader_start_index))
-        logging.info('meta info leader_end_index: {0}'.format(meta_info.leader_end_index))
-        logging.info('meta info file_version: {0}'.format(meta_info.file_version))
 
         json_body = dict(start_time=meta_info.start_time,
                          end_time=meta_info.end_time,
@@ -100,7 +93,7 @@ class SyncConvertDataBlock(object):
                          data_source_name=self.data_source_name
                          )
         # create datablock
-        response_json = wrap_proxy_data_api(
+        response_json = wrap_data_transfer_api(
             method='POST',
             endpoint='/v1/data/{0}/{1}/{2}/create/data/block'.format(
                 meta_info.block_id,
@@ -127,6 +120,4 @@ class StartSyncConvertDataBlock(object):
 
 
 if __name__ == '__main__':
-    # 解析hdfs上的datablockmeta pb格式化的数据
     StartSyncConvertDataBlock().run_task()
-

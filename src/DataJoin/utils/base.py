@@ -1,13 +1,8 @@
 import time
-
 import socket
 
 
 def get_host_ip():
-    """
-    查询本机ip地址
-    :return: ip
-    """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('8.8.8.8', 80))
@@ -20,5 +15,3 @@ def get_host_ip():
 
 def current_timestamp():
     return int(time.time() * 1000)
-
-

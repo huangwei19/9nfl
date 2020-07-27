@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import logging
-from DataJoin.settings import Invalid_ExampleId
+from DataJoin.config import Invalid_ExampleId
 from DataJoin.data_join.data_iterator_builder.data_iterator import DataIterator
 from DataJoin.data_join.data_iterator_builder.tf_data_iterator import TfRecordDataIterator
 from os import path

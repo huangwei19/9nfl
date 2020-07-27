@@ -1,39 +1,23 @@
 import json
-
-import grpc
-
 from flask import jsonify
-import logging
-from DataJoin.utils.grpc_wrap import get_proxy_data_stub, proxy_data_packet_wrap
+from DataJoin.utils.data_transfer import get_data_transfer_stub, data_transfer_bucket
 
 
-def get_result(retcode=0, retmsg='success', data=None, task_id=None):
-    result_dict = {"retcode": retcode, "retmsg": retmsg, "data": data, "task_id": task_id}
-    response = {}
-    for key, value in result_dict.items():
-        if not value and key != "retcode":
-            continue
-        else:
-            response[key] = value
-    return jsonify(response)
+def response_api(retcode=0, retmsg='success', data=None):
+    response_result= {"code": retcode, "msg": retmsg, "data": data}
+    return jsonify(response_result)
 
 
-def wrap_proxy_data_api(method, endpoint, json_body):
-    packet_wrap = proxy_data_packet_wrap(json_body, method, endpoint)
+def wrap_data_transfer_api(request_method, request_url, request_body):
+    data_transfer = data_transfer_bucket(request_body, request_method, request_url)
     try:
-        channel, stub = get_proxy_data_stub()
-        result_return = stub.UnaryCall(packet_wrap)
-        logging.info("grpc api response: {}".format(result_return))
-        channel.close()
-        json_body = json.loads(result_return.body.value)
-        return json_body
-    except grpc.RpcError as e:
-        raise Exception('rpc request error: {}'.format(e))
+        data_transfer_channel, data_transfer_stub = get_data_transfer_stub()
+        data_transfe_response = data_transfer_stub.UnaryCall(data_transfer)
+        data_transfer_channel.close()
+        data_transfe_result = json.loads(data_transfe_response.body.value)
+        return data_transfe_result
     except Exception as e:
-        raise Exception('rpc request error: {}'.format(e))
+        raise Exception('data transfer error: {}'.format(e))
 
 
-if __name__ == '__main__':
-    method = "POST"
-    url = "/v1/job/data/block/meta/query"
-    json_body = {"block_id": "122222222222222eeee"}
+

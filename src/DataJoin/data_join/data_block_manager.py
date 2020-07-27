@@ -16,6 +16,7 @@ from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_m
 
 from DataJoin.utils.base import get_host_ip
 import requests
+from DataJoin.config import HEADERS, HTTP_SERVICE_PORT
 
 host_ip = get_host_ip()
 
@@ -23,14 +24,11 @@ mode = os.environ.get("MODE", None)
 
 
 def save_data_block_info(meta_path, block_path):
-    HEADERS = {
-        'Content-Type': 'application/json',
-    }
     action = getattr(requests, 'POST'.lower(), None)
 
     data = {'dfs_data_block_meta': meta_path, 'dfs_data_block': block_path}
 
-    url = "http://{0}:9380/v1/parse/data/block/meta".format(str(host_ip))
+    url = "http://{0}:{1}/v1/parse/data/block/meta".format(str(host_ip), HTTP_SERVICE_PORT)
 
     response = action(url=url, json=data, headers=HEADERS)
 

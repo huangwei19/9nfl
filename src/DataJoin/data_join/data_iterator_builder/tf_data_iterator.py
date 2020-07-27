@@ -2,7 +2,7 @@
 
 import logging
 import tensorflow.compat.v1 as tf
-from DataJoin.settings import Invalid_ExampleId, Invalid_EventTime
+from DataJoin.config import Invalid_ExampleId, Invalid_EventTime
 from DataJoin.utils.data_process import tf_record_iterator_factory
 from DataJoin.data_join.data_iterator_builder.data_iterator import DataIterator
 import traceback

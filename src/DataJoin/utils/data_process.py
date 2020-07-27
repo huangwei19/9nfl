@@ -5,7 +5,7 @@ from contextlib import contextmanager
 import traceback
 import tensorflow.compat.v1 as tf
 from DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource, Coordinator
-from DataJoin.settings import Data_Block_Suffix, Data_Block_Meta_Suffix
+from DataJoin.config import Data_Block_Suffix, Data_Block_Meta_Suffix
 
 
 def query_data_block_meta(**kwargs):

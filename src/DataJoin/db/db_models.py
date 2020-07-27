@@ -8,7 +8,7 @@ from peewee import Model, CharField, IntegerField, BigIntegerField, TextField, C
 from playhouse.pool import PooledMySQLDatabase
 from DataJoin.utils.base import current_timestamp
 import logging
-from DataJoin.settings import DATABASE
+from DataJoin.config import DATABASE
 
 
 def singleton(cls, *args, **kw):
@@ -63,12 +63,12 @@ class DataBaseModel(Model):
 
 def init_db():
     with DB.connection_context():
-        members = inspect.getmembers(sys.modules[__name__], inspect.isclass)
-        table_objs = []
-        for name, obj in members:
-            if obj != DataBaseModel and issubclass(obj, DataBaseModel):
-                table_objs.append(obj)
-        DB.create_tables(table_objs)
+        components = inspect.getmembers(sys.modules[__name__], inspect.isclass)
+        components_list = []
+        for name, component in components:
+            if component != DataBaseModel and issubclass(component, DataBaseModel):
+                components_list.append(component)
+        DB.create_tables(components_list)
 
 
 class DataBlockMeta(DataBaseModel):

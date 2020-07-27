@@ -58,8 +58,8 @@ class DataBlockController(object):
             time.sleep(2)
             meta_path = data_meta_fpaths_dict["{:08}".format(i)]
             data_path = data_block_fpaths_dict["{:08}".format(i)]
-            logging.info("----------meta path-------: %s" % meta_path)
-            logging.info("----------data path--------:%s" % data_path)
+            logging.info("meta path is: %s" % meta_path)
+            logging.info("data path is :%s" % data_path)
 
             start_sync_data_block_pid = run_subprocess(
                 [
@@ -92,7 +92,6 @@ class StartParseDataBlockMeta(object):
                  for f in gfile.ListDirectory(dfs_data_block_dir)
                  if gfile.IsDirectory(os.path.join(dfs_data_block_dir, f))]
 
-            # logging.info(3333333333333333333, dir_fpaths)
             for data_block_path in dir_fpaths:
                 DataBlockController(data_block_path).data_block_controller()
         else:
@@ -107,5 +106,4 @@ class StartParseDataBlockMeta(object):
 
 
 if __name__ == '__main__':
-    # 解析hdfs上的datablockmeta pb格式化的数据
     StartParseDataBlockMeta().run_task()
