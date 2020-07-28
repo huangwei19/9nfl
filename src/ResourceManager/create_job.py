@@ -95,7 +95,7 @@ def create():
         file_descriptor.write(train_yaml_str)
     retval = os.system('kubectl apply -f %s' % tmp_dir)
     if retval != 0:
-        print 'create tfjob error,exit code:' % str(retval)
+        print 'create tfjob error,exit code: %s' % str(retval)
         sys.exit(-3)
     shutil.rmtree(tmp_dir)
 
