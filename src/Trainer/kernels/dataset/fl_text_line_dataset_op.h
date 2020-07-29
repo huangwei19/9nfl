@@ -1,12 +1,12 @@
 
-#ifndef JDFL_TEXT_LINE_DATASET_OP_H_
-#define JDFL_TEXT_LINE_DATASET_OP_H_
+#ifndef TENSORFLOW_CONTRIB_JDFL_KERNELS_DATASET_FL_TEXT_LINE_DATASET_OP_H_
+#define TENSORFLOW_CONTRIB_JDFL_KERNELS_DATASET_FL_TEXT_LINE_DATASET_OP_H_
 
 #include "tensorflow/core/framework/dataset.h"
 
 #include "tensorflow/contrib/jdfl/rpc/proto/dc_agent.pb.h"
-#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_dc_agent.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/fl_utils.h"
+#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_dc_agent.h"
 
 using namespace ::tensorflow;
 
@@ -30,5 +30,4 @@ class FlTextLineDatasetOp : public UnaryDatasetOpKernel {
 
 }  // namespace jdfl
 
-
-#endif  // JDFL_TEXT_LINE_DATASET_OP_H_
+#endif  // TENSORFLOW_CONTRIB_JDFL_KERNELS_DATASET_FL_TEXT_LINE_DATASET_OP_H_

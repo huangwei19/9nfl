@@ -7,11 +7,8 @@
 
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/fl_rpc_state.h"
 
-//#include "tensorflow/core/common_runtime/process_util.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_client_cq_tag.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_state.h"
-//#include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
-//#include "tensorflow/core/distributed_runtime/tensor_coding.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/lib/core/threadpool.h"
@@ -42,38 +39,38 @@ const int kFetchWaitTime = (10 * 1000 * 1000);
 class RpcDcAgent : public DcInterface {
  public:
   explicit RpcDcAgent(SharedGrpcChannelPtr channel,
-                            ::grpc::CompletionQueue* completion_queue,
-                            RpcBridgeMgr* bridge_mgr )
+                      ::grpc::CompletionQueue* completion_queue,
+                      RpcBridgeMgr* bridge_mgr)
       : channel_(std::move(channel)),
         stub_(channel_),
         cq_(completion_queue),
         bridge_mgr_(bridge_mgr),
         fetch_rpcmethod_(Method(RpcDcAgentMethod::kFetchDataBlock)) {
-          polling_thread_ =
-            Env::Default()->StartThread(ThreadOptions(), "rpc_dc_agent", [this]() {
-              void* tag;
-              bool ok;
-              LOG(INFO) << "rpc_dc_agent start.";
-              while (cq_->Next(&tag, &ok)) {
-                if (FlDebugging()) {
-                  LOG(INFO) << "DcAgent Next ...";
-                }
-                GrpcClientCQTag* callback_tag = static_cast<GrpcClientCQTag*>(tag);
-                callback_tag->OnCompleted(ok);
-              }
-              LOG(INFO) << "rpc_dc_agent thread exit.";
-          });
-        }
+    polling_thread_ =
+        Env::Default()->StartThread(ThreadOptions(), "rpc_dc_agent", [this]() {
+          void* tag;
+          bool ok;
+          LOG(INFO) << "rpc_dc_agent start.";
+          while (cq_->Next(&tag, &ok)) {
+            if (FlDebugging()) {
+              LOG(INFO) << "DcAgent Next ...";
+            }
+            GrpcClientCQTag* callback_tag = static_cast<GrpcClientCQTag*>(tag);
+            callback_tag->OnCompleted(ok);
+          }
+          LOG(INFO) << "rpc_dc_agent thread exit.";
+        });
+  }
 
-  ~RpcDcAgent() override { 
+  ~RpcDcAgent() override {
     if (polling_thread_) {
-      delete polling_thread_; 
+      delete polling_thread_;
     }
   }
 
-  void FetchDataBlockAsync( const FetchDataBlockRequest* request,
-                          FetchDataBlockResponse* response,
-                          StatusCallback done) override {
+  void FetchDataBlockAsync(const FetchDataBlockRequest* request,
+                           FetchDataBlockResponse* response,
+                           StatusCallback done) override {
     IssueRequest(request, response, fetch_rpcmethod_, std::move(done));
   }
 
@@ -81,16 +78,15 @@ class RpcDcAgent : public DcInterface {
   // Utility method for issuing a generic asynchronous request. The
   // given callback, `done`, will be called when the RPC completes.
   template <class Response>
-  void IssueRequest(const protobuf::Message* request,
-                    Response* response, const ::grpc::string& method,
-                    StatusCallback done, CallOptions* call_opts = nullptr,
-                    int max_retries = 1) {
+  void IssueRequest(const protobuf::Message* request, Response* response,
+                    const ::grpc::string& method, StatusCallback done,
+                    CallOptions* call_opts = nullptr, int max_retries = 1) {
     if (FlDebugging()) {
       LOG(INFO) << "IssueRequest: " << method;
     }
     auto tag = new RPCState<Response>(&stub_, cq_, method, *request, response,
-                                    std::move(done), call_opts, nullptr, 
-                                    true, kFetchWaitTime, max_retries);
+                                      std::move(done), call_opts, nullptr, true,
+                                      kFetchWaitTime, max_retries);
     if (FlDebugging()) {
       LOG(INFO) << "IssueRequest: " << method << ", tag " << tag;
     }
@@ -106,14 +102,15 @@ class RpcDcAgent : public DcInterface {
   RpcBridgeMgr* bridge_mgr_;
 
   const ::grpc::string fetch_rpcmethod_;
-  
+
   Thread* polling_thread_{nullptr};
 
   TF_DISALLOW_COPY_AND_ASSIGN(RpcDcAgent);
 };
 
-DcInterface* NewRpcDcAgent(SharedGrpcChannelPtr channel, ::grpc::CompletionQueue* completion_queue, 
-                      RpcBridgeMgr* bridge_mgr ) {
+DcInterface* NewRpcDcAgent(SharedGrpcChannelPtr channel,
+                           ::grpc::CompletionQueue* completion_queue,
+                           RpcBridgeMgr* bridge_mgr) {
   return new RpcDcAgent(std::move(channel), completion_queue, bridge_mgr);
 }
 

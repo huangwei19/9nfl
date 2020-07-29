@@ -1,10 +1,13 @@
 
-//#include "tensorflow/core/common_runtime/metrics.h"
+#include <memory>
+#include <vector>
+#include <string>
+
+#include "tensorflow/core/framework/common_shape_fns.h"
 #include "tensorflow/core/framework/partial_tensor_shape.h"
+#include "tensorflow/core/framework/shape_inference.h"
 #include "tensorflow/core/framework/tensor.h"
 #include "tensorflow/core/kernels/data/name_utils.h"
-#include "tensorflow/core/framework/common_shape_fns.h"
-#include "tensorflow/core/framework/shape_inference.h"
 
 #include "tensorflow/contrib/jdfl/kernels/dataset/fl_grpc_fetch_dataset_op.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
@@ -22,8 +25,7 @@ constexpr const char* const FlGrpcFetchDatasetOp::kTimeoutInMs;
 namespace {
 
 const int sleep_in_ms = (10 * 1000 * 1000);
-
-}
+}  // namespace
 
 class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
  private:
@@ -32,12 +34,12 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
   int timeout_in_ms_;
 
  public:
-  explicit Dataset(OpKernelContext* ctx,
-              const string& role_def, int max_retries, int timeout_in_ms)
+  explicit Dataset(OpKernelContext* ctx, const string& role_def,
+                   int max_retries, int timeout_in_ms)
       : DatasetBase(DatasetContext(ctx)),
         role_def_(role_def),
         max_retries_(max_retries),
-        timeout_in_ms_(timeout_in_ms) {  }
+        timeout_in_ms_(timeout_in_ms) {}
 
   std::unique_ptr<IteratorBase> MakeIteratorInternal(
       const string& prefix) const override {
@@ -68,60 +70,61 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
                             Node** output) const override {
     Node* n = nullptr;
     TF_RETURN_IF_ERROR(b->AddScalar(role_def_, &n));
-    
+
     AttrValue attr_max_retries;
     b->BuildAttrValue(max_retries_, &attr_max_retries);
     AttrValue attr_timeout_in_ms;
     b->BuildAttrValue(timeout_in_ms_, &attr_timeout_in_ms);
-    
-    TF_RETURN_IF_ERROR(b->AddDataset(this, {n}, 
-        {{kMaxRetries, attr_max_retries}, {kTimeoutInMs, attr_timeout_in_ms}}, output));
+
+    TF_RETURN_IF_ERROR(b->AddDataset(
+        this, {n},
+        {{kMaxRetries, attr_max_retries}, {kTimeoutInMs, attr_timeout_in_ms}},
+        output));
     return Status::OK();
   }
 
  private:
   class Iterator : public DatasetIterator<Dataset> {
    public:
-    explicit Iterator(const Params& params)
-        : DatasetIterator<Dataset>(params) {
-          bridge_mgr_ = RpcBridgeMgr::Singleton();
-        }
+    explicit Iterator(const Params& params) : DatasetIterator<Dataset>(params) {
+      bridge_mgr_ = RpcBridgeMgr::Singleton();
+    }
 
     Status GetNextInternal(IteratorContext* ctx,
                            std::vector<Tensor>* out_tensors,
                            bool* end_of_sequence) override {
-      
-      DcInterface * db_api = bridge_mgr_->dc_impl();
+      DcInterface* db_api = bridge_mgr_->dc_impl();
       if (!db_api) {
-        return  errors::InvalidArgument("DbAgent not init...");
+        return errors::InvalidArgument("DbAgent not init...");
       }
 
       BridgeInterface* bridge_api = bridge_mgr_->bridge_impl();
       if (!bridge_api) {
-        return  errors::InvalidArgument("BridgeAgent not init...");
+        return errors::InvalidArgument("BridgeAgent not init...");
       }
 
       mutex_lock l(mu_);
       const string roledef = dataset()->role_def_;
 
       do {
-        
         // Leader
         {
-          if ( roledef == RoleDef_Leader)  {
+          if (roledef == RoleDef_Leader) {
             // fetch data block form datacenter
             FetchDataBlockRequest request;
             FetchDataBlockResponse response;
-            Status s = db_api->FetchDataBlock(&request, &response); 
+            Status s = db_api->FetchDataBlock(&request, &response);
             if (!s.ok()) {
-              LOG(ERROR) << "FlGrpcFetchDatasetOp fetch data block failed: " << s.error_message();
+              LOG(ERROR) << "FlGrpcFetchDatasetOp fetch data block failed: "
+                         << s.error_message();
               LOG(INFO) << "Sleeping for: " << sleep_in_ms;
               ctx->env()->SleepForMicroseconds(sleep_in_ms);
               continue;
             }
-            
+
             if (response.status_code() == StatusCode::ERROR_ABORTED) {
-              return errors::InvalidArgument("DC response internal error, Aborted ...");
+              return errors::InvalidArgument(
+                  "DC response internal error, Aborted ...");
             }
 
             if (response.status_code() == StatusCode::NOT_READY) {
@@ -130,19 +133,20 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
               ctx->env()->SleepForMicroseconds(sleep_in_ms);
               continue;
             }
-            
+
             if (response.status_code() == StatusCode::FINISHED) {
               LOG(INFO) << "Data block FINISHED... ";
               LoadDataBlockRequest msg_send;
               ResultStatus msg_recv;
 
               msg_send.set_count(datablock_count);
-              
+
               // notify peer end of datablock
-              for (int i = 0; i < 3; i ++ ) {
+              for (int i = 0; i < 3; i++) {
                 s = bridge_api->RequestLoadDataBlock(&msg_send, &msg_recv);
                 if (!s.ok()) {
-                  LOG(ERROR) << "RequestLoadDataBlock failed: " << s.error_message();
+                  LOG(ERROR)
+                      << "RequestLoadDataBlock failed: " << s.error_message();
                   LOG(INFO) << "Sleeping for: " << sleep_in_ms;
                   ctx->env()->SleepForMicroseconds(sleep_in_ms);
                   continue;
@@ -163,62 +167,68 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
                 continue;
               }
               LOG(INFO) << "Fetch DataBlock: " << src_fname;
-              int ret = PrepareFile(src_fname, out_fname);
+              int ret = PrepareFile(src_fname, &out_fname);
               if (ret) {
                 LOG(ERROR) << "Data block download failed: " << src_fname;
                 ctx->env()->SleepForMicroseconds(sleep_in_ms);
                 // try next datablock
                 continue;
               }
-              
+
               LoadDataBlockRequest msg_send;
               ResultStatus msg_recv;
-              
+
               msg_send.set_count(datablock_count);
               msg_send.set_block_id(response.db_info().request_id());
-              
+
               // notify peer prepare data block
-              LOG(INFO) << "Request peer prepare data block: " << response.db_info().request_id();
-              for (int i = 0; i < 10; i ++ ) {
+              LOG(INFO) << "Request peer prepare data block: "
+                        << response.db_info().request_id();
+              for (int i = 0; i < 10; i++) {
                 s = bridge_api->RequestLoadDataBlock(&msg_send, &msg_recv);
-                //OP_REQUIRES( ctx, s.ok(),
+                // OP_REQUIRES( ctx, s.ok(),
                 //    errors::InvalidArgument(s.error_message()));
                 if (!s.ok()) {
-                  LOG(ERROR) << "RequestLoadDataBlock failed: " << s.error_message();
+                  LOG(ERROR)
+                      << "RequestLoadDataBlock failed: " << s.error_message();
                   LOG(INFO) << "Sleeping for: " << sleep_in_ms;
                   ctx->env()->SleepForMicroseconds(sleep_in_ms);
                   continue;
                 }
                 if (msg_recv.result_code() != ResultCode::SUCCESS) {
-                  LOG(ERROR) << "RequestLoadDataBlock resp failed, err_code:" 
-                      << msg_recv.result_code() << ", err_info:" << msg_recv.error_message();
+                  LOG(ERROR) << "RequestLoadDataBlock resp failed, err_code:"
+                             << msg_recv.result_code()
+                             << ", err_info:" << msg_recv.error_message();
                   LOG(INFO) << "Sleeping for: " << sleep_in_ms;
                   ctx->env()->SleepForMicroseconds(sleep_in_ms);
                   continue;
                 }
-                LOG(ERROR) << "Peer datablock ready: " << response.db_info().request_id();
+                LOG(ERROR) << "Peer datablock ready: "
+                           << response.db_info().request_id();
                 break;
               }
-              if ( (!s.ok()) || (msg_recv.result_code()) ) {
-                LOG(ERROR) << "RequestLoadDataBlock skip : " << response.db_info().request_id();
+              if ((!s.ok()) || (msg_recv.result_code())) {
+                LOG(ERROR) << "RequestLoadDataBlock skip : "
+                           << response.db_info().request_id();
                 int ret = CleanFile(out_fname);
-                LOG(INFO) << "Claenup " << out_fname << " with exit code : " << ret;
-                
+                LOG(INFO) << "Claenup " << out_fname
+                          << " with exit code : " << ret;
+
                 // datablock count
                 datablock_count++;
-                
+
                 continue;
               }
-              
+
               // data block OK
               LOG(ERROR) << "enqueue datablock file: " << out_fname;
               out_tensors->emplace_back(ctx->allocator({}), DT_STRING,
-                                  TensorShape({}));
+                                        TensorShape({}));
               out_tensors->back().scalar<string>()() = out_fname;
-              
-              // datablock count 
+
+              // datablock count
               datablock_count++;
-              
+
               *end_of_sequence = false;
               return Status::OK();
             }
@@ -227,25 +237,27 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
 
         // Follower
         {
-          if ( roledef == RoleDef_Follower) {
+          if (roledef == RoleDef_Follower) {
             //  Wait leader datablock request
             std::string local_fname;
             bool end_of_files = false;
-            Status s = bridge_api->QueryReadyFile(0, "/LoadDataBlock", local_fname, &end_of_files);
+            Status s = bridge_api->QueryReadyFile(0, "/LoadDataBlock",
+                                                  &local_fname, &end_of_files);
             if (!s.ok()) {
-              LOG(ERROR) << "Query ready datablock file failed: " << s.error_message();
+              LOG(ERROR) << "Query ready datablock file failed: "
+                         << s.error_message();
               LOG(INFO) << "Sleeping for: " << sleep_in_ms;
               ctx->env()->SleepForMicroseconds(sleep_in_ms);
               continue;
             }
-            
-            if ( !end_of_files ) {
+
+            if (!end_of_files) {
               // data block OK
               LOG(ERROR) << "Ready datablock got: " << local_fname;
               out_tensors->emplace_back(ctx->allocator({}), DT_STRING,
-                                  TensorShape({}));
+                                        TensorShape({}));
               out_tensors->back().scalar<string>()() = local_fname;
-              
+
               *end_of_sequence = false;
               return Status::OK();
             } else {
@@ -255,17 +267,13 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
             }
           }
         }
-        
-        // error role def
-        {
-          return  errors::InvalidArgument("RoleDef invalid ... ", roledef);
-        }
 
+        // error role def
+        { return errors::InvalidArgument("RoleDef invalid ... ", roledef); }
       } while (true);
     }
 
    protected:
-
     Status SaveInternal(IteratorStateWriter* writer) override {
       return errors::Unimplemented("SaveInternal is currently not supported");
     }
@@ -273,16 +281,14 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
     Status RestoreInternal(IteratorContext* ctx,
                            IteratorStateReader* reader) override {
       return errors::Unimplemented(
-            "RestoreInternal is currently not supported");
+          "RestoreInternal is currently not supported");
     }
 
-  private:
-
+   private:
     mutex mu_;
     int64 datablock_count{0};
     RpcBridgeMgr* bridge_mgr_ = nullptr;
   };
-
 };
 
 FlGrpcFetchDatasetOp::FlGrpcFetchDatasetOp(OpKernelConstruction* ctx)
@@ -292,11 +298,9 @@ FlGrpcFetchDatasetOp::FlGrpcFetchDatasetOp(OpKernelConstruction* ctx)
 }
 
 void FlGrpcFetchDatasetOp::MakeDataset(OpKernelContext* ctx,
-                                    DatasetBase** output) {
-
+                                       DatasetBase** output) {
   string role_def;
-  OP_REQUIRES_OK(ctx, ParseScalarArgument<string>(ctx, kRoleDef,
-                                                  &role_def));
+  OP_REQUIRES_OK(ctx, ParseScalarArgument<string>(ctx, kRoleDef, &role_def));
   *output = new Dataset(ctx, role_def, max_retries_, timeout_in_ms_);
 }
 
@@ -306,4 +310,3 @@ REGISTER_KERNEL_BUILDER(Name("FlGrpcFetchDataset").Device(DEVICE_CPU),
 }  // namespace
 
 }  // namespace jdfl
-

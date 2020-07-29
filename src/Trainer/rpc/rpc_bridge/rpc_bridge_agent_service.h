@@ -1,11 +1,11 @@
 
-#ifndef JDFL_RPC_BRIDGE_AGENT_SERVICE_H_
-#define JDFL_RPC_BRIDGE_AGENT_SERVICE_H_
+#ifndef TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_SERVICE_H_
+#define TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_SERVICE_H_
 
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
+#include <string>
 
-#include "grpcpp/server_builder.h"
 #include "grpcpp/impl/codegen/async_stream.h"
 #include "grpcpp/impl/codegen/async_unary_call.h"
 #include "grpcpp/impl/codegen/proto_utils.h"
@@ -14,12 +14,13 @@
 #include "grpcpp/impl/codegen/status.h"
 #include "grpcpp/impl/codegen/stub_options.h"
 #include "grpcpp/impl/codegen/sync_stream.h"
+#include "grpcpp/server_builder.h"
 #include "grpcpp/support/byte_buffer.h"
 
 #include "tensorflow/core/distributed_runtime/rpc/async_service_interface.h"
 
-#include "tensorflow/contrib/jdfl/rpc/proto/bridge_agent.pb.h"
 #include "tensorflow/contrib/jdfl/rpc/proto/bridge_agent.grpc.pb.h"
+#include "tensorflow/contrib/jdfl/rpc/proto/bridge_agent.pb.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent.h"
 
 namespace jdfl {
@@ -53,8 +54,9 @@ enum class BridgeMethodIndex {
 std::string RpcAgentMethodRecvKey(BridgeMethodIndex id);
 
 std::unique_ptr<AsyncServiceInterface> NewRpcBridgeAgentService(
-  ::grpc::ServerBuilder* builder, RpcBridgeRecvCache* service_cache, RpcBridgeMgr* bridge_mgr);
+    ::grpc::ServerBuilder* builder, RpcBridgeRecvCache* service_cache,
+    RpcBridgeMgr* bridge_mgr);
 
 }  // namespace jdfl
 
-#endif 
+#endif  // TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_SERVICE_H_

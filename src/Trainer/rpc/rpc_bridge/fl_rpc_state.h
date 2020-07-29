@@ -1,7 +1,7 @@
 
 
-#ifndef JDFL_FL_RPC_STATE_H_
-#define JDFL_FL_RPC_STATE_H_
+#ifndef TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_FL_RPC_STATE_H_
+#define TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_FL_RPC_STATE_H_
 
 //
 //  Modified base on "tensorflow/core/distributed_runtime/rpc/grpc_state.h".
@@ -10,6 +10,8 @@
 
 #include <queue>
 #include <utility>
+#include <vector>
+#include <memory>
 
 #include "grpcpp/generic/generic_stub.h"
 #include "grpcpp/grpcpp.h"
@@ -17,14 +19,13 @@
 #include "tensorflow/core/distributed_runtime/call_options.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_client_cq_tag.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
-//#include "tensorflow/core/distributed_runtime/tensor_coding.h"
+#include "tensorflow/core/distributed_runtime/rpc/grpc_state.h"
 #include "tensorflow/core/lib/core/refcount.h"
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/lib/core/threadpool.h"
 #include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/platform/mutex.h"
 #include "tensorflow/core/platform/notification.h"
-#include "tensorflow/core/distributed_runtime/rpc/grpc_state.h"
 
 namespace tensorflow {
 
@@ -39,22 +40,22 @@ class FlRPCState : public GrpcClientCQTag {
  public:
   // Default behavior is to set fail_fast = False and handle timeouts manually.
   FlRPCState(::grpc::GenericStub* stub, ::grpc::CompletionQueue* cq,
-           const std::vector<CallMeta>& ctx_meta,
-           const ::grpc::string& method, const protobuf::Message& request,
-           Response* response, StatusCallback done, CallOptions* call_opts,
-           thread::ThreadPool* threadpool, int32 max_retries = 0,
-           bool fail_fast = false)
-      : FlRPCState(stub, cq, ctx_meta, method, request, response, std::move(done),
-                 call_opts, threadpool, fail_fast,
-                 /*timeout_in_ms=*/0, max_retries) {}
+             const std::vector<CallMeta>& ctx_meta,
+             const ::grpc::string& method, const protobuf::Message& request,
+             Response* response, StatusCallback done, CallOptions* call_opts,
+             thread::ThreadPool* threadpool, int32 max_retries = 0,
+             bool fail_fast = false)
+      : FlRPCState(stub, cq, ctx_meta, method, request, response,
+                   std::move(done), call_opts, threadpool, fail_fast,
+                   /*timeout_in_ms=*/0, max_retries) {}
 
   template <typename Request>
-  FlRPCState(::grpc::GenericStub* stub, ::grpc::CompletionQueue* cq, 
-           const std::vector<CallMeta>& ctx_meta,
-           const ::grpc::string& method, const Request& request,
-           Response* response, StatusCallback done, CallOptions* call_opts,
-           thread::ThreadPool* threadpool, bool fail_fast, int64 timeout_in_ms,
-           int32 max_retries)
+  FlRPCState(::grpc::GenericStub* stub, ::grpc::CompletionQueue* cq,
+             const std::vector<CallMeta>& ctx_meta,
+             const ::grpc::string& method, const Request& request,
+             Response* response, StatusCallback done, CallOptions* call_opts,
+             thread::ThreadPool* threadpool, bool fail_fast,
+             int64 timeout_in_ms, int32 max_retries)
       : call_opts_(call_opts),
         threadpool_(threadpool),
         done_(std::move(done)),
@@ -89,7 +90,7 @@ class FlRPCState : public GrpcClientCQTag {
     if (call_opts_) {
       call_opts_->SetCancelCallback([this]() { context_->TryCancel(); });
     }
-    
+
     for (auto& kv : ctx_meta_) {
       context_->AddMetadata(kv.first, kv.second);
     }
@@ -183,17 +184,17 @@ class FlRPCState : public GrpcClientCQTag {
   ::grpc::GenericStub* stub_;
   ::grpc::string method_;
   bool fail_fast_;
-  
+
   const std::vector<CallMeta> ctx_meta_;
 };
-
 
 template <class Response>
 class FlStreamingRPCDispatcher {
  public:
-  FlStreamingRPCDispatcher(::grpc::GenericStub* stub, ::grpc::CompletionQueue* cq,
-                         const ::grpc::string& method,
-                         const std::vector<CallMeta>& ctx_meta )
+  FlStreamingRPCDispatcher(::grpc::GenericStub* stub,
+                           ::grpc::CompletionQueue* cq,
+                           const ::grpc::string& method,
+                           const std::vector<CallMeta>& ctx_meta)
       : stub_(stub), cq_(cq), method_(method), ctx_meta_(ctx_meta) {}
 
   // Attempts to send the next request. If there is no active streaming call,
@@ -201,7 +202,7 @@ class FlStreamingRPCDispatcher {
   // `response` has been filled with the data from the server, or if there
   // is an error. `done` can be invoked before SendNextRequest returns.
   Status SendNextRequest(const protobuf::Message& request, Response* response,
-                       StatusCallback done) {
+                         StatusCallback done) {
     mutex_lock l(mu_);
     if (state_ == nullptr) {
       CreateStreamingState();
@@ -213,26 +214,27 @@ class FlStreamingRPCDispatcher {
     } else {
       Status s = errors::Unknown("gRPC call failed right after it was created");
       // Consider retrying to create and start a call few more times.
-      //done(s);
+      // done(s);
       return s;
     }
 
     // The attempt to send failed because the call was dead, create a new
     // call and try again. When the call is dead SendNextRequest does not call
     // `done`.
-    //CreateStreamingState();
+    // CreateStreamingState();
 
-    //is_call_alive = state_->SendNextRequest(request, response, done);
-    //if (!is_call_alive) {
-    //  Status s = errors::Unknown("gRPC call failed right after it was created");
+    // is_call_alive = state_->SendNextRequest(request, response, done);
+    // if (!is_call_alive) {
+    //  Status s = errors::Unknown("gRPC call failed right after it was
+    //  created");
     //  // Consider retrying to create and start a call few more times.
     //  done(s);
     //  return s;
     //}
     //
-    //return Status::OK();
+    // return Status::OK();
   }
-  
+
   void ResetCall() {
     mutex_lock l(mu_);
     state_ = nullptr;
@@ -251,9 +253,8 @@ class FlStreamingRPCDispatcher {
 
  private:
   void CreateStreamingState() EXCLUSIVE_LOCKS_REQUIRED(mu_) {
-    
     LOG(INFO) << "Create Streaming Client Ctx ...";
-    
+
     // ClientContext cannot be reused across calls.
     context_ = std::make_shared<::grpc::ClientContext>();
     // Don't immediately fail StartCall if the channel is not ready. Wait for
@@ -261,11 +262,11 @@ class FlStreamingRPCDispatcher {
     context_->set_wait_for_ready(true);
 
     for (auto& kv : ctx_meta_) {
-      LOG(INFO) << "Client Ctx AddMetadata(), meta_key " << kv.first \
-                      << ", meta_value " << kv.second;
+      LOG(INFO) << "Client Ctx AddMetadata(), meta_key " << kv.first
+                << ", meta_value " << kv.second;
       context_->AddMetadata(kv.first, kv.second);
     }
-    
+
     std::unique_ptr<grpc::GenericClientAsyncReaderWriter> call =
         std::move(stub_->PrepareCall(context_.get(), method_, cq_));
 
@@ -280,7 +281,7 @@ class FlStreamingRPCDispatcher {
 
   // Does not need synchronization since it is constant.
   const ::grpc::string method_;
-  
+
   const std::vector<CallMeta> ctx_meta_;
 
   std::shared_ptr<::grpc::ClientContext> context_ GUARDED_BY(mu_);
@@ -289,4 +290,4 @@ class FlStreamingRPCDispatcher {
 
 }  // namespace tensorflow
 
-#endif
+#endif  // TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_FL_RPC_STATE_H_

@@ -1,18 +1,18 @@
 
-#ifndef JDFL_RPC_DC_AGENT_H_
-#define JDFL_RPC_DC_AGENT_H_
+#ifndef TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_DC_AGENT_H_
+#define TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_DC_AGENT_H_
 
-#include <unordered_map>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
+#include <unordered_map>
 
 #include "tensorflow/core/distributed_runtime/call_options.h"
 #include "tensorflow/core/lib/core/notification.h"
 #include "tensorflow/core/lib/core/status.h"
-#include "tensorflow/core/platform/types.h"
 #include "tensorflow/core/lib/core/threadpool.h"
 #include "tensorflow/core/platform/mutex.h"
+#include "tensorflow/core/platform/types.h"
 
 #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
 
@@ -28,7 +28,6 @@ namespace jdfl {
 
 class RpcBridgeMgr;
 
-// Status callback.
 typedef std::function<void(const Status&)> StatusCallback;
 
 enum class RpcDcAgentMethod {
@@ -37,19 +36,18 @@ enum class RpcDcAgentMethod {
 
 class DcInterface {
  public:
-
   virtual void FetchDataBlockAsync(const FetchDataBlockRequest* request,
-                             FetchDataBlockResponse* response, StatusCallback done) = 0;
+                                   FetchDataBlockResponse* response,
+                                   StatusCallback done) = 0;
 
-  Status FetchDataBlock(const FetchDataBlockRequest* request, 
-                            FetchDataBlockResponse* response) {
+  Status FetchDataBlock(const FetchDataBlockRequest* request,
+                        FetchDataBlockResponse* response) {
     return CallAndWait(&ME::FetchDataBlockAsync, request, response);
   }
 
   virtual ~DcInterface() {}
 
  private:
-
   typedef DcInterface ME;
 
   template <typename Method, typename Req, typename Resp>
@@ -79,9 +77,8 @@ class DcInterface {
 };
 
 DcInterface* NewRpcDcAgent(SharedGrpcChannelPtr channel,
-                     ::grpc::CompletionQueue* completion_queue, 
-                     RpcBridgeMgr* bridge_mgr);
+                           ::grpc::CompletionQueue* completion_queue,
+                           RpcBridgeMgr* bridge_mgr);
+}  // namespace jdfl
 
-}
-
-#endif 
+#endif  // TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_DC_AGENT_H_
