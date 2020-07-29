@@ -1,13 +1,13 @@
 // Copyright (c) 2019 JD, Inc.
-#ifndef SERVICES_INVOKE_MODULE_H_
-#define SERVICES_INVOKE_MODULE_H_
+#ifndef SRC_COORDINATOR_SERVICES_INVOKE_MODULE_H_
+#define SRC_COORDINATOR_SERVICES_INVOKE_MODULE_H_
 
+#include <gflags/gflags.h>
+#include <grpcpp/grpcpp.h>
 #include <iostream>
 #include <memory>
 #include <string>
-#include <grpcpp/grpcpp.h>
 #include "glog/logging.h"
-#include <gflags/gflags.h>
 
 #include "proto/external_service.grpc.pb.h"
 #include "common/fl_gflags.h"
@@ -17,7 +17,7 @@
 namespace jdfl {
 class InvokeModule {
  public:
-  InvokeModule(const ::jdfl::AppInfo& app_info): app_info_(app_info),
+  explicit InvokeModule(const ::jdfl::AppInfo& app_info): app_info_(app_info),
       syn_stub_(::fedlearner::common::StateSynService::NewStub(
         resource::Resource::Instance()->coordinator_channel())),
       submit_train_stub_(::fedlearner::common::Scheduler::NewStub(
@@ -40,4 +40,4 @@ class InvokeModule {
 
 }  // namespace jdfl
 
-#endif
+#endif  // SRC_COORDINATOR_SERVICES_INVOKE_MODULE_H_

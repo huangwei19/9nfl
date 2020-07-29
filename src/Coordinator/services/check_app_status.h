@@ -1,7 +1,9 @@
-#ifndef SERVICES_CHECK_APP_STATUS_H
-#define SERVICES_CHECK_APP_STATUS_H
+#ifndef SRC_COORDINATOR_SERVICES_CHECK_APP_STATUS_H_
+#define SRC_COORDINATOR_SERVICES_CHECK_APP_STATUS_H_
 
 #include <set>
+#include <vector>
+#include <string>
 #include <memory>
 #include "common/util.h"
 
@@ -14,10 +16,10 @@ class CheckAppStatus {
   }
 
   static void InitInstance() {
-    if (nullptr == instance_.get()) 
+    if (nullptr == instance_.get())
       instance_.reset(new CheckAppStatus());
   }
-  
+
   void DoCheckAppStatus();
   void AddAppId(const std::string& app_id);
   void DeleteAppId(std::vector<std::string> app_id_arr);
@@ -36,4 +38,4 @@ void RunCheckAppStatus();
 
 }  // namespace jdfl
 
-#endif
+#endif  // SRC_COORDINATOR_SERVICES_CHECK_APP_STATUS_H_

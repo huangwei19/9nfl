@@ -18,5 +18,5 @@ class CoordinatorExecutor : public BaseExecutor {
   virtual bool Init();
 };
 
-}
-#endif 
+}  // namespace resource
+#endif

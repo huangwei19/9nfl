@@ -1,7 +1,6 @@
-// Copyright (c) 2019 JD, Inc.
+#include <assert.h>
 #include <memory>
 #include <string>
-#include <assert.h>
 #include "resource/hiredis_executor.h"
 #include "common/util.h"
 
@@ -10,10 +9,11 @@ namespace resource {
 bool HiRedisExecutor::Get(const std::string &key,
                         std::string *value) {
   assert(value);
-  const static std::string get_str("GET ");
+  static const std::string get_str("GET ");
   std::string command(get_str);
   std::lock_guard<std::mutex> lock(mtx_);
-  redisReply *reply = static_cast<redisReply*>(redisCommand(redis_ctx_, command.append(key).c_str()));
+  redisReply *reply = static_cast<redisReply*>(
+    redisCommand(redis_ctx_, command.append(key).c_str()));
   if (!reply->str || reply->str == '\0') {
     LOG(ERROR) << "Get key fail! key: " << key;
     freeReplyObject(reply);
@@ -26,11 +26,12 @@ bool HiRedisExecutor::Get(const std::string &key,
 
 bool HiRedisExecutor::Set(const std::string &key,
                         const std::string &value) {
-  const static std::string set_str("SET ");
+  static const std::string set_str("SET ");
   std::string command(set_str);
   command.append(key).append(" ").append(value);
   std::lock_guard<std::mutex> lock(mtx_);
-  redisReply *reply = static_cast<redisReply*>(redisCommand(redis_ctx_, command.c_str()));
+  redisReply *reply = static_cast<redisReply*>(
+    redisCommand(redis_ctx_, command.c_str()));
   bool ret = CheckReply(reply);
   freeReplyObject(reply);
   if (!ret) {
@@ -42,7 +43,7 @@ bool HiRedisExecutor::Set(const std::string &key,
 
 bool HiRedisExecutor::Mset(const std::vector<std::string> &keys,
     const std::vector<std::string> &values) {
-  const static std::string set_str("MSET");
+  static const std::string set_str("MSET");
   if (keys.size() != values.size()) {
     LOG(ERROR) << "Mset keys num not equal value size!";
     return false;
@@ -52,7 +53,8 @@ bool HiRedisExecutor::Mset(const std::vector<std::string> &keys,
     command.append(" ").append(keys[i]).append(" ").append(values[i]);
   }
   std::lock_guard<std::mutex> lock(mtx_);
-  redisReply *reply = static_cast<redisReply*>(redisCommand(redis_ctx_, command.c_str()));
+  redisReply *reply = static_cast<redisReply*>(
+    redisCommand(redis_ctx_, command.c_str()));
   bool ret = CheckReply(reply);
   freeReplyObject(reply);
   if (!ret) {
@@ -65,7 +67,7 @@ bool HiRedisExecutor::Mset(const std::vector<std::string> &keys,
 bool HiRedisExecutor::SetEx(const std::string &key,
     const std::string &value, int time_s) {
   std::string tmp_value(value);
-  const static std::string ex_str(" EX ");
+  static const std::string ex_str(" EX ");
   tmp_value.append(ex_str).append(std::to_string(time_s));
   return this->Set(key, tmp_value.c_str());
 }
@@ -88,10 +90,11 @@ void HiRedisExecutor::Unlock(const std::string &str) {
 }
 
 void HiRedisExecutor::Del(const std::string& key) {
-  const static std::string del_str("DEL ");
+  static const std::string del_str("DEL ");
   std::string command(del_str);
   std::lock_guard<std::mutex> lock(mtx_);
-  redisReply *reply = static_cast<redisReply*>(redisCommand(redis_ctx_, command.append(key).c_str()));
+  redisReply *reply = static_cast<redisReply*>(
+    redisCommand(redis_ctx_, command.append(key).c_str()));
   freeReplyObject(reply);
 }
 
@@ -103,8 +106,11 @@ void HiRedisExecutor::Del(const std::vector<std::string> &keys) {
   this->Del(keys_str);
 }
 
-bool HiRedisExecutor::Init(const std::string &hostname, int port, const struct timeval &timeout) {
-  redis_ctx_ = redisConnectWithTimeout(hostname.c_str(), port, timeout);
+bool HiRedisExecutor::Init(
+    const std::string &hostname, int port,
+    const struct timeval &timeout) {
+  redis_ctx_ = redisConnectWithTimeout(
+    hostname.c_str(), port, timeout);
   if (redis_ctx_ == NULL || redis_ctx_->err) {
     if (redis_ctx_) {
       LOG(ERROR) << "Connection error: " << redis_ctx_->errstr;
@@ -124,4 +130,4 @@ bool HiRedisExecutor::CheckReply(redisReply *reply) {
   return strcmp(reply->str, "OK") == 0;
 }
 
-}
+}  // namespace resource

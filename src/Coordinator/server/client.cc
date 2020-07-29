@@ -1,10 +1,8 @@
+#include <grpcpp/grpcpp.h>
+#include <gflags/gflags.h>
 #include <iostream>
 #include <memory>
 #include <string>
-
-#include <grpcpp/grpcpp.h>
-#include <gflags/gflags.h>
-
 #include "proto/internal_service.grpc.pb.h"
 
 DEFINE_string(model_uri, "DefaultModelUri", "model uri");
@@ -13,7 +11,7 @@ DEFINE_string(server_ip_port, "", "server ip:port");
 
 class Client {
  public:
-  Client(std::shared_ptr<grpc::Channel> channel)
+  explicit Client(std::shared_ptr<grpc::Channel> channel)
       : stub_(jdfl::StartApplication::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
@@ -61,7 +59,8 @@ int main(int argc, char** argv) {
   // (use of InsecureChannelCredentials()).
   Client client(grpc::CreateChannel(
       FLAGS_server_ip_port, grpc::InsecureChannelCredentials()));
-  std::string reply = client.StartApplication(FLAGS_model_uri, FLAGS_model_version);
+  std::string reply = client.StartApplication(
+    FLAGS_model_uri, FLAGS_model_version);
   std::cout << "Client received: " << reply << std::endl;
 
   return 0;

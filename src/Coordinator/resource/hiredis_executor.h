@@ -2,6 +2,7 @@
 #ifndef RESOURCE_HIREDIS_EXECUTOR_H
 #define RESOURCE_HIREDIS_EXECUTOR_H
 
+#include <vector>
 #include <memory>
 #include <string>
 #include <mutex>
@@ -18,7 +19,8 @@ class HiRedisExecutor {
     redisFree(redis_ctx_);
   }
 
-  virtual bool Init(const std::string &hostname, int port, const struct timeval &timeout);
+  virtual bool Init(
+    const std::string &hostname, int port, const struct timeval &timeout);
 
   bool Lock(const std::string &str, int lock_timeout_s);
   void Unlock(const std::string &str);
@@ -30,6 +32,7 @@ class HiRedisExecutor {
   bool SetEx(const std::string &key, const std::string &value, int time_s);
   void Del(const std::string &key);
   void Del(const std::vector<std::string> &keys);
+
  private:
   bool CheckReply(redisReply *reply);
   redisContext *redis_ctx_ = nullptr;
@@ -38,6 +41,6 @@ class HiRedisExecutor {
   std::mutex mtx_;
 };
 
-}
+}  // namespace resource
 
-#endif 
+#endif

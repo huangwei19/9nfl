@@ -1,13 +1,13 @@
 // Copyright (c) 2019 JD, Inc.
-#ifndef SERVICES_EXTERNAL_SERVICE_IMPL_H_
-#define SERVICES_EXTERNAL_SERVICE_IMPL_H_
+#ifndef SRC_COORDINATOR_SERVICES_EXTERNAL_SERVICE_IMPL_H_
+#define SRC_COORDINATOR_SERVICES_EXTERNAL_SERVICE_IMPL_H_
 
+#include <grpcpp/grpcpp.h>
+#include <gflags/gflags.h>
 #include <iostream>
 #include <memory>
 #include <string>
-#include <grpcpp/grpcpp.h>
 #include "glog/logging.h"
-#include <gflags/gflags.h>
 
 #include "proto/external_service.grpc.pb.h"
 #include "proto/internal_service.grpc.pb.h"
@@ -17,7 +17,8 @@
 
 namespace fl {
 
-class SchedulerServiceImpl final : public ::fedlearner::common::Scheduler::Service {
+class SchedulerServiceImpl final :
+    public ::fedlearner::common::Scheduler::Service {
  public:
   grpc::Status SubmitTrain(
     grpc::ServerContext* context,
@@ -33,7 +34,8 @@ struct TaskInfo {
   ::jdfl::AppInfo app_info;
 };
 
-class StateSynServiceImpl final : public ::fedlearner::common::StateSynService::Service {
+class StateSynServiceImpl final :
+    public ::fedlearner::common::StateSynService::Service {
  public:
   grpc::Status Syn(
     grpc::ServerContext* context,
@@ -45,4 +47,4 @@ class StateSynServiceImpl final : public ::fedlearner::common::StateSynService::
 
 }  // namespace fl
 
-#endif
+#endif  // SRC_COORDINATOR_SERVICES_EXTERNAL_SERVICE_IMPL_H_
