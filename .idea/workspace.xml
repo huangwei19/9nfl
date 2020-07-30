@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b38e9fc-1377-4e29-a346-c9f6f60120f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/controller/parse_data_block_meta.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/controller/parse_data_block_meta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/controller/sync_convert_data_block.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_center/distribute_data_center_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_center/distribute_data_center_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_center/local_data_center_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_center/local_data_center_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_join/data_block_producer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_join/data_joiner_builder/memory_data_joiner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/register_coordinator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/register_coordinator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/route_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/route_server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataJoin/start_server.sh" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataJoin/start_server.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +70,7 @@
         <counts>
           <entry key="Base_Dockerfile" value="5" />
           <entry key="Data_Center_Dockerfile" value="5" />
-          <entry key="Data_Join_Dockerfile" value="6" />
+          <entry key="Data_Join_Dockerfile" value="7" />
           <entry key="Dockerfile" value="1" />
           <entry key="conf" value="1" />
           <entry key="md" value="25" />
@@ -94,7 +84,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Markdown" value="25" />
-          <entry key="PLAIN_TEXT" value="46" />
+          <entry key="PLAIN_TEXT" value="47" />
           <entry key="Python" value="461" />
           <entry key="YAML" value="4" />
         </counts>
@@ -195,11 +185,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="23" column="68" lean-forward="true" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+            <state relative-caret-position="300">
+              <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="4" column="34" lean-forward="true" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -236,7 +235,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DATA_CENTER_PORT</find>
       <find>get_proxy_data_stub</find>
       <find>proxy_data_packet_wrap</find>
       <find>get_url</find>
@@ -266,6 +264,7 @@
       <find>internal_server_error</find>
       <find>data_app</find>
       <find>get_http_server_pid</find>
+      <find>apsw</find>
     </findStrings>
     <replaceStrings>
       <replace>create_data_join_channel</replace>
@@ -340,8 +339,6 @@
         <option value="$PROJECT_DIR$/src/DataJoin/proxy/__init__.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/manager/__init__.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/controller/__init__.py" />
-        <option value="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" />
-        <option value="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/base.py" />
         <option value="$PROJECT_DIR$/protocols/DataJoin/common/proxy_data.proto" />
         <option value="$PROJECT_DIR$/src/DataJoin/utils/grpc_wrap.py" />
@@ -366,6 +363,8 @@
         <option value="$PROJECT_DIR$/src/DataJoin/data_join/processor_manager.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/route_server.py" />
         <option value="$PROJECT_DIR$/src/DataJoin/start_server.sh" />
+        <option value="$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile" />
+        <option value="$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile" />
       </list>
     </option>
   </component>
@@ -421,6 +420,13 @@
               <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
               <item name="deploy" type="462c0819:PsiDirectoryNode" />
               <item name="data_join" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
+              <item name="9nfl_opensource" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+              <item name="data_join" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="9nfl_opensource" type="b2602c69:ProjectViewProjectNode" />
@@ -579,13 +585,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/protocols/DataJoin/common/proxy_data.proto">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="24" lean-forward="true" selection-start-line="21" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protocols/DataJoin/common/data_center_service.proto">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1007,8 +1006,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deploy/data_center/images/Data_Center_Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="23" column="68" lean-forward="true" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+        <state relative-caret-position="300">
+          <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/data_join/images/Data_Join_Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="34" lean-forward="true" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
         </state>
       </provider>
     </entry>
