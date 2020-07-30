@@ -1,11 +1,25 @@
 #-*-encoding=utf-8-*-
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 import socket
 import logging
-import grpc
 import time
 import json
 import sys
+import grpc
 import tensorflow as tf
 from tensorflow.python.platform import flags
 from tensorflow.python.framework import ops
@@ -31,30 +45,30 @@ def verify_example_ids(fl_bridge, ids, debug_mode=True):
     
     # check exampleid
     logging.info("check example id")
-    ids_x = tf.strings.to_hash_bucket_fast(ids, num_buckets = 2**31-1)
+    ids_x = tf.strings.to_hash_bucket_fast(ids, num_buckets=2**31-1)
     if FLAGS.role == LEADER:
         if debug_mode:
-            print_op = tf.print("_verify_example_ids:", ids_x, summarize=256,
+            print_op = tf.print("_verify_example_ids:", ids_x, summarize=256,\
                     output_stream=sys.stdout)
             with ops.control_dependencies([print_op]):
-                ids_chk_op = fl_bridge.fl_tensor_send(ids_x,
+                ids_chk_op = fl_bridge.fl_tensor_send(ids_x,\
                     datamsg_sname='_verify_example_ids')
         else:
-            ids_chk_op = fl_bridge.fl_tensor_send(ids_x,
+            ids_chk_op = fl_bridge.fl_tensor_send(ids_x,\
                 datamsg_sname='_verify_example_ids')
     elif FLAGS.role == FOLLOWER:
         with ops.control_dependencies([ids]):
-            ids_y = fl_bridge.fl_tensor_recv(T=tf.int64, 
+            ids_y = fl_bridge.fl_tensor_recv(T=tf.int64, \
                 datamsg_rname='_verify_example_ids')
             if debug_mode:
-                print_op = tf.print("_verify_example_ids:", ids_y, summarize=256,
+                print_op = tf.print("_verify_example_ids:", ids_y, summarize=256,\
                     output_stream=sys.stdout)
                 with ops.control_dependencies([print_op]):
                     ids_chk_op = tf.assert_equal(ids_x, ids_y)
             else:
                 ids_chk_op = tf.assert_equal(ids_x, ids_y)
     else:
-        raise ValueError("role should be leader or follower, received %s"
+        raise ValueError("role should be leader or follower, received %s" \
             % str(role))
     return ids_chk_op
 
@@ -82,7 +96,7 @@ class FLEnv(object):
                     run_config["worker_id"]
             else:
                 channel_comm_uuid = prepare_rpc_channel(
-                   run_config['coordinator_addr'], [run_config['channel_appli_id']],
+                   run_config['coordinator_addr'], [run_config['channel_appli_id']],\
                    run_config['local_addr'])
             self.mconfig["channel_comm_uuid"] = channel_comm_uuid
             
@@ -101,10 +115,10 @@ class FLEnv(object):
             if run_config["checkpoint_hdfs_path"]:
                 # it is possible that the process is restarted
                 # the `SUCCESS_FILE` should not exists when first started
-                SUCCESS_FILE = os.path.join(run_config["model_dir"],
+                SUCCESS_FILE = os.path.join(run_config["model_dir"],\
                     'DOWNLOAD_SUCCESS')
                 if not os.path.exists(SUCCESS_FILE):
-                    util.download_from_hdfs(run_config["checkpoint_hdfs_path"], 
+                    util.download_from_hdfs(run_config["checkpoint_hdfs_path"],\
                         run_config["model_dir"])
                     util.run('touch %s' % SUCCESS_FILE)
 
