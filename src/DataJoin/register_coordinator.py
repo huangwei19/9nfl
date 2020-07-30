@@ -1,9 +1,10 @@
 import logging
 import os
+import time
 import grpc
 from DataJoin.common import coordinator_data_pb2
 from DataJoin.common import coordinator_data_pb2_grpc
-import time
+
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)

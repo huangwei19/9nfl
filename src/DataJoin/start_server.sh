@@ -74,7 +74,6 @@ start_http_server() {
     if [[ $? -eq 1 ]]; then
         mkdir_http_server_log_dir
         nohup python $CURRENT_DIR/route_server.py >> "${http_server_log_dir}/console.log" 2>>"${http_server_log_dir}/error.log" &
-        #python $CURRENT_DIR/route_server.py
         if [[ $? -eq 0 ]]; then
             sleep 2
             get_http_server_pid

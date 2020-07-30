@@ -54,7 +54,7 @@ def write_data(input_file, output_file, batch_size=16):
                 try:
                     batch_data = sess.run(next_element)
                 except Exception as e:
-                    print("done")
+                    logging.info("data convert done")
                     break
                 for item in batch_data:
                     vw_str = map_fn(item)
@@ -82,7 +82,6 @@ class SyncConvertDataBlock(object):
 
         json_body = dict(start_time=meta_info.start_time,
                          end_time=meta_info.end_time,
-                         # example_ids=json.dumps([value.decode("utf-8") for value in data_block_meta.example_ids]),
                          leader_start_index=meta_info.leader_start_index,
                          leader_end_index=meta_info.leader_end_index,
                          follower_restart_index=meta_info.follower_restart_index,
@@ -92,8 +91,7 @@ class SyncConvertDataBlock(object):
                          consumed_status=1,
                          data_source_name=self.data_source_name
                          )
-        # create datablock
-        response_json = wrap_data_transfer_api(
+        wrap_data_transfer_api(
             method='POST',
             endpoint='/v1/data/{0}/{1}/{2}/create/data/block'.format(
                 meta_info.block_id,

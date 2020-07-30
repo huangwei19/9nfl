@@ -61,7 +61,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
     def QueryDataBlock(self, request, context):
         logging.info('server received :%s from client QueryDataBlock ' % request)
         block_id = request.block_id
-        # parse received data from client request
         try:
 
             if not block_id:
@@ -109,7 +108,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 class StartDataCenterServer(object):
     @staticmethod
     def run_server():
-        # 启动 rpc 服务
         import argparse
         parser = argparse.ArgumentParser()
         parser.add_argument('--data_num_epoch', '-d', type=int, default=1,

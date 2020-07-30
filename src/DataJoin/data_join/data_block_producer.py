@@ -153,11 +153,11 @@ class DataBlockProducer(object):
                 self._sync_data_block_meta_sender_status(data_join_wrap)
             join_finished = False
             while not data_join_wrap.data_block_producer_finished:
-                print("***********Next Data Block Index*******", data_join_wrap.next_data_block_index)
+                logging.info("Next Data Block Index : %s" % data_join_wrap.next_data_block_index)
                 join_finished, meta = data_join_wrap.get_next_data_block_meta()
                 if meta is None:
                     break
-                print("------------Send Data Block Meta-----------", meta.block_id)
+                logging.info("Send Data Block Meta : %s" % meta.block_id)
                 self._send_data_block_meta(meta)
                 data_join_wrap.next_data_block_index += 1
             return join_finished
@@ -222,4 +222,3 @@ class DataBlockProducer(object):
         logging.info("data block producing has been finished " \
                      "for partition %d", data_join_wrap._partition_id)
         return True
-

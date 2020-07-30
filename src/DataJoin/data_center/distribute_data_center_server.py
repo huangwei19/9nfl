@@ -56,7 +56,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
         data_block_dict = None
         block_id = request.block_id
         endpoint = "/{0}/data/query/data/block/meta".format(api_version)
-        # parse received data from client request
         try:
 
             if not block_id:
@@ -143,9 +142,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 class StartDataCenterServer(object):
     @staticmethod
     def run_server():
-        # 启动 rpc 服务
         import argparse
-
         parser = argparse.ArgumentParser()
         parser.add_argument('train_data_start', type=int,
                             help='train start time of distribute data center service')

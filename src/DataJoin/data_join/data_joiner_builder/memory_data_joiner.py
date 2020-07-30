@@ -49,10 +49,6 @@ class MemoryDataJoiner(DataJoiner):
                     if lite_example_ids.finished:
                         if self._acquire_data_block_maker(False) is not None:
                             yield self._data_join_finalizer(lite_example_ids.finished)
-                '''
-                if lite_example_ids.finished:
-                    self._set_data_joiner_finished()
-                '''
 
             if self._acquire_data_block_maker(False) is not None and \
                     self._data_block_finalizer_if_time_span():

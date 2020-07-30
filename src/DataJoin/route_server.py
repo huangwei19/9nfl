@@ -4,7 +4,7 @@ import sys
 import time
 from concurrent import futures
 import traceback
-
+import logging
 import grpc
 from grpc._cython import cygrpc
 from werkzeug.serving import run_simple
@@ -19,10 +19,6 @@ from DataJoin.config import SLEEP_TIME, api_version, HTTP_SERVICE_HOST, HTTP_SER
     PROXY_SERVICE_HOST, PROXY_SERVICE_PORT
 from DataJoin.utils.data_transfer import ProxyDataService
 from DataJoin.utils.base import get_host_ip
-import os
-
-
-import logging
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -51,18 +47,15 @@ if __name__ == '__main__':
     if mode == "distribute":
         init_db()
     grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
-                         options=[(cygrpc.ChannelArgKey.max_send_message_length, -1),
-                                  (cygrpc.ChannelArgKey.max_receive_message_length, -1)])
+                              options=[(cygrpc.ChannelArgKey.max_send_message_length, -1),
+                                       (cygrpc.ChannelArgKey.max_receive_message_length, -1)])
 
     common_pb2_grpc.add_ProxyDataServiceServicer_to_server(ProxyDataService(), grpc_server)
     grpc_server.add_insecure_port("{}:{}".format(PROXY_SERVICE_HOST, PROXY_SERVICE_PORT))
     grpc_server.start()
-    # start http server
     try:
-        run_simple(hostname=HTTP_SERVICE_HOST, port=HTTP_SERVICE_PORT, application=routine, threaded=True)
-    except OSError as e:
-        traceback.print_exc()
-        os.kill(os.getpid(), signal.SIGKILL)
+        run_simple(hostname=HTTP_SERVICE_HOST, port=HTTP_SERVICE_PORT,
+                   application=routine, threaded=True)
     except Exception as e:
         traceback.print_exc()
         os.kill(os.getpid(), signal.SIGKILL)
