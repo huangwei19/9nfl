@@ -20,7 +20,6 @@ function build_common()
     mode=${1:-"opt"}
     execshell "bazel build server/... ${OPT} -c ${mode}"
 
-    # 输出到output文件夹
     bin="./output/bin"
     if [[ ! -d ${bin} ]]
     then
@@ -33,7 +32,6 @@ function build_common()
         execshell "cp $src_path/$src_com ${bin}"
     done
 
-    # 生成commit id
     commit_id_file=commit_id.txt
     execshell "echo commit_id `git rev-parse HEAD` > $commit_id_file"
 }
@@ -56,11 +54,11 @@ function build_debug()
 function usage()
 {
     cat <<HELP_END
-用法：sh build.sh [参数]
-        clean                       清理当前编译环境和xts运行环境
-        debug                       编译debug版本
-        release或缺省               编译release版本
-        --help                      显示帮助信息
+    sh build.sh
+        clean              
+        debug             
+        release或缺省    
+        --help          
 HELP_END
 }
 case $1 in

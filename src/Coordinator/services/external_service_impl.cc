@@ -36,8 +36,10 @@ grpc::Status SchedulerServiceImpl::SubmitTrain(
     // check trainer num
     if (request->model_train_mata().worker_num() !=
         app_info.conf_info().worker_num()) {
-      std::string local_num = std::to_string(app_info.conf_info().worker_num());
-      std::string remote_num = std::to_string(request->model_train_mata().worker_num());
+      std::string local_num = std::to_string(
+        app_info.conf_info().worker_num());
+      std::string remote_num = std::to_string(
+        request->model_train_mata().worker_num());
       err.assign("check trainer number fail! local number: ").append(
           local_num).append(" ,remote number: ").append(remote_num);
       break;
@@ -68,9 +70,10 @@ grpc::Status SchedulerServiceImpl::SubmitTrain(
 }
 
 // make pair
-grpc::Status StateSynServiceImpl::Syn(grpc::ServerContext* context,
-                                      const ::fedlearner::common::AppSynRequest* request,
-                                      ::fedlearner::common::Status* response) {
+grpc::Status StateSynServiceImpl::Syn(
+    grpc::ServerContext* context,
+    const ::fedlearner::common::AppSynRequest* request,
+    ::fedlearner::common::Status* response) {
   // judge client or server
   const auto &app_id = request->app_id();
   // judge if stop this train
@@ -144,8 +147,7 @@ grpc::Status StateSynServiceImpl::Syn(grpc::ServerContext* context,
         ptr_service_pair->set_remote_uuid(iter->second);
       }
     }
-    
-    // save AppInfo to redis 
+    // save AppInfo to redis
     int index = 0;
     auto redis_ptr = resource::Resource::Instance()->redis_resource();
     while (index++ < FLAGS_lock_times) {
@@ -190,7 +192,7 @@ bool MakeServicePairInfo(TaskInfo *task_ptr) {
   task_ptr->request.mutable_service_pair()->
       Swap(new_request.mutable_service_pair());
   // make pair done
-  LOG(INFO) << "thread, make pair done!" ;
+  LOG(INFO) << "thread, make pair done!";
   return true;
 }
 
@@ -204,7 +206,8 @@ void StateSynServiceImpl::WaitForServiceRegistered(TaskInfo *task) {
       return;
     }
     if (-1 == status) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(FLAGS_wait_registered_time_ms));
+      std::this_thread::sleep_for(
+        std::chrono::milliseconds(FLAGS_wait_registered_time_ms));
       continue;
     }
     if (!MakeServicePairInfo(task_ptr.get())) {
@@ -214,7 +217,7 @@ void StateSynServiceImpl::WaitForServiceRegistered(TaskInfo *task) {
     // done
     break;
   }
-  // set redis 
+  // set redis
   auto redis_ptr = resource::Resource::Instance()->redis_resource();
   int index = 0;
   while (index++ < FLAGS_lock_times) {

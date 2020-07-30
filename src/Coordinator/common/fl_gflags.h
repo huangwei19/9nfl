@@ -21,4 +21,4 @@ DECLARE_string(redis_hostname);
 DECLARE_int32(redis_port);
 
 
-#endif 
+#endif

@@ -39,6 +39,6 @@ class Resource {
   std::shared_ptr<CoordinatorExecutor> coordinator_executor_;
 };
 
-}
+}  // namespace resource
 
-#endif 
+#endif

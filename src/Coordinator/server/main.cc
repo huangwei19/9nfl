@@ -1,11 +1,11 @@
+#include <grpcpp/grpcpp.h>
+#include <gflags/gflags.h>
 #include <iostream>
 #include <memory>
 #include <thread>
 #include <string>
-#include <grpcpp/grpcpp.h>
-#include "glog/logging.h"
-#include <gflags/gflags.h>
 
+#include "glog/logging.h"
 #include "proto/internal_service.grpc.pb.h"
 #include "proto/external_service.grpc.pb.h"
 #include "common/fl_gflags.h"

@@ -6,7 +6,8 @@
 namespace resource {
 
 bool CoordinatorExecutor::Init() {
-  channel_ = grpc::CreateChannel(FLAGS_proxy_domain, grpc::InsecureChannelCredentials());
+  channel_ = grpc::CreateChannel(
+    FLAGS_proxy_domain, grpc::InsecureChannelCredentials());
   if (!channel_) {
     LOG(ERROR) << "Init coordinator fail!";
     return false;
@@ -14,4 +15,4 @@ bool CoordinatorExecutor::Init() {
   return true;
 }
 
-}
+}  // namespace resource

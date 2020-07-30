@@ -1,6 +1,7 @@
+#include <stdlib.h>
 #include <map>
 #include <string>
-#include <stdlib.h>
+#include <vector>
 #include "services/common.h"
 #include "common/util.h"
 #include "common/fl_gflags.h"
@@ -14,14 +15,15 @@ namespace jdfl {
       LOG(ERROR) << "#item not exist in AppInfo."; \
       return false; \
     } \
-  } while(0) 
+  } while (0)
 #define CHECK_APPINFO_INTITEM(item) \
   do { \
     if (0 == app_info.conf_info().item()) { \
       LOG(ERROR) << "#item not exist in AppInfo."; \
       return false; \
     } \
-  } while(0) 
+  } while (0)
+
 bool CheckAppInfo(const AppInfo& app_info) {
   CHECK_APPINFO_STRITEM(model_uri);
   CHECK_APPINFO_STRITEM(data_source_name);
@@ -91,7 +93,7 @@ bool SetAppInfoToRedis(const ::jdfl::AppInfo& app_info) {
   return true;
 }
 
-bool GetAppInfoFromRedis(const std::string &app_id, 
+bool GetAppInfoFromRedis(const std::string &app_id,
                          ::jdfl::AppInfo *app_info) {
   assert(app_info);
   app_info->Clear();
@@ -109,8 +111,8 @@ bool GetAppInfoFromRedis(const std::string &app_id,
 }
 
 bool RegisterCoodinator() {
-  const static std::string scheduler_service("Scheduler");
-  const static std::string app_service("StateSynService");
+  static const std::string scheduler_service("Scheduler");
+  static const std::string app_service("StateSynService");
   auto redis_ptr = resource::Resource::Instance()->redis_resource();
   std::vector<std::string> keys = {scheduler_service,
                                    app_service};
@@ -189,10 +191,10 @@ int CheckK8S(const std::string& app_id) {
   } else {
     task_id.append("1");
   }
- 
   LOG(INFO) << "CheckK8S() app_id: " << app_id << " task_id: " << task_id;
   std::ostringstream os;
-  os << "python ../ResourceManager/check_job.py " << app_info.conf_info().role() << " " << task_id;
+  os << "python ../ResourceManager/check_job.py "
+     << app_info.conf_info().role() << " " << task_id;
   int status = system(os.str().c_str());
   if (WIFEXITED(status)) {
     return WEXITSTATUS(status);
@@ -212,7 +214,8 @@ bool StopK8S(const std::string& app_id) {
   }
 
   std::ostringstream os;
-  os << "python ../ResourceManager/delete_job.py " << app_info.conf_info().role() << " " << task_id;
+  os << "python ../ResourceManager/delete_job.py "
+     << app_info.conf_info().role() << " " << task_id;
   LOG(INFO) << "command: " << os.str();
   int res = system(os.str().c_str());
   if (0 != res) {
@@ -268,4 +271,4 @@ bool GetJsonConfFromRedis(const std::string& model_uri,
   return true;
 }
 
-}
+}  // namespace jdfl

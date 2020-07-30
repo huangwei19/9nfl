@@ -12,7 +12,8 @@ bool Resource::Init() {
   hiredis_executor_.reset(new HiRedisExecutor());
   // 1.5s
   struct timeval timeout = { 1, 500000 };
-  if (!hiredis_executor_->Init(FLAGS_redis_hostname, FLAGS_redis_port, timeout)) {
+  if (!hiredis_executor_->Init(
+    FLAGS_redis_hostname, FLAGS_redis_port, timeout)) {
     LOG(ERROR) << "redis init fail!";
     return false;
   }
@@ -36,4 +37,4 @@ bool Resource::InitInstance() {
   return true;
 }
 
-}
+}  // namespace resource

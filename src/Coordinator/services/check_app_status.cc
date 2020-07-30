@@ -14,9 +14,8 @@ void CheckAppStatus::DoCheckAppStatus() {
     app_id_arr.clear();
     std::this_thread::sleep_for(std::chrono::milliseconds(60 * 1000));
     do {
-      common::ReadLockGuard r_lock(rw_lock_);
+      common::ReadLockGuard r_lock(&rw_lock_);
       for (auto it = app_id_set_.begin(); it != app_id_set_.end(); ++it) {
-         
         ::fedlearner::common::Status reply;
         grpc::ClientContext context;
         ::fedlearner::common::AppSynRequest request;
@@ -30,7 +29,6 @@ void CheckAppStatus::DoCheckAppStatus() {
         LOG(INFO) << "CheckK8S(app_id) app_id: " << app_id;
         int res = ::jdfl::CheckK8S(app_id);
         LOG(INFO) << "res: " << res;
-        // TODO: set ctrl flag
         if (0 == res) {
           LOG(INFO) << "runing.";
           continue;
@@ -54,14 +52,17 @@ void CheckAppStatus::DoCheckAppStatus() {
 
         request.set_app_id(app_id);
         jdfl::InvokeModule invoke_module(app_info);
-        grpc::Status status = invoke_module.InvokeSyn(&context, request, &reply);
+        grpc::Status status = invoke_module.InvokeSyn(
+            &context, request, &reply);
         if (!status.ok()) {
           LOG(ERROR) << "fail to send app status. app_id: "
-                    << app_id << ", status: " << status.error_message();
+                     << app_id << ", status: "
+                     << status.error_message();
           return;
         }
         if (0 != reply.status()) {
-          LOG(ERROR) << "fail to send local uuid to remote." << reply.err_msg(); 
+          LOG(ERROR) << "fail to send local uuid to remote."
+                     << reply.err_msg();
         }
       }
     } while (false);
@@ -70,7 +71,7 @@ void CheckAppStatus::DoCheckAppStatus() {
 }
 
 void CheckAppStatus::DeleteAppId(std::vector<std::string> app_id_arr) {
-  common::WriteLockGuard w_lock(rw_lock_);
+  common::WriteLockGuard w_lock(&rw_lock_);
   for (uint32_t i = 0; i < app_id_arr.size(); ++i) {
     std::set<std::string>::iterator it = app_id_set_.find(app_id_arr[i]);
     if (it != app_id_set_.end()) {
@@ -80,11 +81,11 @@ void CheckAppStatus::DeleteAppId(std::vector<std::string> app_id_arr) {
 }
 
 void CheckAppStatus::AddAppId(const std::string& app_id) {
-  common::WriteLockGuard w_lock(rw_lock_);
+  common::WriteLockGuard w_lock(&rw_lock_);
   app_id_set_.insert(app_id);
 }
 
-void RunCheckAppStatus(){
+void RunCheckAppStatus() {
   CheckAppStatus::Instance()->DoCheckAppStatus();
 }
 

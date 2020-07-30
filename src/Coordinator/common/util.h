@@ -2,11 +2,11 @@
 #define COMMON_UTIL_H_
 
 #include <math.h>
+#include <pthread.h>
+#include <grpcpp/grpcpp.h>
 #include <string>
 #include <vector>
 #include <fstream>
-#include <pthread.h>
-#include <grpcpp/grpcpp.h>
 #include "glog/logging.h"
 #include "google/protobuf/util/json_util.h"
 
@@ -24,7 +24,7 @@ namespace common {
 
 inline void Trim(std::string *s) {
   if (s->empty()) {
-      return ;
+      return;
   }
   s->erase(0, s->find_first_not_of(" "));
   s->erase(s->find_last_not_of(" ") + 1);
@@ -42,8 +42,7 @@ inline void Split(const std::string& str,
     if (comma_pos != std::string::npos) {
       tmp = str.substr(pos_begin, comma_pos - pos_begin);
       pos_begin = comma_pos + sep.length();
-    }
-    else {
+    } else {
       tmp = str.substr(pos_begin);
       pos_begin = comma_pos;
     }
@@ -97,7 +96,7 @@ inline bool JsonStringToMessage(const std::string& json_str,
                << json_str << ". reason is : " << status.error_message();
     return false;
   }
-  return true;                              
+  return true;
 }
 
 inline bool MessageToJsonString(const google::protobuf::Message& message,
@@ -114,9 +113,10 @@ inline bool MessageToJsonString(const google::protobuf::Message& message,
   return true;
 }
 
-inline bool JsonFileToMessage(const std::string &file,
-                              google::protobuf::Message *message,
-                              const google::protobuf::util::JsonParseOptions &options) {
+inline bool JsonFileToMessage(
+    const std::string &file,
+    google::protobuf::Message *message,
+    const google::protobuf::util::JsonParseOptions &options) {
   assert(message);
   std::string json_str;
   if (!ReadJsonFile(file, &json_str)) {
@@ -142,32 +142,30 @@ inline bool JsonFileToMessage(const std::string &file,
 
 class ReadLockGuard {
  public:
-  ReadLockGuard(pthread_rwlock_t& lock)
-   :lock_(lock) {
-    pthread_rwlock_rdlock(&lock_);
+  explicit ReadLockGuard(pthread_rwlock_t *lock) : lock_(lock) {
+    pthread_rwlock_rdlock(lock_);
   }
 
   ~ReadLockGuard() {
-    pthread_rwlock_unlock(&lock_);
+    pthread_rwlock_unlock(lock_);
   }
 
  private:
-  pthread_rwlock_t& lock_;
+  pthread_rwlock_t *lock_ = nullptr;
 };
 
 class WriteLockGuard {
  public:
-  WriteLockGuard(pthread_rwlock_t& lock)
-   :lock_(lock) {
-    pthread_rwlock_wrlock(&lock_);
+  explicit WriteLockGuard(pthread_rwlock_t* lock) : lock_(lock) {
+    pthread_rwlock_wrlock(lock_);
   }
 
   ~WriteLockGuard() {
-    pthread_rwlock_unlock(&lock_);
+    pthread_rwlock_unlock(lock_);
   }
 
  private:
-  pthread_rwlock_t& lock_;
+  pthread_rwlock_t *lock_ = nullptr;
 };
 
 }  //  namespace common

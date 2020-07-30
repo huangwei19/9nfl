@@ -1,6 +1,7 @@
 #include <unistd.h>
-#include <thread>
 #include <sys/time.h>
+#include <vector>
+#include <thread>
 #include "services/invoke_module.h"
 #include "services/check_app_status.h"
 #include "services/internal_service_impl.h"
@@ -17,9 +18,10 @@ void SetSynRequest(const ::jdfl::AppInfo& app_info,
     const ::jdfl::PairInfo& pair_info = app_info.pair_infos(i);
     for (int32_t j = 0; j < pair_info.service_pair_size(); j++) {
       const ::jdfl::ServicePair& service_pair = pair_info.service_pair(j);
-      ::fedlearner::common::ServicePair* ptr_service_pair = request->add_service_pair();
+      auto ptr_service_pair = request->add_service_pair();
       ptr_service_pair->set_leader_uuid(service_pair.local_uuid());
-      ptr_service_pair->set_ctrl_flag(::fedlearner::common::ServiceCtrlFlag::SYN);
+      ptr_service_pair->set_ctrl_flag(
+        ::fedlearner::common::ServiceCtrlFlag::SYN);
     }
   }
 }
@@ -37,7 +39,7 @@ bool SendUUIDToFollower(const ::jdfl::AppInfo& app_info,
     return false;
   }
   if (0 != reply.status()) {
-    LOG(ERROR) << "fail to send local uuid to remote." << reply.err_msg(); 
+    LOG(ERROR) << "fail to send local uuid to remote." << reply.err_msg();
     return false;
   }
   return true;
@@ -74,7 +76,7 @@ grpc::Status StartApplicationImpl::StartApplication(
     LOG(ERROR) << "fail to start Application.";
     return status;
   }
- // pull up datawork and trainer.
+  // pull up datawork and trainer.
   if (!StartK8S(app_id)) {
     std::string err = "fail to start k8s. app_id: " + app_id +
                       " model_uri: " + model_uri;
@@ -85,7 +87,9 @@ grpc::Status StartApplicationImpl::StartApplication(
   do {
     int status = CheckRegisterNum(app_id, &app_info);
     if (status == -2) {
-      std::string err = "fail to get app_id from redis or finish or shutdown. app_id: " + app_id;
+      std::string err =
+        "fail to get app_id from redis or finish or shutdown. app_id: "
+        + app_id;
       return common::ReturnErrorStatus(err);
     }
     if (-1 == status) {
@@ -125,7 +129,7 @@ grpc::Status InternalServiceImpl::RegisterUUID(
       err.assign("set uuid fail! ip : ").append(request->ip_port());
       break;
     }
-    // second, internal pb info  
+    // second, internal pb info
     int index = 0;
     while (index++ < FLAGS_lock_times) {
       if (!redis_ptr->Lock(app_id, FLAGS_lock_timeout_s)) {
@@ -137,7 +141,7 @@ grpc::Status InternalServiceImpl::RegisterUUID(
     if (index >= FLAGS_lock_times) {
       err.assign("lock fail for many times! app_id : ").append(app_id);
       break;
-    } 
+    }
     has_locked = true;
     ::jdfl::AppInfo app_info;
     if (!GetAppInfoFromRedis(app_id, &app_info)) {
@@ -146,14 +150,14 @@ grpc::Status InternalServiceImpl::RegisterUUID(
     }
     // check service, if has this uuid, replace (for restart ip)
     if (!ReplaceUUIDForNewIp(*request, &app_info)) {
-      // not in redis 
+      // not in redis
       auto pair_info = app_info.add_pair_infos();
       pair_info->set_ip_port(request->ip_port());
       for (const auto &key : request->uuid()) {
         pair_info->add_service_pair()->set_local_uuid(key);
       }
     }
-    // set redis 
+    // set redis
     if (!SetAppInfoToRedis(app_info)) {
       err.assign("set app info fail! app_id : ").append(app_id);
       break;

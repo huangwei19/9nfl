@@ -22,5 +22,5 @@ class BaseExecutor {
   std::shared_ptr<grpc::Channel> channel_;
 };
 
-}
-#endif 
+}  // namespace resource
+#endif
