@@ -16,24 +16,17 @@ from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_m
 
 from DataJoin.utils.base import get_host_ip
 import requests
+from DataJoin.config import HEADERS, HTTP_SERVICE_PORT
 
 host_ip = get_host_ip()
-
 mode = os.environ.get("MODE", None)
 
 
 def save_data_block_info(meta_path, block_path):
-    HEADERS = {
-        'Content-Type': 'application/json',
-    }
     action = getattr(requests, 'POST'.lower(), None)
-
     data = {'dfs_data_block_meta': meta_path, 'dfs_data_block': block_path}
-
-    url = "http://{0}:9380/v1/parse/data/block/meta".format(str(host_ip))
-
+    url = "http://{0}:{1}/v1/parse/data/block/meta".format(str(host_ip), HTTP_SERVICE_PORT)
     response = action(url=url, json=data, headers=HEADERS)
-
     res = response.json()
     logging.info('request result is :%s' % res)
 
@@ -108,7 +101,6 @@ class DataBlockMaker(object):
             )
             gfile.Rename(self._tmp_file_path, data_block_path, True)
             meta_path = self._make_data_block_meta()
-            # todo: request save data block info
             if mode == "distribute":
                 save_data_block_info(meta_path, data_block_path)
             return self._data_block_meta
@@ -195,16 +187,16 @@ class DataBlockManager(object):
         if self._saved_data_block_index is None:
             assert self._saving_data_block_index is None, \
                 "no data block index is saving when no saved index"
-            left_index = 0
-            right_index = 1 << 63
-            while left_index <= right_index:
-                index = (left_index + right_index) // 2
+            low_index = 0
+            high_index = 1 << 63
+            while low_index <= high_index:
+                index = (low_index + high_index) // 2
                 file_name = self._acquire_data_block_meta_path(index)
                 if gfile.Exists(file_name):
-                    left_index = index + 1
+                    low_index = index + 1
                 else:
-                    right_index = index - 1
-            self._saved_data_block_index = right_index
+                    high_index = index - 1
+            self._saved_data_block_index = high_index
         elif self._saving_data_block_index is not None:
             assert self._saving_data_block_index == self._saved_data_block_index + 1, \
                 "the saving index should be next of saved index " \

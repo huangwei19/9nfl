@@ -20,6 +20,12 @@ enum FLRole {
   Follower = 1;
 }
 
+message Data {
+    string key = 1;
+    bytes value = 2;
+    string operator = 3;
+}
+
 enum DataSourceState {
   UnKnown = 0;
   Init = 1;
@@ -29,12 +35,21 @@ enum DataSourceState {
   Failed = 5;
 }
 
+message HeaderData {
+    string operator = 1;
+}
+
 message DataSourceMeta {
   string name = 1;
   uint32 partition_num = 2;
   int64 start_time = 3;
   int64 end_time = 4;
   float negative_sampling_rate = 5;
+}
+
+message Packet {
+    HeaderData header = 1;
+    Data body = 2;
 }
 
 message DataSource {
@@ -46,4 +61,9 @@ message DataSource {
   FLRole role = 6;
   DataSourceState state = 7;
 }
+
+service ProxyDataService {
+    rpc UnaryCall (Packet) returns (Packet);
+}
+
 

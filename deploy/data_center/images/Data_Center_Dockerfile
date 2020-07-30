@@ -12,7 +12,6 @@ RUN echo "/workspace/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-pack
     pip install peewee==3.9.3  && \
     pip install PyMySQL==0.9.3  && \
     pip install Flask-SocketIO==3.0.2  && \
-    pip install apsw==3.9.2.post1  && \
     pip install cachetools  && \
     #pip uninstall werkzeug -y && \
     pip install Werkzeug==0.15.3 

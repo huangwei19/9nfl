@@ -4,31 +4,14 @@ from DataJoin.common import data_center_service_pb2_grpc
 from concurrent import futures
 import time
 import json
-from DataJoin.utils.api import wrap_proxy_data_api
+from DataJoin.utils.api import wrap_data_transfer_api
 import logging
-import os
 from DataJoin.data_center.counter import Counter
 from DataJoin.data_center.data_block_manager import DataBlockMetaManage, ReidsHandle
 import traceback
 import sys
-from DataJoin.settings import api_version, DATA_CENTER_PORT
-import queue
-from tensorflow.compat.v1 import gfile
-from os import path
+from DataJoin.config import api_version, DATA_CENTER_PORT
 from DataJoin.utils.base import get_host_ip
-
-'''
-train_data_start = time_str_to_timestamp(str(os.environ.get("train_data_start", '')))
-train_data_end = time_str_to_timestamp(str(os.environ.get("train_data_end", '')))
-train_data_start = 150003072
-train_data_end = 150005119
-
-train_data_start = int(
-    str(os.environ.get("train_data_start", 300000000)).replace("-", "").replace(":", "").replace(" ", ""))
-train_data_end = int(str(os.environ.get("train_data_end", 30000000)).replace("-", "").replace(":", "").replace(" ", ""))
-data_num_epoch = os.environ.get("data_num_epoch", 1)
-data_source_name = os.environ.get("data_source_name", "jd_bd_dsp_data_source")
-'''
 
 
 class DataBlockMeta(object):
@@ -73,7 +56,6 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
         data_block_dict = None
         block_id = request.block_id
         endpoint = "/{0}/data/query/data/block/meta".format(api_version)
-        # parse received data from client request
         try:
 
             if not block_id:
@@ -90,7 +72,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                 redis_handle = ReidsHandle()
                 if num == 1:
                     logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
-                    data_block_result = wrap_proxy_data_api("POST", endpoint, json_body)
+                    data_block_result = wrap_data_transfer_api("POST", endpoint, json_body)
                     data_block_check_null_status = DataBlockMetaManage().check_result_null(**data_block_result)
                     if data_block_check_null_status:
                         return data_block_check_null_status
@@ -127,7 +109,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
             else:
                 json_body = {"block_id": block_id}
                 logging.info('server received json_body :%s from client QueryDataBlock ' % json_body)
-                data_block_result = wrap_proxy_data_api("POST", endpoint, json_body)
+                data_block_result = wrap_data_transfer_api("POST", endpoint, json_body)
                 data_block_check_null_status = DataBlockMetaManage().check_result_null(**data_block_result)
                 if data_block_check_null_status:
                     return data_block_check_null_status
@@ -160,9 +142,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
 class StartDataCenterServer(object):
     @staticmethod
     def run_server():
-        # 启动 rpc 服务
         import argparse
-
         parser = argparse.ArgumentParser()
         parser.add_argument('train_data_start', type=int,
                             help='train start time of distribute data center service')

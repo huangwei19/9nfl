@@ -1,5 +1,5 @@
 import os
-from DataJoin.settings import REDIS, db_index
+from DataJoin.config import REDIS, db_index
 import redis
 import logging
 import traceback
@@ -35,10 +35,8 @@ class RedisManage(object):
             redis_conn = self.acquire_redis_conn()
             value = redis_conn.get(key)
             if value:
-                logging.info('get from redis, {}:{}'.format(key, value))
                 return True, value
             else:
-                logging.info('get from redis return nul, key={}'.format(key))
                 return False, value
         except Exception as e:
             logging.error('get value from redis failed')
@@ -49,7 +47,6 @@ class RedisManage(object):
         try:
             redis_conn = self.acquire_redis_conn()
             redis_conn.setex(key, expire_seconds, value)
-            logging.info('set {}:{} {} into redis.'.format(key, value, expire_seconds))
         except Exception as e:
             logging.info('set {}:{} {} into redis failed.'.format(key, value, expire_seconds))
             traceback.print_exc(file=sys.stdout)
@@ -58,7 +55,6 @@ class RedisManage(object):
         try:
             redis_conn = self.acquire_redis_conn()
             redis_conn.delete(*key)
-            logging.info('del {} from redis.'.format(*key))
         except Exception as e:
             logging.info('del {} from redis failed.'.format(*key))
             traceback.print_exc(file=sys.stdout)
