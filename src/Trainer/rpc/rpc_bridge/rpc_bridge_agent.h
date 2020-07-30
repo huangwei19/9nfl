@@ -1,19 +1,19 @@
 
-#ifndef JDFL_RPC_BRIDGE_AGENT_H_
-#define JDFL_RPC_BRIDGE_AGENT_H_
+#ifndef TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_H_
+#define TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_H_
 
-#include <unordered_map>
-#include <iostream>
-#include <string>
-#include <sstream>
 #include <deque>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <unordered_map>
 
 #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
 
 #include "tensorflow/contrib/jdfl/rpc/proto/bridge_agent.pb.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/bridge_interface.h"
-#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent_service.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/fl_utils.h"
+#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent_service.h"
 
 using namespace ::tensorflow;
 
@@ -25,7 +25,7 @@ namespace jdfl {
 
 extern const char* const FL_Key_Prefetch;
 extern const char* const FL_Key_TrainStart;
-//extern const char* const FL_Key_TrainStartCommit;
+// extern const char* const FL_Key_TrainStartCommit;
 extern const char* const FL_Key_StepCommit;
 extern const char* const FL_Key_DataMessage;
 extern const char* const FL_Key_Connect;
@@ -36,24 +36,28 @@ class RpcBridgeRecvCache;
 class RpcBridgeMgr;
 
 BridgeInterface* NewRpcBridgeAgent(SharedGrpcChannelPtr channel,
-                     ::grpc::CompletionQueue* completion_queue, 
-                     RpcBridgeRecvCache* service_cache, RpcBridgeMgr* bridge_mgr);
+                                   ::grpc::CompletionQueue* completion_queue,
+                                   RpcBridgeRecvCache* service_cache,
+                                   RpcBridgeMgr* bridge_mgr);
 
 class RpcBridgeRecvCache {
  public:
   using RecvFinishCB = std::function<void(const Status& status)>;
 
-  bool QueryResult(int64 request_id, const std::string& slot_key, const std::string& content_key, 
-                   TrainerWorkerMessage* result, int64 timeout_in_us, RecvFinishCB cb);
-  bool QueryReadyFile(int64 request_id, const std::string& slot_key, std::string& result,
-                   bool* end_of_files, int64 timeout_in_us, RecvFinishCB cb);
-  bool WaitPeerReady(int64 request_id, const std::string& slot_key, ConnectRequest* peer, 
-                    int64 timeout_in_us, RecvFinishCB cb);
+  bool QueryResult(int64 request_id, const std::string& slot_key,
+                   const std::string& content_key, TrainerWorkerMessage* result,
+                   int64 timeout_in_us, RecvFinishCB cb);
+  bool QueryReadyFile(int64 request_id, const std::string& slot_key,
+                      std::string* result, bool* end_of_files,
+                      int64 timeout_in_us, RecvFinishCB cb);
+  bool WaitPeerReady(int64 request_id, const std::string& slot_key,
+                     ConnectRequest* peer, int64 timeout_in_us,
+                     RecvFinishCB cb);
 
   Status OnReceived(const TrainerWorkerMessage* recvdata);
   Status OnReceived(const std::string& fname, bool end_of_files);
   Status OnReceived(const ConnectRequest* peerdata);
-  
+
   void EraseRequestId(int64 request_id, const std::string& slot_key);
   void CleanEntriesForKey(const std::string& slot_key);
 
@@ -63,18 +67,16 @@ class RpcBridgeRecvCache {
     WAIT = 1,
     ACTIVE = 2,
   };
-  
+
   struct RecvCacheEntry {
     State state = State::IDLE;
     int64 step_id = -1;
-    //Tensor tensor;
+    // Tensor tensor;
     TrainerWorkerMessage* rptr{nullptr};
-    TrainerWorkerMessage  rdata;
+    TrainerWorkerMessage rdata;
     Status recv_status;
 
-    void FinishRecv(RecvFinishCB& cb) const {
-      cb(recv_status);
-    }
+    void FinishRecv(RecvFinishCB& cb) const { cb(recv_status); }
     RecvFinishCB callback_;
   };
 
@@ -82,34 +84,33 @@ class RpcBridgeRecvCache {
     State state = State::IDLE;
     int64 step_id = -1;
     int64 recv_count = 0;
-    
+
     RecvFinishCB callback_;
-    
+
     std::deque<string> q_files;
   };
-  
+
   struct PeerInfo {
     State state = State::IDLE;
-    
+
     RecvFinishCB callback_;
-    
+
     bool peer_connected_{false};
-    ConnectRequest  rdata;
+    ConnectRequest rdata;
   };
-  
+
   mutex mu_;
-  std::unordered_map<std::string, \
-        std::unordered_map<std::string, RecvCacheEntry>> recv_cache_;
+  std::unordered_map<std::string,
+                     std::unordered_map<std::string, RecvCacheEntry>>
+      recv_cache_;
   uint32_t logcnt_{0};
-  
+
   mutex q_mu_;
   TrainFilesCache files_ready_cache_;
-  
+
   mutex connect_mu_;
   PeerInfo peer_info_;
-
 };
+}  // namespace jdfl
 
-}
-
-#endif 
+#endif  // TENSORFLOW_CONTRIB_JDFL_RPC_RPC_BRIDGE_RPC_BRIDGE_AGENT_H_

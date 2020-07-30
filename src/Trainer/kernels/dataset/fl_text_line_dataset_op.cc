@@ -1,6 +1,13 @@
 
+#include <utility>
+#include <vector>
+#include <string>
+#include <memory>
+
 #include "tensorflow/core/common_runtime/metrics.h"
+#include "tensorflow/core/framework/common_shape_fns.h"
 #include "tensorflow/core/framework/partial_tensor_shape.h"
+#include "tensorflow/core/framework/shape_inference.h"
 #include "tensorflow/core/framework/tensor.h"
 #include "tensorflow/core/kernels/data/name_utils.h"
 #include "tensorflow/core/lib/io/buffered_inputstream.h"
@@ -8,8 +15,6 @@
 #include "tensorflow/core/lib/io/random_inputstream.h"
 #include "tensorflow/core/lib/io/zlib_compression_options.h"
 #include "tensorflow/core/lib/io/zlib_inputstream.h"
-#include "tensorflow/core/framework/shape_inference.h"
-#include "tensorflow/core/framework/common_shape_fns.h"
 
 #include "tensorflow/contrib/jdfl/kernels/dataset/fl_text_line_dataset_op.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
@@ -38,8 +43,8 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
         use_compression_(!compression_type.empty()),
         options_(options),
         input_(input) {
-          input_->Ref();
-        }
+    input_->Ref();
+  }
 
   std::unique_ptr<IteratorBase> MakeIteratorInternal(
       const string& prefix) const override {
@@ -97,15 +102,14 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
                            bool* end_of_sequence) override {
       mutex_lock l(mu_);
       do {
-        
         if (current_file_.empty()) {
-          GetNextFileInternal(ctx, current_file_, end_of_sequence);
+          GetNextFileInternal(ctx, &current_file_, end_of_sequence);
           if (*end_of_sequence) {
             input_impl_.reset();
             return Status::OK();
           }
         }
-        
+
         // We are currently processing a file, so try to read the next line.
         if (buffered_input_stream_) {
           string line_contents;
@@ -131,11 +135,12 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
 
           // We have reached the end of the current file, so maybe move on to
           // next file.
-          LOG(INFO) << "End of file : " << current_file_ << ", move to next file";
+          LOG(INFO) << "End of file : " << current_file_
+                    << ", move to next file";
           ResetStreamsLockedWithCleanup(current_file_);
           current_file_.clear();
-          GetNextFileInternal(ctx, current_file_, end_of_sequence);
-          
+          GetNextFileInternal(ctx, &current_file_, end_of_sequence);
+
           if (*end_of_sequence) {
             input_impl_.reset();
             LOG(ERROR) << "end_of_sequence";
@@ -162,38 +167,36 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
                            IteratorStateReader* reader) override {
       mutex_lock l(mu_);
       return errors::Unimplemented(
-            "RestoreInternal is currently not supported");
+          "RestoreInternal is currently not supported");
     }
 
    private:
-   
-    Status GetNextFileInternal(IteratorContext* ctx,
-                         std::string& out_fname,
-                         bool* end_of_sequence) {
+    Status GetNextFileInternal(IteratorContext* ctx, std::string* out_fname,
+                               bool* end_of_sequence) {
       if (!input_impl_) {
         LOG(ERROR) << "input_impl_ invalid.";
         *end_of_sequence = true;
         return Status::OK();
       }
-      
+
       do {
         std::vector<Tensor> fname_element;
         TF_RETURN_IF_ERROR(
-           input_impl_->GetNext(ctx, &fname_element, end_of_sequence));
+            input_impl_->GetNext(ctx, &fname_element, end_of_sequence));
         if (*end_of_sequence) {
           input_impl_.reset();
           return Status::OK();
         }
-        out_fname = fname_element[0].scalar<string>()();
-        LOG(INFO) << "Get Next File: " << out_fname;
+        *out_fname = fname_element[0].scalar<string>()();
+        LOG(INFO) << "Get Next File: " << *out_fname;
         return Status::OK();
       } while (true);
-      
+
       *end_of_sequence = true;
       return Status::OK();
     }
-    
-    Status SetupStreamsLocked(Env* env, const std::string& fname)  {
+
+    Status SetupStreamsLocked(Env* env, const std::string& fname) {
       LOG(INFO) << "Setup File Stream for: [" << fname << "]";
       TF_RETURN_IF_ERROR(env->NewRandomAccessFile(fname, &file_));
       input_stream_ =
@@ -212,7 +215,7 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
       }
       return Status::OK();
     }
-    
+
     // Resets all reader streams.
     void ResetStreamsLocked() EXCLUSIVE_LOCKS_REQUIRED(mu_) {
       input_stream_.reset();
@@ -220,9 +223,9 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
       buffered_input_stream_.reset();
       file_.reset();
     }
-    
+
     // Resets all reader streams with cleanup.
-    void ResetStreamsLockedWithCleanup(const std::string fname)  {
+    void ResetStreamsLockedWithCleanup(const std::string fname) {
       input_stream_.reset();
       zlib_input_stream_.reset();
       buffered_input_stream_.reset();
@@ -238,7 +241,8 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
     std::unique_ptr<io::ZlibInputStream> zlib_input_stream_ GUARDED_BY(mu_);
     std::unique_ptr<io::BufferedInputStream> buffered_input_stream_
         GUARDED_BY(mu_);
-    std::unique_ptr<RandomAccessFile> file_ GUARDED_BY(mu_);  // must outlive input_stream_
+    std::unique_ptr<RandomAccessFile> file_
+        GUARDED_BY(mu_);  // must outlive input_stream_
   };
 
   const tstring compression_type_;
@@ -248,11 +252,10 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
 };
 
 FlTextLineDatasetOp::FlTextLineDatasetOp(OpKernelConstruction* ctx)
-    : UnaryDatasetOpKernel(ctx) {
-}
+    : UnaryDatasetOpKernel(ctx) {}
 
 void FlTextLineDatasetOp::MakeDataset(OpKernelContext* ctx, DatasetBase* input,
-                                    DatasetBase** output) {
+                                      DatasetBase** output) {
   tstring compression_type;
   OP_REQUIRES_OK(ctx, ParseScalarArgument<tstring>(ctx, kCompressionType,
                                                    &compression_type));
@@ -280,8 +283,7 @@ void FlTextLineDatasetOp::MakeDataset(OpKernelContext* ctx, DatasetBase* input,
     zlib_compression_options.input_buffer_size = buffer_size;
   }
 
-  *output = new Dataset(ctx, compression_type,
-                        zlib_compression_options, input);
+  *output = new Dataset(ctx, compression_type, zlib_compression_options, input);
 }
 
 namespace {
@@ -290,4 +292,3 @@ REGISTER_KERNEL_BUILDER(Name("FlTextLineDataset").Device(DEVICE_CPU),
 }  // namespace
 
 }  // namespace jdfl
-

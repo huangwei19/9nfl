@@ -3,13 +3,12 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 #include "grpcpp/alarm.h"
 #include "grpcpp/server_builder.h"
-//#include "tensorflow/core/common_runtime/copy_tensor.h"
 #include "tensorflow/core/distributed_runtime/rpc/async_service_interface.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_call.h"
-//#include "tensorflow/core/distributed_runtime/rpc/grpc_tensor_coding.h"
 #include "tensorflow/core/distributed_runtime/rpc/grpc_util.h"
 #include "tensorflow/core/framework/cancellation.h"
 #include "tensorflow/core/framework/tensor.h"
@@ -22,9 +21,9 @@
 #include "tensorflow/core/platform/mutex.h"
 #include "tensorflow/core/platform/tracing.h"
 
-#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
-#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent_service.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/fl_utils.h"
+#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent_service.h"
+#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
 
 namespace jdfl {
 
@@ -38,11 +37,9 @@ static int64 _RpcDataLoadNextId = 0;
 class RpcBridgeAgentService : public AsyncServiceInterface {
  public:
   RpcBridgeAgentService(::grpc::ServerBuilder* builder,
-                    RpcBridgeRecvCache* service_cache,
-                    RpcBridgeMgr* bridge_mgr )
-      : cache_(service_cache), 
-        bridge_mgr_(bridge_mgr), 
-        is_shutdown_(false) {
+                        RpcBridgeRecvCache* service_cache,
+                        RpcBridgeMgr* bridge_mgr)
+      : cache_(service_cache), bridge_mgr_(bridge_mgr), is_shutdown_(false) {
     builder->RegisterService(&agent_service_);
     tcq_ = builder->AddCompletionQueue();
     dcq_ = builder->AddCompletionQueue();
@@ -65,56 +62,56 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
 
     LOG(INFO) << "RpcBridgeAgentService Shutdown() finish.";
   }
-  
-  ~RpcBridgeAgentService() {
-    LOG(INFO) << "~RpcBridgeAgentService() done.";
-  }
-  
-#define ENQUEUE_REQUEST_METHOD(method, request_msg, response_msg, cq, supports_cancel)  \
-  do {                                                                                  \
-    mutex_lock l(service_shutdown_mu_);                                                 \
-    if (!is_shutdown_) {                                                                \
-      Call<RpcBridgeAgentService, TrainerWorkerService::AsyncService,                   \
-           request_msg, response_msg>::                                                 \
-          EnqueueRequestForMethod(                                                      \
-              &agent_service_, cq.get(),                                                \
-              static_cast<int>(RpcBridgeAgentMethod::k##method),                        \
-              &RpcBridgeAgentService::method##Handler, (supports_cancel));              \
-    }                                                                                   \
+
+  ~RpcBridgeAgentService() { LOG(INFO) << "~RpcBridgeAgentService() done."; }
+
+#define ENQUEUE_REQUEST_METHOD(method, request_msg, response_msg, cq,      \
+                               supports_cancel)                            \
+  do {                                                                     \
+    mutex_lock l(service_shutdown_mu_);                                    \
+    if (!is_shutdown_) {                                                   \
+      Call<RpcBridgeAgentService, TrainerWorkerService::AsyncService,      \
+           request_msg, response_msg>::                                    \
+          EnqueueRequestForMethod(                                         \
+              &agent_service_, cq.get(),                                   \
+              static_cast<int>(RpcBridgeAgentMethod::k##method),           \
+              &RpcBridgeAgentService::method##Handler, (supports_cancel)); \
+    }                                                                      \
   } while (0)
 
-
-#define ENQUEUE_REQUEST(method, request_msg, response_msg, cq, supports_cancel)         \
-  do {                                                                                  \
-    mutex_lock l(service_shutdown_mu_);                                                 \
-    if (!is_shutdown_) {                                                                \
-      Call<RpcBridgeAgentService, TrainerWorkerService::AsyncService,                   \
-           request_msg, response_msg>::                                                 \
-          EnqueueRequest(                                                               \
-              &agent_service_, cq.get(),                                                \
-              &TrainerWorkerService::AsyncService::Request##method,                     \
-              &RpcBridgeAgentService::method##Handler, (supports_cancel));              \
-    }                                                                                   \
+#define ENQUEUE_REQUEST(method, request_msg, response_msg, cq,                 \
+                        supports_cancel)                                       \
+  do {                                                                         \
+    mutex_lock l(service_shutdown_mu_);                                        \
+    if (!is_shutdown_) {                                                       \
+      Call<RpcBridgeAgentService, TrainerWorkerService::AsyncService,          \
+           request_msg, response_msg>::                                        \
+          EnqueueRequest(&agent_service_, cq.get(),                            \
+                         &TrainerWorkerService::AsyncService::Request##method, \
+                         &RpcBridgeAgentService::method##Handler,              \
+                         (supports_cancel));                                   \
+    }                                                                          \
   } while (0)
-
 
   void HandleRPCsTcq() {
     LOG(INFO) << "HandleRPCsTcq Start ...";
     for (int i = 0; i < 32; ++i) {
-      ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse, tcq_, false);
+      ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse,
+                      tcq_, false);
     }
-    ENQUEUE_REQUEST(Connect,  ConnectRequest, ConnectResponse, tcq_, false);
-    ENQUEUE_REQUEST(Heartbeat, HeartbeatRequest, HeartbeatResponse, tcq_, false);
- 
+    ENQUEUE_REQUEST(Connect, ConnectRequest, ConnectResponse, tcq_, false);
+    ENQUEUE_REQUEST(Heartbeat, HeartbeatRequest, HeartbeatResponse, tcq_,
+                    false);
+
     // Request a StreamingEnqueue call.
-    ServerBidirectionalStreamingCall<RpcBridgeAgentService,
-                                   TrainerWorkerService::AsyncService,
-                                   TrainerWorkerMessage, TrainerWorkerResponse>::
-      EnqueueRequest(
-        &agent_service_, tcq_.get(),
-        &TrainerWorkerService::AsyncService::RequestStreamTransmit,
-        &RpcBridgeAgentService::StreamTransmitHandler);
-    
+    ServerBidirectionalStreamingCall<
+        RpcBridgeAgentService, TrainerWorkerService::AsyncService,
+        TrainerWorkerMessage, TrainerWorkerResponse>::
+        EnqueueRequest(
+            &agent_service_, tcq_.get(),
+            &TrainerWorkerService::AsyncService::RequestStreamTransmit,
+            &RpcBridgeAgentService::StreamTransmitHandler);
+
     void* tag;
     bool ok;
 
@@ -134,9 +131,10 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
   void HandleRPCsDcq() {
     LOG(INFO) << "HandleRPCsDcq Start ...";
     for (int i = 0; i < 16; ++i) {
-      ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_, false);
+      ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_,
+                      false);
     }
-    
+
     void* tag;
     bool ok;
 
@@ -154,18 +152,18 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
   }
 
   void HandleRPCsLoop() {
-    thread_t_.reset(
-      Env::Default()->StartThread(ThreadOptions(), "rpc_bridge_agent_service", 
-                                  [this]() { HandleRPCsTcq(); }));
-    
-    thread_d_.reset(
-      Env::Default()->StartThread(ThreadOptions(), "rpc_bridge_data_load_service",
-                                  [this]() { HandleRPCsDcq(); }));
+    thread_t_.reset(Env::Default()->StartThread(ThreadOptions(),
+                                                "rpc_bridge_agent_service",
+                                                [this]() { HandleRPCsTcq(); }));
+
+    thread_d_.reset(Env::Default()->StartThread(ThreadOptions(),
+                                                "rpc_bridge_data_load_service",
+                                                [this]() { HandleRPCsDcq(); }));
   }
 
  private:
   void Schedule(std::function<void()> f) {
-    //Env::Default()->Schedule(std::move(f));
+    // Env::Default()->Schedule(std::move(f));
     LOG(FATAL) << "Invalid, NOT implemented";
   }
 
@@ -179,55 +177,65 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
     if (FlDebugging()) {
       LOG(INFO) << "TransmitHandler Event... " << _RpcUnaryCallEventCnt++;
     }
-    
+
     if (!LinkUp()) {
-      LOG(ERROR) << "Drop Received:" << " seq num " << call->request.seq_num() \
-          << ", msg_type " << call->request.msg_case()
-          << " , link not ready, probably because not recv peer connect request.";
+      LOG(ERROR) << "Drop Received:"
+                 << " seq num " << call->request.seq_num() << ", msg_type "
+                 << call->request.msg_case()
+                 << " , link not ready, probably because not recv peer connect "
+                    "request.";
       call->SendResponse(::grpc::Status::CANCELLED);
-      ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse, tcq_, false);
+      ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse,
+                      tcq_, false);
       return;
     }
-    
+
     bridge_mgr_->StateMove(RpcBridgeMgr::BrState::STARTED);
-    
-    if (call->request.seq_num() \
-          == bridge_mgr_->StepStats()->CurrentRecvSeqNum()) {
+
+    if (call->request.seq_num() ==
+        bridge_mgr_->StepStats()->CurrentRecvSeqNum()) {
       Status s = cache_->OnReceived(&call->request);
       if (s.ok()) {
         call->response.mutable_status()->set_result_code(ResultCode::SUCCESS);
         call->response.mutable_status()->clear_error_message();
-        call->response.set_next_seq_num(bridge_mgr_->StepStats()->NextRecvSeqNum());
+        call->response.set_next_seq_num(
+            bridge_mgr_->StepStats()->NextRecvSeqNum());
       } else {
-        call->response.mutable_status()->set_result_code(ResultCode::UNKNOWN_ERROR);
+        call->response.mutable_status()->set_result_code(
+            ResultCode::UNKNOWN_ERROR);
         call->response.mutable_status()->set_error_message(s.error_message());
-        call->response.set_next_seq_num(bridge_mgr_->StepStats()->CurrentRecvSeqNum());
+        call->response.set_next_seq_num(
+            bridge_mgr_->StepStats()->CurrentRecvSeqNum());
       }
       if (FlDebugging()) {
-        LOG(INFO) << "Resp msg_type " << call->request.msg_case() << ", next seq num: " \
-              << bridge_mgr_->StepStats()->CurrentRecvSeqNum();
+        LOG(INFO) << "Resp msg_type " << call->request.msg_case()
+                  << ", next seq num: "
+                  << bridge_mgr_->StepStats()->CurrentRecvSeqNum();
       }
     } else {
-      
-      ResultCode ret_code 
-          = ( call->request.seq_num() > bridge_mgr_->StepStats()->CurrentRecvSeqNum() ) 
-            ? (ResultCode::MESSAGE_MISSING) : (ResultCode::MESSAGE_DUPLICATED);
-      
-      LOG(ERROR) << "Drop Received " << "seq num " << call->request.seq_num() \
-          << ", msg_type " << call->request.msg_case() \
-          << ", want seq num " << bridge_mgr_->StepStats()->CurrentRecvSeqNum()\
-          << ", ack err_code " << ret_code;
-          
+      ResultCode ret_code = (call->request.seq_num() >
+                             bridge_mgr_->StepStats()->CurrentRecvSeqNum())
+                                ? (ResultCode::MESSAGE_MISSING)
+                                : (ResultCode::MESSAGE_DUPLICATED);
+
+      LOG(ERROR) << "Drop Received "
+                 << "seq num " << call->request.seq_num() << ", msg_type "
+                 << call->request.msg_case() << ", want seq num "
+                 << bridge_mgr_->StepStats()->CurrentRecvSeqNum()
+                 << ", ack err_code " << ret_code;
+
       call->response.mutable_status()->set_result_code(ret_code);
-      //call->response.mutable_status()->set_error_message("reject");
+      // call->response.mutable_status()->set_error_message("reject");
       call->response.mutable_status()->clear_error_message();
-      call->response.set_next_seq_num(bridge_mgr_->StepStats()->CurrentRecvSeqNum());
+      call->response.set_next_seq_num(
+          bridge_mgr_->StepStats()->CurrentRecvSeqNum());
     }
-    
+
     call->SendResponse(::grpc::Status::OK);
-    ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse, tcq_, false);
+    ENQUEUE_REQUEST(Transmit, TrainerWorkerMessage, TrainerWorkerResponse, tcq_,
+                    false);
   }
-  
+
   template <class RequestMessage, class ResponseMessage>
   using StreamingCall =
       ServerBidirectionalStreamingCall<RpcBridgeAgentService,
@@ -236,88 +244,99 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
 
   void StreamTransmitHandler(
       StreamingCall<TrainerWorkerMessage, TrainerWorkerResponse>* call) {
-    
     if (FlDebugging()) {
-      LOG(INFO) << "StreamTransmitHandler Event ... " << _RpcStreamingCallEventCnt++;
+      LOG(INFO) << "StreamTransmitHandler Event ... "
+                << _RpcStreamingCallEventCnt++;
     }
-    
+
     if (!LinkUp()) {
-      LOG(ERROR) << "Drop Received:" << " seq num " << call->request().seq_num() \
-          << ", msg_type " << call->request().msg_case() 
-          << " , link not ready, probably because not recv peer connect request.";
+      LOG(ERROR) << "Drop Received:"
+                 << " seq num " << call->request().seq_num() << ", msg_type "
+                 << call->request().msg_case()
+                 << " , link not ready, probably because not recv peer connect "
+                    "request.";
       call->Finish(::grpc::Status::CANCELLED);
       return;
     }
-    
+
     bridge_mgr_->StateMove(RpcBridgeMgr::BrState::STARTED);
-    
-    if (call->request().seq_num() \
-          == bridge_mgr_->StepStats()->CurrentRecvSeqNum()) {
+
+    if (call->request().seq_num() ==
+        bridge_mgr_->StepStats()->CurrentRecvSeqNum()) {
       Status s = cache_->OnReceived(&call->request());
       if (s.ok()) {
-        call->mutable_response()->mutable_status()->set_result_code(ResultCode::SUCCESS);
+        call->mutable_response()->mutable_status()->set_result_code(
+            ResultCode::SUCCESS);
         call->mutable_response()->mutable_status()->clear_error_message();
-        call->mutable_response()->set_next_seq_num(bridge_mgr_->StepStats()->NextRecvSeqNum());
+        call->mutable_response()->set_next_seq_num(
+            bridge_mgr_->StepStats()->NextRecvSeqNum());
       } else {
-        call->mutable_response()->mutable_status()->set_result_code(ResultCode::UNKNOWN_ERROR);
-        call->mutable_response()->mutable_status()->set_error_message(s.error_message());
-        call->mutable_response()->set_next_seq_num(bridge_mgr_->StepStats()->CurrentRecvSeqNum());
+        call->mutable_response()->mutable_status()->set_result_code(
+            ResultCode::UNKNOWN_ERROR);
+        call->mutable_response()->mutable_status()->set_error_message(
+            s.error_message());
+        call->mutable_response()->set_next_seq_num(
+            bridge_mgr_->StepStats()->CurrentRecvSeqNum());
       }
       if (FlDebugging()) {
-        LOG(INFO) << "Resp msg_type " << call->request().msg_case() << ", next seq num: " \
-              << bridge_mgr_->StepStats()->CurrentRecvSeqNum();
+        LOG(INFO) << "Resp msg_type " << call->request().msg_case()
+                  << ", next seq num: "
+                  << bridge_mgr_->StepStats()->CurrentRecvSeqNum();
       }
     } else {
-      
-      ResultCode ret_code 
-          = ( call->request().seq_num() > bridge_mgr_->StepStats()->CurrentRecvSeqNum() ) 
-            ? (ResultCode::MESSAGE_MISSING) : (ResultCode::MESSAGE_DUPLICATED);
-      
-      LOG(ERROR) << "Drop Received " << "seq num " << call->request().seq_num() \
-          << ", msg_type " << call->request().msg_case() \
-          << ", want seq num " << bridge_mgr_->StepStats()->CurrentRecvSeqNum()\
-          << ", ack err_code " << ret_code;
-      
+      ResultCode ret_code = (call->request().seq_num() >
+                             bridge_mgr_->StepStats()->CurrentRecvSeqNum())
+                                ? (ResultCode::MESSAGE_MISSING)
+                                : (ResultCode::MESSAGE_DUPLICATED);
+
+      LOG(ERROR) << "Drop Received "
+                 << "seq num " << call->request().seq_num() << ", msg_type "
+                 << call->request().msg_case() << ", want seq num "
+                 << bridge_mgr_->StepStats()->CurrentRecvSeqNum()
+                 << ", ack err_code " << ret_code;
+
       call->mutable_response()->mutable_status()->set_result_code(ret_code);
-      //call->mutable_response()->mutable_status()->set_error_message("reject");
+      // call->mutable_response()->mutable_status()->set_error_message("reject");
       call->mutable_response()->mutable_status()->clear_error_message();
-      call->mutable_response()->set_next_seq_num(bridge_mgr_->StepStats()->CurrentRecvSeqNum());
+      call->mutable_response()->set_next_seq_num(
+          bridge_mgr_->StepStats()->CurrentRecvSeqNum());
     }
-    
+
     call->SendResponse();
   }
-  
+
   void LoadDataBlockHandler(
       UnaryCall<LoadDataBlockRequest, ResultStatus>* call) {
     if (FlDebugging()) {
       LOG(INFO) << "LoadDataBlockHandler Event...";
     }
     if (!LinkUp()) {
-      LOG(ERROR) << "Drop LoadDataBlock request, " \
-          "link not ready, probably because not recv peer connect request.";
+      LOG(ERROR)
+          << "Drop LoadDataBlock request, "
+             "link not ready, probably because not recv peer connect request.";
       call->SendResponse(::grpc::Status::CANCELLED);
-      ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_, false);
+      ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_,
+                      false);
       return;
     }
-    
+
     bridge_mgr_->StateMove(RpcBridgeMgr::BrState::STARTED);
 
     if (bridge_mgr_->RoleDef() == RoleDef_Follower) {
       LOG(INFO) << " Handle DataBlock load ... " << _RpcDataLoadEventCnt++;
-      
+
       Status s;
       std::string src_fname, out_fname;
-      DcInterface * db_api = bridge_mgr_->dc_impl();
-      
+      DcInterface* db_api = bridge_mgr_->dc_impl();
+
       bool end_of_blocks = false;
-      do 
-      {
+      do {
         if (!db_api) {
           LOG(ERROR) << "DbAgent not initialized.";
           s = errors::Aborted("DbAgent not initialized.");
           break;
         }
-        
+
         FetchDataBlockRequest request;
         FetchDataBlockResponse response;
         request.set_request_id(call->request.block_id());
@@ -328,31 +347,33 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
           break;
         }
 
-        LOG(INFO) << "Fetch DataBlock: " << call->request.block_id() << ", count " << call->request.count();
-        
+        LOG(INFO) << "Fetch DataBlock: " << call->request.block_id()
+                  << ", count " << call->request.count();
+
         // drop duplicated datablock
-        if ( call->request.count() < _RpcDataLoadNextId ) {
-          LOG(ERROR) << "Drop duplicated DataBlock " << call->request.block_id() \
-              << ", count " << call->request.count() << ", want next count " << _RpcDataLoadNextId;
+        if (call->request.count() < _RpcDataLoadNextId) {
+          LOG(ERROR) << "Drop duplicated DataBlock " << call->request.block_id()
+                     << ", count " << call->request.count()
+                     << ", want next count " << _RpcDataLoadNextId;
           call->response.set_result_code(ResultCode::SUCCESS);
           call->response.clear_error_message();
           call->SendResponse(::grpc::Status::OK);
-          ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_, false);
+          ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus,
+                          dcq_, false);
           return;
         }
 
         int retries = 0;
         int64 sleep_in_ms = 10 * 1000 * 1000;
-        
-        do 
-        {
+
+        do {
           if (retries++ > 10) {
             s = errors::Aborted("Fetch DataBlock, already Try max times ... ");
             // End handler
             break;
           }
           // Fetch data block full path name.
-          s = db_api->FetchDataBlock(&request, &response); 
+          s = db_api->FetchDataBlock(&request, &response);
           if (!s.ok()) {
             LOG(ERROR) << "Fetch DataBlock failed: " << s.error_message();
             LOG(INFO) << "Sleeping for: " << sleep_in_ms;
@@ -376,30 +397,31 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
           } else if (response.status_code() == StatusCode::OK) {
             //
             // next step
-            // 
+            //
           } else {
-            LOG(ERROR) << "DataBlock request ABORTED, unknown code " << response.status_code();
+            LOG(ERROR) << "DataBlock request ABORTED, unknown code "
+                       << response.status_code();
             s = errors::Aborted("DataBlock request ABORTED, unknown code");
             break;
           }
-          
+
           // prepare file, may copy to local
           src_fname = response.db_info().data_path();
-          int ret = PrepareFile(src_fname, out_fname);
+          int ret = PrepareFile(src_fname, &out_fname);
           if (ret) {
             LOG(ERROR) << "DataBlock download failed: " << src_fname;
             s = errors::Aborted("DataBlock download failed.");
             // End handler, failed.
             break;
           }
-          
+
           // End handler, send response
           break;
         } while (true);
-        
+
         // End handler, send response
       } while (false);
-      
+
       if (s.ok()) {
         cache_->OnReceived((!end_of_blocks) ? out_fname : "", end_of_blocks);
         call->response.set_result_code(ResultCode::SUCCESS);
@@ -414,37 +436,39 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
     } else {
       LOG(ERROR) << "LoadDataBlockHandler Event... cannot handle dataload ...";
       call->response.set_result_code(ResultCode::INVALID_REQUEST);
-      call->response.set_error_message("Not follower, cannot handle dataload request...");
+      call->response.set_error_message(
+          "Not follower, cannot handle dataload request...");
       call->SendResponse(::grpc::Status::OK);
     }
-    ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_, false);
+    ENQUEUE_REQUEST(LoadDataBlock, LoadDataBlockRequest, ResultStatus, dcq_,
+                    false);
   }
-  
-  void ConnectHandler(
-      UnaryCall<ConnectRequest, ConnectResponse>* call) {
+
+  void ConnectHandler(UnaryCall<ConnectRequest, ConnectResponse>* call) {
     if (FlDebugging()) {
       LOG(INFO) << "ConnectHandler Event...";
     }
-    
-    if ( RpcBridgeMgr::BrState::NEW == bridge_mgr_->State() ) {
+
+    if (RpcBridgeMgr::BrState::NEW == bridge_mgr_->State()) {
       bool chk_ok = true;
       do {
-        if ((call->request.app_id() != bridge_mgr_->AppID())
-            || (call->request.worker_rank() != bridge_mgr_->RankID())){
-          LOG(ERROR) << "Reject connect request: " 
-            << "appli_id: " << call->request.app_id()\
-            << ", worker_rank: " << call->request.worker_rank()\
-            << ", identifier: " <<  call->request.identifier();
+        if ((call->request.app_id() != bridge_mgr_->AppID()) ||
+            (call->request.worker_rank() != bridge_mgr_->RankID())) {
+          LOG(ERROR) << "Reject connect request: "
+                     << "appli_id: " << call->request.app_id()
+                     << ", worker_rank: " << call->request.worker_rank()
+                     << ", identifier: " << call->request.identifier();
           chk_ok = false;
           break;
         }
         cache_->OnReceived(&call->request);
         link_up_ = true;
       } while (false);
-      
+
       call->response.set_app_id(bridge_mgr_->AppID());
       call->response.set_worker_rank(bridge_mgr_->RankID());
-      call->SendResponse((chk_ok) ? (::grpc::Status::OK) : (::grpc::Status::CANCELLED));
+      call->SendResponse((chk_ok) ? (::grpc::Status::OK)
+                                  : (::grpc::Status::CANCELLED));
       ENQUEUE_REQUEST(Connect, ConnectRequest, ConnectResponse, tcq_, false);
     } else {
       LOG(ERROR) << "****************************************** ";
@@ -458,28 +482,30 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
     }
   }
 
-  void HeartbeatHandler(
-      UnaryCall<HeartbeatRequest, HeartbeatResponse>* call) {
+  void HeartbeatHandler(UnaryCall<HeartbeatRequest, HeartbeatResponse>* call) {
     if (FlDebugging()) {
       LOG(INFO) << "HeartbeatHandler Event...";
     }
     call->response.set_app_id(bridge_mgr_->AppID());
     call->response.set_worker_rank(bridge_mgr_->RankID());
-    call->response.set_current_iter_id(bridge_mgr_->StepStats()->CurrentIterId());
-    
+    call->response.set_current_iter_id(
+        bridge_mgr_->StepStats()->CurrentIterId());
+
     call->SendResponse(::grpc::Status::OK);
-    ENQUEUE_REQUEST(Heartbeat, HeartbeatRequest, HeartbeatResponse, tcq_, false);
+    ENQUEUE_REQUEST(Heartbeat, HeartbeatRequest, HeartbeatResponse, tcq_,
+                    false);
   }
 
  private:
   TrainerWorkerService::AsyncService agent_service_;
-  std::unique_ptr<::grpc::ServerCompletionQueue> tcq_; // for train result transmit
-  std::unique_ptr<::grpc::ServerCompletionQueue> dcq_; // for data load 
+  std::unique_ptr<::grpc::ServerCompletionQueue>
+      tcq_;  // for train result transmit
+  std::unique_ptr<::grpc::ServerCompletionQueue> dcq_;  // for data load
   std::unique_ptr<Thread> thread_t_;
   std::unique_ptr<Thread> thread_d_;
-  
-  RpcBridgeRecvCache* cache_{nullptr}; //not owned
-  RpcBridgeMgr* bridge_mgr_{nullptr}; // not owned
+
+  RpcBridgeRecvCache* cache_{nullptr};  // not owned
+  RpcBridgeMgr* bridge_mgr_{nullptr};   // not owned
   mutex service_shutdown_mu_;
   bool is_shutdown_ GUARDED_BY(service_shutdown_mu_);
   bool link_up_{false};
@@ -489,9 +515,9 @@ class RpcBridgeAgentService : public AsyncServiceInterface {
 };
 
 std::unique_ptr<AsyncServiceInterface> NewRpcBridgeAgentService(
-  ::grpc::ServerBuilder* builder, RpcBridgeRecvCache* service_cache, RpcBridgeMgr* bridge_mgr) {
+    ::grpc::ServerBuilder* builder, RpcBridgeRecvCache* service_cache,
+    RpcBridgeMgr* bridge_mgr) {
   return std::unique_ptr<AsyncServiceInterface>(
       new RpcBridgeAgentService(builder, service_cache, bridge_mgr));
 }
-
-} 
+}  // namespace jdfl

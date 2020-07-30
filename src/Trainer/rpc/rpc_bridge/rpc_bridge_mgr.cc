@@ -1,9 +1,9 @@
 
+#include <chrono>
 #include <cstring>
 #include <limits>
 #include <memory>
 #include <vector>
-#include <chrono>
 
 #include "grpc/support/alloc.h"
 #include "grpcpp/grpcpp.h"
@@ -17,8 +17,8 @@
 #include "tensorflow/core/platform/env.h"
 #include "tensorflow/core/platform/mem.h"
 
-#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
 #include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_agent_service.h"
+#include "tensorflow/contrib/jdfl/rpc/rpc_bridge/rpc_bridge_mgr.h"
 
 using namespace ::tensorflow;
 
@@ -33,31 +33,35 @@ ChannelPtr CreateChannelForTarget(const string& target) {
   // Set a standard backoff timeout of 1s instead of the
   // (sometimes default) 20s.
   args.SetInt("grpc.testing.fixed_reconnect_backoff_ms", 3000);
-  return ::grpc::CreateCustomChannel(target, ::grpc::InsecureChannelCredentials(), args);
+  return ::grpc::CreateCustomChannel(
+      target, ::grpc::InsecureChannelCredentials(), args);
 }
 
-Status RpcBridgeMgr::InitServer(const std::string& server_def, const Params& params) {
+Status RpcBridgeMgr::InitServer(const std::string& server_def,
+                                const Params& params) {
   mutex_lock l(mu_);
   if (service_initialized_) {
-    LOG(INFO) << "gRPC server already initialized. target(" << server_def << ")";
+    LOG(INFO) << "gRPC server already initialized. target(" << server_def
+              << ")";
     return Status::OK();
   }
-  
+
   appli_id_ = params.appli_id;
   rank_id_ = params.rank_id;
   role_def_ = params.role_def;
   service_type_ = params.service_type;
   ctx_meta_ = params.ctx_meta_conf;
-  uint64_t tp = std::chrono::duration_cast<std::chrono::milliseconds>\
-                (std::chrono::steady_clock::now().time_since_epoch()).count();
+  uint64_t tp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now().time_since_epoch())
+                    .count();
   identifier_ = std::to_string(tp);
-  
+
   step_stats_.reset(new RunStepStats());
-  
+
   LOG(INFO) << "Create gRPC server: " << server_def;
   ::grpc::ServerBuilder builder;
   builder.AddListeningPort(server_def, grpc::InsecureServerCredentials());
-  
+
   bridge_service_ = NewRpcBridgeAgentService(&builder, &service_cache_, this);
   server_ = builder.BuildAndStart();
   if (!server_) {
@@ -66,18 +70,19 @@ Status RpcBridgeMgr::InitServer(const std::string& server_def, const Params& par
   }
   LOG(INFO) << "Start HandleRPCsLoop thread: " << server_def;
   bridge_service_->HandleRPCsLoop();
-  
+
   service_initialized_ = true;
   return Status::OK();
 }
 
-Status RpcBridgeMgr::InitRpcChannel(const std::string& channel_type, 
-            const std::string& target_addr) {
+Status RpcBridgeMgr::InitRpcChannel(const std::string& channel_type,
+                                    const std::string& target_addr) {
   mutex_lock l(mu_);
-  
-  if ( channel_type == "TRAIN" ) {
+
+  if (channel_type == "TRAIN") {
     if (train_channel_initialized_) {
-      LOG(INFO) << "TRAIN Channel already initialized. target(" << target_addr << ")";
+      LOG(INFO) << "TRAIN Channel already initialized. target(" << target_addr
+                << ")";
       return Status::OK();
     }
 
@@ -87,14 +92,16 @@ Status RpcBridgeMgr::InitRpcChannel(const std::string& channel_type,
       LOG(ERROR) << "Could not create gRPC Channel: " << target_addr;
       return errors::Unknown("Could not create gRPC Channel");
     }
-    bridge_impl_ = NewRpcBridgeAgent(channel, &bridge_cq_, &service_cache_, this);
+    bridge_impl_ =
+        NewRpcBridgeAgent(channel, &bridge_cq_, &service_cache_, this);
     LOG(INFO) << "Create Channel done. (" << target_addr << ")";
 
     train_channel_initialized_ = true;
     return Status::OK();
-  } else if (channel_type == "DATA" ) {
+  } else if (channel_type == "DATA") {
     if (data_channel_initialized_) {
-      LOG(INFO) << "DATA Channel already initialized. target(" << target_addr << ")";
+      LOG(INFO) << "DATA Channel already initialized. target(" << target_addr
+                << ")";
       return Status::OK();
     }
     //  init datacenter channel
@@ -135,7 +142,7 @@ Status RpcBridgeMgr::Stop() {
     delete dc_impl_;
     dc_impl_ = nullptr;
   }
-  
+
   return Status::OK();
 }
 

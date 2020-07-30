@@ -1,12 +1,11 @@
 
+#include "tensorflow/core/framework/common_shape_fns.h"
 #include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/shape_inference.h"
-#include "tensorflow/core/framework/common_shape_fns.h"
 
-using namespace ::tensorflow;
-using namespace ::tensorflow::shape_inference;
-using shape_inference::InferenceContext;
-using shape_inference::ShapeHandle;
+using ::tensorflow::shape_inference::ScalarShape;
+using ::tensorflow::shape_inference::InferenceContext;
+using ::tensorflow::shape_inference::ShapeHandle;
 
 REGISTER_OP("FlGrpcFetchDataset")
     .Input("role_def: string")
@@ -14,9 +13,8 @@ REGISTER_OP("FlGrpcFetchDataset")
     .Attr("data_source: string = ''")
     .Attr("max_retries: int = -1")
     .Attr("timeout_in_ms: int = 0")
-    .SetIsStateful() 
-    .SetShapeFn(shape_inference::ScalarShape);
-    ;
+    .SetIsStateful()
+    .SetShapeFn(ScalarShape);
 
 REGISTER_OP("FlTextLineDataset")
     .Input("input_dataset: variant")
@@ -39,6 +37,5 @@ REGISTER_OP("FlTFRecordDataset")
     .Input("buffer_size: int64")
     .Output("handle: variant")
     .Attr("file_type: string = ''")
-    .SetIsStateful() 
-    .SetShapeFn(shape_inference::ScalarShape)
-    ;
+    .SetIsStateful()
+    .SetShapeFn(ScalarShape);
