@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Copyright 2020 The 9nFL Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-kill -9 `ps -aux | grep python | grep mnist_leader | awk '{print $2}'`
-kill -9 `ps -aux | grep python | grep mnist_follower | awk '{print $2}'`
-kill -9 `ps -aux | grep python | grep dc_leader | awk '{print $2}'`
-kill -9 `ps -aux | grep python | grep dc_follower | awk '{print $2}'`
-kill -9 `ps -aux | grep python | grep co_proxy_server | awk '{print $2}'`
+DATA_DIR=../mnist_data
+PYTHON=python
+# run fl_mnist
+bash run_mnist_local.sh ${DATA_DIR} ${PYTHON}
+# run baseline
+${PYTHON} baseline.py -d ${DATA_DIR}
 
 
+grep loss logs/leader.log
