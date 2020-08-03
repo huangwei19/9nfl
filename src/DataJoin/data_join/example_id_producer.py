@@ -5,6 +5,7 @@ import logging
 from contextlib import contextmanager
 from DataJoin.common import data_join_service_pb2 as dj_pb
 from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.config import sync_example_id_nums
 from DataJoin.data_join.data_join_server import InitRawDataLoading
 
 
@@ -76,7 +77,7 @@ class ExampleIdProducer(object):
             examples_list = []
             for (key, example) in init_loading.item_dict.items():
                 examples_list.append(example)
-                if len(examples_list) > 2048:
+                if len(examples_list) > sync_example_id_nums:
                     self._send_example_ids(examples_list, init_loading)
                     examples_list = []
             if len(examples_list) >= 0:

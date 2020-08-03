@@ -10,8 +10,8 @@ from grpc._cython import cygrpc
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 from flask import Flask
-from DataJoin.routine.data_app import manager as data_app_manager
-from DataJoin.routine.parse_data_block_meta_app import manager as parse_data_block_meta_app_manager
+from DataJoin.routine.data_routine import manager as data_app_manager
+from DataJoin.routine.parse_data_block_meta_routine import manager as parse_data_block_meta_app_manager
 from DataJoin.db.db_models import init_db
 from DataJoin.utils.api import response_api
 from DataJoin.common import common_pb2_grpc

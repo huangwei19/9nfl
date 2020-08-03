@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: TASK_NAME
-        image: mirror.jd.com/pino/fl:data_join_leader_opensource_v1.0
+        image: your_data_join_mirror
         resources:
           requests:
             cpu: 4

@@ -16,7 +16,7 @@ from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_m
 
 from DataJoin.utils.base import get_host_ip
 import requests
-from DataJoin.config import HEADERS, HTTP_SERVICE_PORT
+from DataJoin.config import HEADERS, HTTP_SERVICE_PORT,removed_items_nums_from_buffer
 
 host_ip = get_host_ip()
 mode = os.environ.get("MODE", None)
@@ -240,5 +240,5 @@ class DataBlockManager(object):
                             partition_id_wrap(self._partition_id))
 
     def _remove_item_from_data_block_memory_buffer(self):
-        while len(self._data_block_meta_memory_buffer) > 1024:
+        while len(self._data_block_meta_memory_buffer) > removed_items_nums_from_buffer:
             self._data_block_meta_memory_buffer.popitem()

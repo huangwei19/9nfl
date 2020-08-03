@@ -36,7 +36,7 @@ def parse_data_block_meta():
     dfs_data_block_meta = data_block_meta_hdfs_dir.get('dfs_data_block_meta', '')
     dfs_data_block = data_block_meta_hdfs_dir.get('dfs_data_block', '')
     if not dfs_data_block_dir and not dfs_data_block_meta and not dfs_data_block:
-        return response_api(retcode=999, retmsg='args is null')
+        return response_api(retcode=500, retmsg='args is null')
     parse_data_block_meta_pid = run_subprocess(
         [
             'python', sys.modules[StartParseDataBlockMeta.__module__].__file__,

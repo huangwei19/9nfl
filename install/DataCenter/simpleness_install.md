@@ -2,8 +2,9 @@
 一. Stand-alone Deployment Guide:
 
 1. DownLoad 
-Download package from git address https://git.jd.com/ads-conversion/9nfl_opensource.git
-`git clone https://git.jd.com/ads-conversion/9nfl_opensource.git`
+Download package from open_source git address :xxx
+`git clone xxx`
+#please replace xxx with open source git address
 
 2. Set Environment
 copy or move 9nfl_opensource into /app (you can change the root dir /app into yours directory);

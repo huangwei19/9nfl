@@ -4,17 +4,17 @@
 
 `cd /app/9nfl_opensource/deploy/data_join/images` 
 
-`docker build -t  FROM mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1 . -f Base_Dockerfile`
+`docker build -t  FROM Base_Mirror . -f Base_Dockerfile`
 
-please replace "mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1"  with your base image name 
+please replace "Base_Mirror"  with your base image name 
 
 2. Make  Data Join Image
 
 `cd /app/9nfl_opensource/deploy/data_join/images`
 
-`docker build -t  mirror.jd.com/pino/fl:data_join_leader_opensource_v1.0 . -f Base_Dockerfile`
+`docker build -t  DataJoin_Mirror . -f Base_Dockerfile`
 
-please replace "mirror.jd.com/pino/fl:data_join_leader_opensource_v1.0"  with your data join image name 
+please replace "DataJoin_Mirror"  with your data join image name 
 
 Making leader data join image  and follower data join image is the same  as the second step
 

@@ -10,7 +10,7 @@ manager = Flask(__name__)
 @manager.errorhandler(500)
 def internal_server_error(e):
     logging.error(str(e))
-    return response_api(retcode=100, retmsg=str(e))
+    return response_api(retcode=500, retmsg=str(e))
 
 
 @manager.route('/<block_id>/<partition_id>/<file_version>/create/data/block', methods=['POST'])
@@ -25,7 +25,7 @@ def create_data_block_meta(block_id, partition_id, file_version):
 def query_data_block_meta():
     data_block_metas = data_process.query_data_block_meta(**request.json)
     if not data_block_metas:
-        return response_api(retcode=101, retmsg='find data block meta failed')
+        return response_api(retcode=500, retmsg='find data block meta failed')
     return response_api(retcode=0, retmsg='success',
                            data=[meta.to_json() for meta in data_block_metas])
 
@@ -34,7 +34,7 @@ def query_data_block_meta():
 def query_data_source_meta():
     data_source_metas = data_process.query_data_source_meta(**request.json)
     if not data_source_metas:
-        return response_api(retcode=101, retmsg='find data source meta failed')
+        return response_api(retcode=500, retmsg='find data source meta failed')
     return response_api(retcode=0, retmsg='success',
                            data=[data_source_meta.to_json() for data_source_meta in data_source_metas])
 
@@ -43,5 +43,5 @@ def query_data_source_meta():
 def query_data_source():
     data_sources = data_process.query_data_source(**request.json)
     if not data_sources:
-        return response_api(retcode=101, retmsg='find data source failed')
+        return response_api(retcode=500, retmsg='find data source failed')
     return response_api(retcode=0, retmsg='success', data=[data_source.to_json() for data_source in data_sources])
