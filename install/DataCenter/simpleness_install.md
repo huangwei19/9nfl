@@ -13,7 +13,7 @@ if root dir /app does not exists,please mkdir /app
 `su root`
 
 if python3.6 is installed by anaconda3
-`echo "/app/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth`
+`echo "/app/9nfl_opensource/src" >  /usr/local/anaconda3/lib/python3.6/site-packages/tmp.pth`
 if python3.6 is not installed  by anaconda3
 `echo "/app/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth` 
 

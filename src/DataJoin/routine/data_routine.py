@@ -27,7 +27,7 @@ def query_data_block_meta():
     if not data_block_metas:
         return response_api(retcode=500, retmsg='find data block meta failed')
     return response_api(retcode=0, retmsg='success',
-                           data=[meta.to_json() for meta in data_block_metas])
+                        data=[meta.to_json() for meta in data_block_metas])
 
 
 @manager.route('/query/data/source/meta', methods=['POST'])
@@ -36,7 +36,7 @@ def query_data_source_meta():
     if not data_source_metas:
         return response_api(retcode=500, retmsg='find data source meta failed')
     return response_api(retcode=0, retmsg='success',
-                           data=[data_source_meta.to_json() for data_source_meta in data_source_metas])
+                        data=[data_source_meta.to_json() for data_source_meta in data_source_metas])
 
 
 @manager.route('/query/data/source', methods=['POST'])
