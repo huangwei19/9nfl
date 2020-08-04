@@ -9,7 +9,7 @@ import grpc
 from DataJoin.common import common_pb2 as common_pb
 from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
 from DataJoin.common import data_join_service_pb2 as dj_pb
-from DataJoin.proxy.channel import create_data_join_channel, ModeType
+from DataJoin.proxy.data_join_channel import create_data_join_channel, ModeType
 from DataJoin.data_join.raw_data_loader import RawDataLoader
 
 import multiprocessing
