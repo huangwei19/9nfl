@@ -1,18 +1,13 @@
 # coding: utf-8
 
-from enum import Enum
 import os
 import socket
 import logging
 import collections
 import grpc
+from DataJoin.config import ModeType
 
-INTERNAL_PROXY = os.environ.get('INTERNAL_PROXY', None)
-
-
-class ModeType(Enum):
-    UNKNOWN = 0
-    REMOTE = 1
+inner_proxy = os.environ.get('INTERNAL_PROXY', None)
 
 
 class _GenericClientInterceptor(grpc.UnaryUnaryClientInterceptor,
@@ -86,8 +81,7 @@ def address_valid_checker(address):
                 return True
         return False
     except Exception as e:
-        logging.info('%s is not valid address. detail is %s.', address,
-                      repr(e))
+        logging.info('%s is not valid address. detail is %s.', address, str(e))
     return False
 
 
@@ -100,9 +94,9 @@ def create_data_join_channel(uuid,
 
     if mode == ModeType.REMOTE:
         header_adder = add_header_interceptor('uuid', uuid)
-        if not INTERNAL_PROXY:
-            raise Exception("INTERNAL_PROXY is None,Not Found Env")
-        logging.debug("INTERNAL_PROXY is [%s]", INTERNAL_PROXY)
-        channel = grpc.insecure_channel(INTERNAL_PROXY, options, compression)
+        if not inner_proxy:
+            raise Exception("inner_proxy is None,please ")
+        logging.debug("inner_proxy is [%s]", inner_proxy)
+        channel = grpc.insecure_channel(inner_proxy, options, compression)
         return grpc.intercept_channel(channel, header_adder)
     raise Exception("uuid mode type is UnKnown %s" % uuid)

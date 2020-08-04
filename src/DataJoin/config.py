@@ -1,5 +1,5 @@
-
 # -*- coding: utf-8 -*-
+from enum import Enum
 
 api_version = "v1"
 SLEEP_TIME = 60 * 60 * 24
@@ -39,3 +39,6 @@ sync_example_id_nums = 2048
 removed_items_nums_from_buffer = 1024
 
 
+class ModeType(Enum):
+    UNKNOWN = 0
+    REMOTE = 1
