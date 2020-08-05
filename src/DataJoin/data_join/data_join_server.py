@@ -1,3 +1,16 @@
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # coding: utf-8
 
 import logging
@@ -8,7 +21,7 @@ import grpc
 
 from DataJoin.common import common_pb2 as common_pb
 from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
-from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.common import data_join_service_pb2 as data_join_pb
 from DataJoin.proxy.data_join_channel import create_data_join_channel
 from DataJoin.config import ModeType
 from DataJoin.data_join.raw_data_loader import RawDataLoader
@@ -105,7 +118,7 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
         content_bytes = request.content_bytes
         if request.compressed:
             content_bytes = zlib.decompress(content_bytes)
-        send_example_items = dj_pb.SyncContent()
+        send_example_items = data_join_pb.SyncContent()
         send_example_items.ParseFromString(content_bytes)
         status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
         if not status:
@@ -117,7 +130,7 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
     @partition_id_wrap
     def StartPartition(self, request, context):
         logging.info("Start Partition Req:{0}".format(request.partition_id))
-        response = dj_pb.StartPartitionResponse()
+        response = data_join_pb.StartPartitionResponse()
         peer_partition_id = request.partition_id
         partition_id = \
             self._consumer_process.fetch_partition_id()
@@ -134,7 +147,7 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
     @partition_id_wrap
     def FinishPartition(self, request, context):
         logging.info("Finish Partition Req:{0}".format(request.partition_id))
-        response = dj_pb.FinishPartitionResponse()
+        response = data_join_pb.FinishPartitionResponse()
         peer_partition_id = request.partition_id
         partition_id = self._consumer_process.fetch_partition_id()
         assert partition_id == peer_partition_id, \
@@ -259,14 +272,14 @@ class RunDataJoinService(object):
         args = parser.parse_args()
         if args.tf_eager_mode:
             tensorflow.compat.v1.enable_eager_execution()
-        raw_data_options = dj_pb.RawDataOptions()
-        example_joiner_options = dj_pb.ExampleJoinerOptions()
+        raw_data_options = data_join_pb.RawDataOptions()
+        example_joiner_options = data_join_pb.ExampleJoinerOptions()
         raw_data_options.raw_data_iter = args.raw_data_iter
         raw_data_options.compressed_type = args.compressed_type
         example_joiner_options.example_joiner = args.example_joiner
         example_joiner_options.dump_data_block_time_span = args.dump_data_block_time_span
         example_joiner_options.dump_data_block_threshold = args.dump_data_block_threshold
-        options_args = dj_pb.DataJoinOptions(
+        options_args = data_join_pb.DataJoinOptions(
             raw_data_options=raw_data_options,
             example_joiner_options=example_joiner_options,
         )

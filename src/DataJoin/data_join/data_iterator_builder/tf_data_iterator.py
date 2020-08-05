@@ -1,3 +1,16 @@
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # coding: utf-8
 
 import logging
@@ -63,19 +76,18 @@ class TfRecordDataIterator(DataIterator):
     def iterator_name(cls):
         return 'TF_RECORD_ITERATOR'
 
-    def _data_iterator_factory(self, file_path):
-        with tf_record_iterator_factory(file_path) as record_iter:
-            for record in record_iter:
-                yield TfRecordDataItemParser(record)
-
     def _reset_data_iterator(self, file_path):
-        if file_path is not None:
+        if file_path:
             data_iterator = self._data_iterator_factory(file_path)
             first_item = next(data_iterator)
             return data_iterator, first_item
         return None, None
 
-    def _visit_next_item(self):
-        assert self._data_iterator is not None, "data_iterator should not be None in _next"
-        return next(self._data_iterator)
+    def _data_iterator_factory(self, file_path):
+        with tf_record_iterator_factory(file_path) as data_record_iter:
+            for data_record in data_record_iter:
+                yield TfRecordDataItemParser(data_record)
 
+    def _visit_next_item(self):
+        assert self._data_iterator, "data_iterator should not be None in next"
+        return next(self._data_iterator)
