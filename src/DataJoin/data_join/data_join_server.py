@@ -20,7 +20,7 @@ import tensorflow
 import grpc
 
 from DataJoin.common import common_pb2 as common_pb
-from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
+from DataJoin.common import data_join_service_pb2_grpc as data_join_service_grpc
 from DataJoin.common import data_join_service_pb2 as data_join_pb
 from DataJoin.proxy.data_join_channel import create_data_join_channel
 from DataJoin.config import ModeType
@@ -82,7 +82,7 @@ def partition_id_wrap(f):
     return check_partition_id
 
 
-class DataJoin(dj_grpc.DataJoinServiceServicer):
+class DataJoin(data_join_service_grpc.DataJoinServiceServicer):
     def __init__(self, peer_client, rank_id, options_args, data_source):
         super(DataJoin, self).__init__()
         self._peer_client = peer_client
@@ -196,11 +196,11 @@ class DataJoinService(object):
         self._port = port
         self._worker_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         peer_channel = create_data_join_channel(peer_address, ModeType.REMOTE)
-        peer_client = dj_grpc.DataJoinServiceStub(peer_channel)
+        peer_client = data_join_service_grpc.DataJoinServiceStub(peer_channel)
         self._data_join_worker = DataJoin(
             peer_client, rank_id, options_args, data_source
         )
-        dj_grpc.add_DataJoinServiceServicer_to_server(
+        data_join_service_grpc.add_DataJoinServiceServicer_to_server(
             self._data_join_worker, self._worker_server
         )
         self._role = "leader" if data_source.role == common_pb.FLRole.Leader else "follower"
