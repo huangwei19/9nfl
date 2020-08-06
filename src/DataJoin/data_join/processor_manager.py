@@ -24,15 +24,20 @@ class ProcessorManager(object):
         self._impl_processor_name = impl_processor_name
         self._lock = threading.Lock()
         self._impl_time_span = impl_time_span
+        self._impl_processor = impl_processor
         assert self._impl_time_span > 0, "impl time span is invalid:{0}".format(impl_time_span)
         self._condition = threading.Condition(self._lock)
         self._impl_condition = impl_condition
-        self._impl_processor = impl_processor
-        self._pass_impl_processor = False
-        self._threading = None
-        self._inactive_status = False
         self._para_tuple = tuple()
+        self._pass_impl_processor = False
+        self._inactive_status = False
         self._para_dict = dict()
+        self._threading = None
+
+    def enable_processor(self):
+        with self._condition:
+            self._condition.notify()
+            self._pass_impl_processor = False
 
     def active_processor(self):
         with self._lock:
@@ -41,6 +46,15 @@ class ProcessorManager(object):
             self._threading = threading.Thread(target=self.implementor,
                                                name=self._impl_processor_name)
             self._threading.start()
+
+    def is_inactive(self):
+        with self._lock:
+            return self._inactive_status
+
+    def build_impl_processor_parameter(self, *args, **kwargs):
+        with self._lock:
+            self._para_tuple = args
+            self._para_dict = kwargs
 
     def inactive_processor(self):
         thread = None
@@ -53,32 +67,11 @@ class ProcessorManager(object):
         if thread is not None:
             thread.join()
 
-    def enable_processor(self):
-        with self._condition:
-            self._condition.notify()
-            self._pass_impl_processor = False
-
-    def is_inactive(self):
-        with self._lock:
-            return self._inactive_status
-
-    def build_impl_processor_parameter(self, *args, **kwargs):
-        with self._lock:
-            self._para_tuple = args
-            self._para_dict = kwargs
-
     def entry_impl_processor(self):
         with self._lock:
             if self._pass_impl_processor:
                 return True
         return not self._impl_condition()
-
-    def acquire_impl_processor_parameter(self):
-        with self._lock:
-            parameter = (self._para_tuple, self._para_dict)
-            self._para_tuple = tuple()
-            self._para_dict = dict()
-            return parameter
 
     def implementor(self):
         impl_count = 0
@@ -109,3 +102,10 @@ class ProcessorManager(object):
             else:
                 logging.info("processor: %s implement %d round", self._impl_processor_name, impl_count)
             impl_count += 1
+
+    def acquire_impl_processor_parameter(self):
+        with self._lock:
+            parameter = (self._para_tuple, self._para_dict)
+            self._para_tuple = tuple()
+            self._para_dict = dict()
+            return parameter
