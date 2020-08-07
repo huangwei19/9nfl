@@ -110,52 +110,52 @@ class DataJoin(data_join_service_grpc.DataJoinServiceServicer):
                     self._partition_id, follower_data_queue
                 )
 
-        @rank_id_wrap
-        @partition_id_wrap
-        def StartPartition(self, request, context):
-            logging.info("Start Partition Req:{0}".format(request.partition_id))
-            response = data_join_pb.StartPartitionResponse()
-            peer_partition_id = request.partition_id
-            partition_id = \
-                self._consumer_process.fetch_partition_id()
-            if peer_partition_id != partition_id:
-                response.status.code = -2
-                response.status.error_message = \
-                    "partition_id :{0} is not same with peer partition_id:{1}".format(partition_id, peer_partition_id)
-            if response.status.code == 0:
-                response.next_index, response.finished = \
-                    self._consumer_process.partition_syncer_to_consumer(peer_partition_id)
-            return response
-
-        @rank_id_wrap
-        @partition_id_wrap
-        def FinishPartition(self, request, context):
-            logging.info("Finish Partition Req:{0}".format(request.partition_id))
-            response = data_join_pb.FinishPartitionResponse()
-            peer_partition_id = request.partition_id
-            partition_id = self._consumer_process.fetch_partition_id()
-            assert partition_id == peer_partition_id, \
+    @rank_id_wrap
+    @partition_id_wrap
+    def StartPartition(self, request, context):
+        logging.info("Start Partition Req:{0}".format(request.partition_id))
+        response = data_join_pb.StartPartitionResponse()
+        peer_partition_id = request.partition_id
+        partition_id = \
+            self._consumer_process.fetch_partition_id()
+        if peer_partition_id != partition_id:
+            response.status.code = -2
+            response.status.error_message = \
                 "partition_id :{0} is not same with peer partition_id:{1}".format(partition_id, peer_partition_id)
-            response.finished = \
-                self._consumer_process.finish_partition_transmit(
-                    peer_partition_id
-                )
-            if response.finished:
-                self._consumer_process.reset_consumer_wrap(peer_partition_id)
-            return response
+        if response.status.code == 0:
+            response.next_index, response.finished = \
+                self._consumer_process.partition_syncer_to_consumer(peer_partition_id)
+        return response
 
-        @rank_id_wrap
-        @partition_id_wrap
-        def SyncPartition(self, request, context):
-            logging.info("Sync Partition Req:{0}".format(request.partition_id))
-            response = data_join_common_pb.Status()
-            content_bytes = request.content_bytes
-            if request.compressed:
-                content_bytes = zlib.decompress(content_bytes)
-            send_example_items = data_join_pb.SyncContent()
-            send_example_items.ParseFromString(content_bytes)
-            status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
-            if not status:
-                response.code = -1
-                response.error_message = "example id is enough"
-            return response
+    @rank_id_wrap
+    @partition_id_wrap
+    def FinishPartition(self, request, context):
+        logging.info("Finish Partition Req:{0}".format(request.partition_id))
+        response = data_join_pb.FinishPartitionResponse()
+        peer_partition_id = request.partition_id
+        partition_id = self._consumer_process.fetch_partition_id()
+        assert partition_id == peer_partition_id, \
+            "partition_id :{0} is not same with peer partition_id:{1}".format(partition_id, peer_partition_id)
+        response.finished = \
+            self._consumer_process.finish_partition_transmit(
+                peer_partition_id
+            )
+        if response.finished:
+            self._consumer_process.reset_consumer_wrap(peer_partition_id)
+        return response
+
+    @rank_id_wrap
+    @partition_id_wrap
+    def SyncPartition(self, request, context):
+        logging.info("Sync Partition Req:{0}".format(request.partition_id))
+        response = data_join_common_pb.Status()
+        content_bytes = request.content_bytes
+        if request.compressed:
+            content_bytes = zlib.decompress(content_bytes)
+        send_example_items = data_join_pb.SyncContent()
+        send_example_items.ParseFromString(content_bytes)
+        status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
+        if not status:
+            response.code = -1
+            response.error_message = "example id is enough"
+        return response
