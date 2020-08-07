@@ -16,16 +16,12 @@
 import logging
 import os
 import uuid
-
 import tensorflow.compat.v1 as tf
 from google.protobuf import text_format
 from tensorflow.compat.v1 import gfile
-
 from DataJoin.common import data_join_service_pb2 as data_join_pb
-
-from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_meta_file_name_wrap, \
+from DataJoin.utils.process_manager import tf_record_iterator_factory, data_block_meta_file_name_wrap, \
     block_id_wrap, data_block_file_name_wrap, partition_id_wrap
-
 from DataJoin.utils.base import get_host_ip
 import requests
 from DataJoin.config import HEADERS, HTTP_SERVICE_PORT, removed_items_nums_from_buffer

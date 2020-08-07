@@ -18,7 +18,6 @@ import zlib
 from DataJoin.common import common_pb2 as data_join_common_pb
 from DataJoin.common import data_join_service_pb2_grpc as data_join_service_grpc
 from DataJoin.common import data_join_service_pb2 as data_join_pb
-
 from DataJoin.data_join import example_id_producer, example_id_consumer, \
     data_block_producer, data_block_consumer
 import multiprocessing
