@@ -80,3 +80,22 @@ class RawDataLoader(RawDataManager):
         return DataIterator.build(self._raw_data_options)
 
 
+class InitRawDataLoading(object):
+    def __init__(self, raw_data_dir, raw_data_options, partition_id, mode):
+        self.raw_data_loader = RawDataLoader(raw_data_dir,
+                                             raw_data_options,
+                                             mode
+                                             )
+        self.partition_finished = False
+        self.follower_finished = False
+        self.stale_with_sender = True
+        self.partition_id = partition_id
+
+    def acquire_stale_with_sender(self):
+        self.stale_with_sender = True
+
+    def release_stale_with_sender(self):
+        self.stale_with_sender = False
+
+    def __getattr__(self, attribute):
+        return getattr(self.raw_data_loader, attribute)

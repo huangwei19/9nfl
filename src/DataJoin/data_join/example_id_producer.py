@@ -19,6 +19,7 @@ from contextlib import contextmanager
 from DataJoin.common import data_join_service_pb2 as data_join_pb
 from DataJoin.utils.data_process import ProcessorManager
 from DataJoin.config import sync_example_id_nums
+from DataJoin.data_join.raw_data_loader import InitRawDataLoading
 
 
 class ExampleIdProducer(object):
