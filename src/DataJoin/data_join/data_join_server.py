@@ -22,7 +22,7 @@ from DataJoin.common import data_join_service_pb2_grpc as data_join_service_grpc
 from DataJoin.common import data_join_service_pb2 as data_join_pb
 from DataJoin.proxy.data_join_channel import create_data_join_channel
 from DataJoin.config import ModeType
-from DataJoin.data_join_manager import DataJoin
+from DataJoin.data_join.data_join_manager import DataJoin
 
 
 class DataJoinService(object):
