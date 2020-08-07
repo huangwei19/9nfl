@@ -107,12 +107,12 @@ class SyncConvertDataBlock(object):
                          data_source_name=self.data_source_name
                          )
         wrap_data_transfer_api(
-            method='POST',
-            endpoint='/v1/data/{0}/{1}/{2}/create/data/block'.format(
+            'POST',
+            '/v1/data/{0}/{1}/{2}/create/data/block'.format(
                 meta_info.block_id,
                 meta_info.partition_id,
                 meta_info.file_version),
-            json_body=json_body,
+            json_body,
         )
 
 
