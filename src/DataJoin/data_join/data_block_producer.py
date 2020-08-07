@@ -18,7 +18,7 @@ import logging
 from contextlib import contextmanager
 import zlib
 from DataJoin.common import data_join_service_pb2 as data_join_pb
-from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.utils.data_process import ProcessorManager
 from DataJoin.data_join.data_joiner_builder.data_joiner import DataJoiner
 from DataJoin.data_join.data_joiner_builder.memory_data_joiner import MemoryDataJoiner
 

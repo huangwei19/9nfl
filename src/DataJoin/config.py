@@ -51,6 +51,7 @@ PROXY_SERVICE_PORT = 9400
 DATA_CENTER_PORT = 50052
 sync_example_id_nums = 2048
 removed_items_nums_from_buffer = 1024
+data_block_index_threshold = 1 << 53
 
 
 class ModeType(Enum):

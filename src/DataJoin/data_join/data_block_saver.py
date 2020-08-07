@@ -17,7 +17,8 @@ from contextlib import contextmanager
 import threading
 import logging
 import traceback
-from DataJoin.data_join.data_block_manager import DataBlockMaker, DataBlockManager
+from DataJoin.data_join.data_block_manager import DataBlockManager
+from DataJoin.data_join.data_block_maker import DataBlockMaker
 
 
 class DataBlockSaver(object):

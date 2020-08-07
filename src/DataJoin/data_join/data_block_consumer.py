@@ -15,7 +15,7 @@
 
 import threading
 
-from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.utils.data_process import ProcessorManager
 from DataJoin.data_join.data_block_saver import DataBlockSaver
 
 

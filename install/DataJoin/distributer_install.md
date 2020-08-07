@@ -4,7 +4,7 @@
 
 `cd /app/9nfl_opensource/deploy/data_join/images` 
 
-`docker build -t  FROM Base_Mirror . -f Base_Dockerfile`
+`docker build -t  Base_Mirror . -f Base_Dockerfile`
 
 please replace "Base_Mirror"  with your base image name 
 

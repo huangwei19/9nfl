@@ -17,9 +17,9 @@ import threading
 import logging
 from contextlib import contextmanager
 from DataJoin.common import data_join_service_pb2 as data_join_pb
-from DataJoin.data_join.processor_manager import ProcessorManager
+from DataJoin.utils.data_process import ProcessorManager
 from DataJoin.config import sync_example_id_nums
-from DataJoin.data_join.data_join_server import InitRawDataLoading
+from DataJoin.data_join.data_join_manager import InitRawDataLoading
 
 
 class ExampleIdProducer(object):
