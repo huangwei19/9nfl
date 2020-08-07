@@ -6,58 +6,27 @@ RUN ln -s /usr/bin/python3.6 /usr/bin/python &&\
     pip3.6 install --upgrade pip &&\
     ln -s /usr/bin/pip3.6 /usr/bin/pip
 
-# temp
-RUN wget http://storage.jd.local/pinoctl/MachineLearning/tensorFlow/tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl &&\
-    pip install --ignore-installed tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl &&\
-    rm -rf tensorflow-1.15.0-cp36-cp36m-manylinux2010_x86_64.whl
-    #wget https://github.com/tensorflow/tensorflow/blob/r1.15/tensorflow/python/pywrap_dlopen_global_flags.py -O /usr/local/lib64/python3.6/site-packages/tensorflow_core/pywrap_dlopen_global_flags.py
-
-#RUN pip install tensorflow==1.15.0
+RUN pip install tensorflow==1.15.0 &&\
+    pip install protobuf==3.8.0
 
 RUN mkdir /workspace
 WORKDIR /workspace
 
-# 以下COPY命令需保证example和fl_comm_libs与DockerFile在同一目录
-#COPY src/Trainer/example /workspace/example
-#COPY src/Trainer/fl_comm_libs /workspace/fl_comm_libs
+# The COPY command needs to ensure that example and fl_comm_libs
+# are in the same directory as DockerFile
+COPY src/Trainer/example /workspace/example
+COPY src/Trainer/fl_comm_libs /workspace/fl_comm_libs
 
-RUN mkdir -m 777 -p /export/App &&\
-    cd /export/App &&\
-    wget http://9nadmin.jd.local/upload/niuwenjie/hadoop/hadoop2020/hadoop2020.tgz -O /export/App/hadoop-all-in-one-nm.tgz &&\
-    tar zxf hadoop-all-in-one-nm.tgz &&\
-    rm -rf hadoop-all-in-one-nm.tgz &&\
-    chmod 777 -R hadoop-2.7.1 jdhive-2.0.0-HADOOP-2.7.1 pig-0.15.0 spark-2.4.3 yarn-2.7.1
-    #cd /usr/lib64 &&\
-    #wget http://9nadmin.jd.local/upload/niuwenjie/hadoop/liblzo2.so.2.0.0 &&\
-    #ln -s liblzo2.so.2.0.0 liblzo2.so.2
+RUN mv /workspace/fl_comm_libs/pywrap_dlopen_global_flags.py  /usr/local/lib64/python3.6/site-packages/tensorflow_core/python/
 
-ENV HADOOP_USER_CERTIFICATE="pMfcWQb+jzcCryJNZULLPNcZRUQj06VEbrgPpdN5A7EoA9lY7Uprz5u4HdiZzigHLJhp2Xwy92aBkqk+wYcTAhSQqOyFiiGwKhPi8ySHtQgOoFKJzckIbD8f6NPUKtRwkSI2aXnpoNAKSlWuwCLx8octiB5WmG+k7ZC+e4UmsMH24oLtSZ34vpVsEC3K0uniwItZaEc7Cwll7wgL/jB2vK3fb4o1Gn1YK8puaOv5qIC0bquMa7lRY1+TuEb6dIF3UEHU8zMd/XWGDU7t1a9kNBm91eS6qn+CC4nww9irFSVmteb8YWUkFV219o4EjTo2MA9nFZjdif9jpwzGnObMDA==IyMjIw==YWRzXzluY2xvdWQ="
+# Add related software and environment configuration to access HDFS in trainer image here
 
-RUN echo "export JAVA_HOME=/export/App/jdk1.7.0_67" >> /root/.bashrc &&\
-    echo "export HADOOP_HOME=/export/App/hadoop-2.7.1" >> /root/.bashrc &&\
-    echo "export HADOOP_DEV_HOME=\$HADOOP_HOME" >> /root/.bashrc &&\
-    echo "export UDF_PATH=\$HIVE_HOME/udf" >> /root/.bashrc &&\
-    echo "export HADOOP_MAPARED_HOME=\$HADOOP_DEV_HOME" >> /root/.bashrc &&\
-    echo "export HADOOP_COMMON_HOME=\$HADOOP_DEV_HOME" >> /root/.bashrc &&\
-    echo "export HADOOP_HDFS_HOME=\$HADOOP_DEV_HOME" >> /root/.bashrc &&\
-    echo "export HADOOP_YARN_HOME=\$HADOOP_DEV_HOME" >> /root/.bashrc &&\
-    echo "export HADOOP_DISTCP=\$HADOOP_HOME/share/hadoop/tools/lib/hadoop-distcp-2.7.1.jar" >> /root/.bashrc &&\
-    echo "export HADOOP_CMD=\$HADOOP_HOME/bin/hadoop" >> /root/.bashrc &&\
-    echo "export HADOOP_LZO=\$HADOOP_HOME/share/hadoop/common/lib/hadoop-lzo-0.4.20.jar" >> /root/.bashrc &&\
-    echo "export HADOOP_CONF_DIR=\$HADOOP_HOME/hadoop_conf" >> /root/.bashrc &&\
-    echo "export HADOOP_STREAMING=\$HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar" >> /root/.bashrc &&\
-    echo "export HDFS_CONF_DIR=\$HADOOP_HOME/hadoop_conf" >> /root/.bashrc &&\
-    echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc &&\
-    echo "export PATH=\$HADOOP_HOME/bin:\$PATH" >> /root/.bashrc &&\
-    echo "export LANG=en_US.UTF-8" >> /root/.bashrc &&\
-    echo "export LD_LIBRARY_PATH=/export/App/hadoop-2.7.1/lib/native:/export/App/hadoop-2.7.1/jdk1.8.0_121/jre/lib/amd64/server:\$LD_LIBRARY_PATH" >> /root/.bashrc &&\
-    echo "export CLASSPATH=\$(\${HADOOP_HDFS_HOME}/bin/hadoop classpath --glob)" >> /root/.bashrc &&\
-    echo "Done!"
-
-
-#DataCenter以及Trianer的镜像只将以下CMD修改为对应的启动命令
 # demo leader
-#CMD python /workspace/example/mnist_demo/mnist_leader.py
+# CMD python /workspace/example/mnist_demo/mnist_leader.py
 # demo follower
+# CMD python /workspace/example/mnist_demo/mnist_follower.py
+# demo leader DataCenter
+# CMD python /workspace/example/mnist_demo/dc_leader.py
+# demo follower DataCenter
 # CMD python /workspace/example/mnist_demo/mnist_follower.py
 CMD []

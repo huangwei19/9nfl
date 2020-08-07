@@ -1,3 +1,16 @@
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # coding: utf-8
 
 import logging
@@ -60,10 +73,6 @@ class DataJoiner(object, metaclass=MetaClass):
             return self._data_joiner_finished, \
                    self._data_block_manager.acquire_data_block_meta_by_index(index)
 
-    @contextmanager
-    def data_joiner_factory(self):
-        yield self._data_joiner_algo()
-
     def acquire_produced_data_block_number(self):
         return self._data_block_manager.acquire_produced_data_block_number()
 
@@ -98,10 +107,14 @@ class DataJoiner(object, metaclass=MetaClass):
             self._data_block_maker.build_data_block_manager(
                 self._data_block_manager
             )
-            self._data_block_maker.set_follower_restart_index(
+            self._data_block_maker.set_restart_data_join_index(
                 self._follower_restart_index
             )
         return self._data_block_maker
+
+    @contextmanager
+    def data_joiner_factory(self):
+        yield self._data_joiner_algo()
 
     def _data_join_finalizer(self, is_data_joiner_finished):
         if self._data_block_maker is not None:
@@ -112,10 +125,6 @@ class DataJoiner(object, metaclass=MetaClass):
             self._update_data_block_produced_timestamp()
             return data_block_meta
         return None
-
-    def _update_data_block_produced_timestamp(self):
-        with self._lock:
-            self._data_block_produced_timestamp = time.time()
 
     def _set_data_joiner_finished(self):
         with self._lock:
@@ -134,3 +143,6 @@ class DataJoiner(object, metaclass=MetaClass):
         if maker is not None:
             del maker
 
+    def _update_data_block_produced_timestamp(self):
+        with self._lock:
+            self._data_block_produced_timestamp = time.time()

@@ -1,4 +1,5 @@
-FROM FROM mirror.jd.com/pino/fl/opensource_tf1.15_base:v0.1
+FROM Base_Mirror
+# replace Base_Mirror with  your base mirror
 
 USER root
 RUN echo "/workspace/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth && \

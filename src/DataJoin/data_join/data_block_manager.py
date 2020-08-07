@@ -1,3 +1,16 @@
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # coding: utf-8
 
 import threading
@@ -9,14 +22,14 @@ import tensorflow.compat.v1 as tf
 from google.protobuf import text_format
 from tensorflow.compat.v1 import gfile
 
-from DataJoin.common import data_join_service_pb2 as dj_pb
+from DataJoin.common import data_join_service_pb2 as data_join_pb
 
 from DataJoin.utils.data_process import tf_record_iterator_factory, data_block_meta_file_name_wrap, \
     block_id_wrap, data_block_file_name_wrap, partition_id_wrap
 
 from DataJoin.utils.base import get_host_ip
 import requests
-from DataJoin.config import HEADERS, HTTP_SERVICE_PORT
+from DataJoin.config import HEADERS, HTTP_SERVICE_PORT, removed_items_nums_from_buffer
 
 host_ip = get_host_ip()
 mode = os.environ.get("MODE", None)
@@ -29,113 +42,6 @@ def save_data_block_info(meta_path, block_path):
     response = action(url=url, json=data, headers=HEADERS)
     res = response.json()
     logging.info('request result is :%s' % res)
-
-
-class DataBlockMaker(object):
-    tmp_file_path_counter = 0
-
-    def __init__(self, data_block_dir_name, data_source_name, partition_id,
-                 data_block_index, example_num_threshold=None):
-        self._data_source_name = data_source_name
-        self._partition_id = partition_id
-        self._example_num_threshold = example_num_threshold
-        self._data_block_dir_name = data_block_dir_name
-        self._tmp_file_path = self._make_tmp_file_path()
-        self._tf_record_writer = tf.io.TFRecordWriter(self._tmp_file_path)
-        self._data_block_meta = dj_pb.DataBlockMeta()
-        self._data_block_meta.partition_id = partition_id
-        self._data_block_meta.data_block_index = data_block_index
-        self._data_block_meta.follower_restart_index = 0
-        self._saved_example_num = 0
-        self._data_block_manager = None
-
-    def init_maker_by_input_meta(self, data_block_meta):
-        self._partition_id = data_block_meta.partition_id
-        self._example_num_threshold = None
-        self._data_block_meta = data_block_meta
-
-    def build_data_block_manager(self, data_block_manager):
-        self._data_block_manager = data_block_manager
-
-    def save(self, data_record, example_id, event_time):
-        self._tf_record_writer.write(data_record)
-        self._data_block_meta.example_ids.append(example_id)
-        if self._saved_example_num == 0:
-            self._data_block_meta.start_time = event_time
-            self._data_block_meta.end_time = event_time
-        else:
-            if event_time < self._data_block_meta.start_time:
-                self._data_block_meta.start_time = event_time
-            if event_time > self._data_block_meta.end_time:
-                self._data_block_meta.end_time = event_time
-
-        self._saved_example_num += 1
-
-    def set_follower_restart_index(self, follower_restart_index):
-        self._data_block_meta.follower_restart_index = follower_restart_index
-
-    def save_data_record(self, record):
-        self._tf_record_writer.write(record)
-        self._saved_example_num += 1
-
-    def is_data_block_exceed_threshold(self):
-        if (self._example_num_threshold is not None and
-                len(self._data_block_meta.example_ids) >=
-                self._example_num_threshold):
-            return True
-        return False
-
-    def data_block_finalizer(self):
-        assert self._saved_example_num == len(self._data_block_meta.example_ids)
-        self._tf_record_writer.close()
-        if len(self._data_block_meta.example_ids) > 0:
-            self._data_block_meta.block_id = \
-                block_id_wrap(self._data_source_name,
-                              self._data_block_meta)
-            data_block_path = os.path.join(
-                self._obtain_data_block_dir(),
-                data_block_file_name_wrap(
-                    self._data_source_name,
-                    self._data_block_meta
-                )
-            )
-            gfile.Rename(self._tmp_file_path, data_block_path, True)
-            meta_path = self._make_data_block_meta()
-            if mode == "distribute":
-                save_data_block_info(meta_path, data_block_path)
-            return self._data_block_meta
-        gfile.Remove(self._tmp_file_path)
-        return None
-
-    def _obtain_data_block_dir(self):
-        return os.path.join(
-            self._data_block_dir_name, partition_id_wrap(self._partition_id)
-        )
-
-    def _make_tmp_file_path(self):
-        tmp_file_name = str(uuid.uuid1()) + '-{}.tmp'.format(self.tmp_file_path_counter)
-        self.tmp_file_path_counter += 1
-        return os.path.join(self._obtain_data_block_dir(), tmp_file_name)
-
-    def _make_data_block_meta(self):
-        meta_file_path_tmp = self._make_tmp_file_path()
-        with tf.io.TFRecordWriter(meta_file_path_tmp) as meta_writer:
-            meta_writer.write(text_format.MessageToString(self._data_block_meta).encode())
-        if self._data_block_manager is not None:
-            meta_file_path = self._data_block_manager.update_data_block_meta(
-                meta_file_path_tmp, self._data_block_meta
-            )
-        else:
-            meta_file_name = data_block_meta_file_name_wrap(self._data_source_name,
-                                                            self._partition_id,
-                                                            self._data_block_meta.data_block_index)
-            meta_file_path = os.path.join(self._obtain_data_block_dir(), meta_file_name)
-            gfile.Rename(meta_file_path_tmp, meta_file_path)
-        return meta_file_path
-
-    def __del__(self):
-        if self._tf_record_writer is not None:
-            del self._tf_record_writer
 
 
 class DataBlockManager(object):
@@ -164,12 +70,11 @@ class DataBlockManager(object):
 
     def update_data_block_meta(self, meta_file_path_tmp, data_block_meta):
         if not gfile.Exists(meta_file_path_tmp):
-            raise RuntimeError("the tmp file no existed {}".format(meta_file_path_tmp))
+            raise RuntimeError("the tmp file does not existed {}".format(meta_file_path_tmp))
         with self._lock:
             if self._saving_data_block_index is not None:
                 raise RuntimeError(
-                    "data block of index {} is " \
-                    "saving".format(self._saving_data_block_index)
+                    "data block of index {} is saving".format(self._saving_data_block_index)
                 )
             data_block_index = data_block_meta.data_block_index
             if data_block_index != self._saved_data_block_index + 1:
@@ -182,6 +87,29 @@ class DataBlockManager(object):
             self._remove_item_from_data_block_memory_buffer()
             self._data_block_meta_memory_buffer[data_block_index] = data_block_meta
             return data_block_meta_path
+
+    def _data_block_dir_wrap(self):
+        return os.path.join(self._data_block_dir,
+                            partition_id_wrap(self._partition_id))
+
+    def _create_data_block_dir_if_need(self):
+        data_block_dir_wrap = self._data_block_dir_wrap()
+        if not gfile.Exists(data_block_dir_wrap):
+            gfile.MakeDirs(data_block_dir_wrap)
+        if not gfile.IsDirectory(data_block_dir_wrap):
+            logging.fatal("%s must be directory", data_block_dir_wrap)
+            os._exit(-1)
+
+    def _sync_data_block_meta(self, data_block_index):
+        if self._saved_data_block_index < 0 or data_block_index > self._saved_data_block_index:
+            return None
+        if data_block_index not in self._data_block_meta_memory_buffer:
+            data_block_meta_file_path = self._acquire_data_block_meta_path(data_block_index)
+            with tf_record_iterator_factory(data_block_meta_file_path) as record_iter:
+                self._data_block_meta_memory_buffer[data_block_index] = \
+                    text_format.Parse(next(record_iter), data_join_pb.DataBlockMeta())
+            self._remove_item_from_data_block_memory_buffer()
+        return self._data_block_meta_memory_buffer[data_block_index]
 
     def _sync_saved_data_block_index(self):
         if self._saved_data_block_index is None:
@@ -208,25 +136,9 @@ class DataBlockManager(object):
                 self._saved_data_block_index = self._saving_data_block_index
                 self._saving_data_block_index = None
 
-    def _create_data_block_dir_if_need(self):
-        data_block_dir_wrap = self._data_block_dir_wrap()
-        if not gfile.Exists(data_block_dir_wrap):
-            gfile.MakeDirs(data_block_dir_wrap)
-        if not gfile.IsDirectory(data_block_dir_wrap):
-            logging.fatal("%s must be directory", data_block_dir_wrap)
-            os._exit(-1)
-
-    def _sync_data_block_meta(self, index):
-        if self._saved_data_block_index < 0 or index > self._saved_data_block_index:
-            return None
-        if index not in self._data_block_meta_memory_buffer:
-            data_block_meta_file_path = self._acquire_data_block_meta_path(index)
-            with tf_record_iterator_factory(data_block_meta_file_path) as record_iter:
-                self._data_block_meta_memory_buffer[index] = \
-                    text_format.Parse(next(record_iter),
-                                      dj_pb.DataBlockMeta())
-            self._remove_item_from_data_block_memory_buffer()
-        return self._data_block_meta_memory_buffer[index]
+    def _remove_item_from_data_block_memory_buffer(self):
+        while len(self._data_block_meta_memory_buffer) > removed_items_nums_from_buffer:
+            self._data_block_meta_memory_buffer.popitem()
 
     def _acquire_data_block_meta_path(self, data_block_index):
         data_block_meta_file_name = data_block_meta_file_name_wrap(
@@ -235,10 +147,108 @@ class DataBlockManager(object):
         )
         return os.path.join(self._data_block_dir_wrap(), data_block_meta_file_name)
 
-    def _data_block_dir_wrap(self):
-        return os.path.join(self._data_block_dir,
-                            partition_id_wrap(self._partition_id))
 
-    def _remove_item_from_data_block_memory_buffer(self):
-        while len(self._data_block_meta_memory_buffer) > 1024:
-            self._data_block_meta_memory_buffer.popitem()
+class DataBlockMaker(object):
+    tmp_file_path_counter = 0
+
+    def __init__(self, data_block_dir_name, data_source_name, partition_id,
+                 data_block_index, example_num_threshold=None):
+        self._data_source_name = data_source_name
+        self._data_block_manager = None
+        self._saved_example_num = 0
+        self._partition_id = partition_id
+        self._data_block_meta = data_join_pb.DataBlockMeta()
+        self._data_block_meta.partition_id = partition_id
+        self._data_block_meta.data_block_index = data_block_index
+        self._data_block_meta.follower_restart_index = 0
+        self._example_num_threshold = example_num_threshold
+        self._data_block_dir_name = data_block_dir_name
+        self._tmp_file_path = self._make_tmp_file_path()
+        self._tf_record_writer = tf.io.TFRecordWriter(self._tmp_file_path)
+
+    def build_data_block_manager(self, data_block_manager):
+        self._data_block_manager = data_block_manager
+
+    def save(self, data_record, example_id, event_time):
+        self._tf_record_writer.write(data_record)
+        self._data_block_meta.example_ids.append(example_id)
+        if self._saved_example_num == 0:
+            self._data_block_meta.start_time = event_time
+            self._data_block_meta.end_time = event_time
+        else:
+            if event_time < self._data_block_meta.start_time:
+                self._data_block_meta.start_time = event_time
+            if event_time > self._data_block_meta.end_time:
+                self._data_block_meta.end_time = event_time
+
+        self._saved_example_num += 1
+
+    def init_maker_by_input_meta(self, data_block_meta):
+        self._partition_id = data_block_meta.partition_id
+        self._example_num_threshold = None
+        self._data_block_meta = data_block_meta
+
+    def set_restart_data_join_index(self, restart_data_join_index):
+        self._data_block_meta.follower_restart_index = restart_data_join_index
+
+    def is_data_block_exceed_threshold(self):
+        if (self._example_num_threshold is not None and
+                len(self._data_block_meta.example_ids) >=
+                self._example_num_threshold):
+            return True
+        return False
+
+    def save_data_record(self, record):
+        self._tf_record_writer.write(record)
+        self._saved_example_num += 1
+
+    def _make_tmp_file_path(self):
+        tmp_file_name = str(uuid.uuid1()) + '-{}.tmp'.format(self.tmp_file_path_counter)
+        self.tmp_file_path_counter += 1
+        return os.path.join(self._obtain_data_block_dir(), tmp_file_name)
+
+    def _make_data_block_meta(self):
+        meta_file_path_tmp = self._make_tmp_file_path()
+        with tf.io.TFRecordWriter(meta_file_path_tmp) as meta_writer:
+            meta_writer.write(text_format.MessageToString(self._data_block_meta).encode())
+        if self._data_block_manager is not None:
+            meta_file_path = self._data_block_manager.update_data_block_meta(
+                meta_file_path_tmp, self._data_block_meta
+            )
+        else:
+            meta_file_name = data_block_meta_file_name_wrap(self._data_source_name,
+                                                            self._partition_id,
+                                                            self._data_block_meta.data_block_index)
+            meta_file_path = os.path.join(self._obtain_data_block_dir(), meta_file_name)
+            gfile.Rename(meta_file_path_tmp, meta_file_path)
+        return meta_file_path
+
+    def data_block_finalizer(self):
+        assert self._saved_example_num == len(self._data_block_meta.example_ids)
+        self._tf_record_writer.close()
+        if len(self._data_block_meta.example_ids) > 0:
+            self._data_block_meta.block_id = block_id_wrap(self._data_source_name,
+                                                           self._data_block_meta)
+            data_block_path = os.path.join(
+                self._obtain_data_block_dir(),
+                data_block_file_name_wrap(
+                    self._data_source_name,
+                    self._data_block_meta
+                )
+            )
+            gfile.Rename(self._tmp_file_path, data_block_path, True)
+            meta_path = self._make_data_block_meta()
+            if mode == "distribute":
+                save_data_block_info(meta_path, data_block_path)
+            return self._data_block_meta
+        gfile.Remove(self._tmp_file_path)
+        return None
+
+    def __del__(self):
+        if self._tf_record_writer is not None:
+            del self._tf_record_writer
+
+    def _obtain_data_block_dir(self):
+        return os.path.join(
+            self._data_block_dir_name, partition_id_wrap(self._partition_id)
+        )

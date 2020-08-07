@@ -1,3 +1,16 @@
+# Copyright 2020 The 9nFL Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # coding: utf-8
 
 import logging
@@ -6,15 +19,16 @@ from concurrent import futures
 import tensorflow
 import grpc
 
-from DataJoin.common import common_pb2 as common_pb
-from DataJoin.common import data_join_service_pb2_grpc as dj_grpc
-from DataJoin.common import data_join_service_pb2 as dj_pb
-from DataJoin.proxy.channel import create_data_join_channel, ModeType
+from DataJoin.common import common_pb2 as data_join_common_pb
+from DataJoin.common import data_join_service_pb2_grpc as data_join_service_grpc
+from DataJoin.common import data_join_service_pb2 as data_join_pb
+from DataJoin.proxy.data_join_channel import create_data_join_channel
+from DataJoin.config import ModeType
 from DataJoin.data_join.raw_data_loader import RawDataLoader
 
 import multiprocessing
 
-from DataJoin.data_join import example_id_producer, example_id_consumer,\
+from DataJoin.data_join import example_id_producer, example_id_consumer, \
     data_block_producer, data_block_consumer
 
 from functools import wraps
@@ -45,9 +59,9 @@ def rank_id_wrap(f):
     @wraps(f)
     def check_rank_id(self, *args, **kwargs):
         assert isinstance(self, DataJoin), \
-            "Invalid function type: {}, should be DataJoin".format(type(self))
+            "function type should be DataJoin, not be:{} ".format(type(self))
         assert self._rank_id == args[0].rank_id, \
-            "rank_id :{} mismatch peer_rank_id: {} ".format(self._rank_id, args[0].rank_id)
+            "rank_id :{} is not same with peer_rank_id: {} ".format(self._rank_id, args[0].rank_id)
         return f(self, *args, **kwargs)
 
     return check_rank_id
@@ -57,73 +71,57 @@ def partition_id_wrap(f):
     @wraps(f)
     def check_partition_id(self, *args, **kwargs):
         assert isinstance(self, DataJoin), \
-            "Invalid function type: {}, should be DataJoin".format(type(self))
+            "function type should be DataJoin, not be:{}".format(type(self))
         partition_id = args[0].partition_id
         assert partition_id >= 0, \
-            "partition id {} should not be negative)".format(partition_id)
+            "partition id {} should not be negative".format(partition_id)
         assert self._partition_id == partition_id, \
-            "partition_id :{} mismatch peer_partition_id: {} ".format(self._partition_id, partition_id)
+            "partition_id :{} is not same with peer_partition_id: {} ".format(self._partition_id, partition_id)
         return f(self, *args, **kwargs)
 
     return check_partition_id
 
 
-class DataJoin(dj_grpc.DataJoinServiceServicer):
+class DataJoin(data_join_service_grpc.DataJoinServiceServicer):
     def __init__(self, peer_client, rank_id, options_args, data_source):
         super(DataJoin, self).__init__()
         self._peer_client = peer_client
-        self._rank_id = rank_id
         self._data_source = data_source
         self._role = self._data_source.role
         self._partition_id = self._data_source.partition_id
         self._raw_data_dir = self._data_source.raw_data_dir
         self._data_block_dir = self._data_source.data_block_dir
         self._data_source_name = self._data_source.data_source_name
+        self._consumer_process = None
+        self._rank_id = rank_id
         self._mode = self._data_source.mode
         self._producer_process = None
-        self._consumer_process = None
         self._init_raw_data_loading = InitRawDataLoading(self._raw_data_dir, options_args.raw_data_options,
                                                          self._partition_id, self._mode)
         self._init_data_join_processor(options_args)
 
     def start_data_join_processor(self):
         self._producer_process.start_processors()
-        if self._role == common_pb.FLRole.Leader:
+        if self._role == data_join_common_pb.FLRole.Leader:
             self._consumer_process.start_processors()
 
     def stop_data_join_processor(self):
         self._producer_process.stop_processors()
-        if self._role == common_pb.FLRole.Leader:
+        if self._role == data_join_common_pb.FLRole.Leader:
             self._consumer_process.stop_processors()
-
-    @rank_id_wrap
-    @partition_id_wrap
-    def SyncPartition(self, request, context):
-        logging.info("Sync Partition Req:{0}".format(request.partition_id))
-        response = common_pb.Status()
-        content_bytes = request.content_bytes
-        if request.compressed:
-            content_bytes = zlib.decompress(content_bytes)
-        send_example_items = dj_pb.SyncContent()
-        send_example_items.ParseFromString(content_bytes)
-        status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
-        if not status:
-            response.code = -1
-            response.error_message = "not need example items"
-        return response
 
     @rank_id_wrap
     @partition_id_wrap
     def StartPartition(self, request, context):
         logging.info("Start Partition Req:{0}".format(request.partition_id))
-        response = dj_pb.StartPartitionResponse()
+        response = data_join_pb.StartPartitionResponse()
         peer_partition_id = request.partition_id
         partition_id = \
             self._consumer_process.fetch_partition_id()
         if peer_partition_id != partition_id:
             response.status.code = -2
             response.status.error_message = \
-                "partition_id :{0} does not match peer partition_id:{1}".format(partition_id, peer_partition_id)
+                "partition_id :{0} is not same with peer partition_id:{1}".format(partition_id, peer_partition_id)
         if response.status.code == 0:
             response.next_index, response.finished = \
                 self._consumer_process.partition_syncer_to_consumer(peer_partition_id)
@@ -133,11 +131,11 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
     @partition_id_wrap
     def FinishPartition(self, request, context):
         logging.info("Finish Partition Req:{0}".format(request.partition_id))
-        response = dj_pb.FinishPartitionResponse()
+        response = data_join_pb.FinishPartitionResponse()
         peer_partition_id = request.partition_id
         partition_id = self._consumer_process.fetch_partition_id()
         assert partition_id == peer_partition_id, \
-            "partition_id :{0} does not match peer partition_id:{1}".format(partition_id, peer_partition_id)
+            "partition_id :{0} is not same with peer partition_id:{1}".format(partition_id, peer_partition_id)
         response.finished = \
             self._consumer_process.finish_partition_transmit(
                 peer_partition_id
@@ -146,8 +144,24 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
             self._consumer_process.reset_consumer_wrap(peer_partition_id)
         return response
 
+    @rank_id_wrap
+    @partition_id_wrap
+    def SyncPartition(self, request, context):
+        logging.info("Sync Partition Req:{0}".format(request.partition_id))
+        response = data_join_common_pb.Status()
+        content_bytes = request.content_bytes
+        if request.compressed:
+            content_bytes = zlib.decompress(content_bytes)
+        send_example_items = data_join_pb.SyncContent()
+        send_example_items.ParseFromString(content_bytes)
+        status, next_index = self._consumer_process.append_data_items_from_producer(send_example_items)
+        if not status:
+            response.code = -1
+            response.error_message = "example id is enough"
+        return response
+
     def _init_data_join_processor(self, options_args):
-        if self._role == common_pb.FLRole.Leader:
+        if self._role == data_join_common_pb.FLRole.Leader:
             self._producer_process = \
                 example_id_producer.ExampleIdProducer(
                     self._peer_client, self._raw_data_dir, self._partition_id,
@@ -160,7 +174,7 @@ class DataJoin(dj_grpc.DataJoinServiceServicer):
                     self._data_source_name
                 )
         else:
-            assert self._role == common_pb.FLRole.Follower, \
+            assert self._role == data_join_common_pb.FLRole.Follower, \
                 "if role not leader, should be Follower"
             follower_data_queue = multiprocessing.Queue(-1)
             self._producer_process = \
@@ -182,16 +196,21 @@ class DataJoinService(object):
         self._port = port
         self._worker_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         peer_channel = create_data_join_channel(peer_address, ModeType.REMOTE)
-        peer_client = dj_grpc.DataJoinServiceStub(peer_channel)
+        peer_client = data_join_service_grpc.DataJoinServiceStub(peer_channel)
         self._data_join_worker = DataJoin(
             peer_client, rank_id, options_args, data_source
         )
-        dj_grpc.add_DataJoinServiceServicer_to_server(
+        data_join_service_grpc.add_DataJoinServiceServicer_to_server(
             self._data_join_worker, self._worker_server
         )
-        self._role = "leader" if data_source.role == common_pb.FLRole.Leader else "follower"
+        self._role = "leader" if data_source.role == data_join_common_pb.FLRole.Leader else "follower"
         self._worker_server.add_insecure_port('[::]:%d' % port)
         self._data_join_server_started = False
+
+    def run(self):
+        self.start_data_join_service()
+        self._worker_server.wait_for_termination()
+        self.stop_data_join_service()
 
     def start_data_join_service(self):
         if not self._data_join_server_started:
@@ -208,11 +227,6 @@ class DataJoinService(object):
             self._data_join_server_started = False
             logging.info("Data Join Worker:{0} of data_source :{1} stopped".
                          format(self._role, self._data_source_name))
-
-    def run(self):
-        self.start_data_join_service()
-        self._worker_server.wait_for_termination()
-        self.stop_data_join_service()
 
 
 class RunDataJoinService(object):
@@ -258,28 +272,28 @@ class RunDataJoinService(object):
         args = parser.parse_args()
         if args.tf_eager_mode:
             tensorflow.compat.v1.enable_eager_execution()
-        raw_data_options = dj_pb.RawDataOptions()
-        example_joiner_options = dj_pb.ExampleJoinerOptions()
+        raw_data_options = data_join_pb.RawDataOptions()
+        example_joiner_options = data_join_pb.ExampleJoinerOptions()
         raw_data_options.raw_data_iter = args.raw_data_iter
         raw_data_options.compressed_type = args.compressed_type
         example_joiner_options.example_joiner = args.example_joiner
         example_joiner_options.dump_data_block_time_span = args.dump_data_block_time_span
         example_joiner_options.dump_data_block_threshold = args.dump_data_block_threshold
-        options_args = dj_pb.DataJoinOptions(
+        options_args = data_join_pb.DataJoinOptions(
             raw_data_options=raw_data_options,
             example_joiner_options=example_joiner_options,
         )
-        data_source = common_pb.DataSource()
+        data_source = data_join_common_pb.DataSource()
         data_source.data_source_name = args.data_source_name
         data_source.data_block_dir = args.data_block_dir
         data_source.raw_data_dir = args.raw_data_dir
         data_source.partition_id = args.partition_id
         data_source.mode = args.mode
         if args.role == 'leader':
-            data_source.role = common_pb.FLRole.Leader
+            data_source.role = data_join_common_pb.FLRole.Leader
         else:
             assert args.role == 'follower'
-            data_source.role = common_pb.FLRole.Follower
+            data_source.role = data_join_common_pb.FLRole.Follower
         worker_service = DataJoinService(args.peer_address, args.port,
                                          args.rank_id,
                                          options_args, data_source)
@@ -292,4 +306,3 @@ if __name__ == "__main__":
 
     logging.getLogger().setLevel(logging.INFO)
     RunDataJoinService.run_task()
-
