@@ -82,32 +82,28 @@ class DataJoin(data_join_service_grpc.DataJoinServiceServicer):
 
     def _init_data_join_processor(self, options_args):
         if self._role == data_join_common_pb.FLRole.Leader:
-            self._producer_process = \
-                example_id_producer.ExampleIdProducer(
-                    self._peer_client, self._raw_data_dir, self._partition_id,
-                    self._rank_id, options_args.raw_data_options, self._mode, self._init_raw_data_loading
-                )
-            self._consumer_process = \
-                data_block_consumer.DataBlockConsumer(
-                    self._partition_id, options_args.raw_data_options,
-                    self._init_raw_data_loading, self._data_block_dir,
-                    self._data_source_name
-                )
+            self._producer_process = example_id_producer.ExampleIdProducer(
+                self._peer_client, self._raw_data_dir, self._partition_id,
+                self._rank_id, options_args.raw_data_options, self._mode, self._init_raw_data_loading
+            )
+            self._consumer_process = data_block_consumer.DataBlockConsumer(
+                self._partition_id, options_args.raw_data_options,
+                self._init_raw_data_loading, self._data_block_dir,
+                self._data_source_name
+            )
         else:
             assert self._role == data_join_common_pb.FLRole.Follower, \
                 "if role not leader, should be Follower"
             follower_data_queue = multiprocessing.Queue(-1)
-            self._producer_process = \
-                data_block_producer.DataBlockProducer(
-                    self._peer_client, self._rank_id, self._raw_data_dir,
-                    options_args.raw_data_options, options_args.example_joiner_options
-                    , self._partition_id, follower_data_queue, self._mode,
-                    self._data_block_dir, self._data_source_name
-                )
-            self._consumer_process = \
-                example_id_consumer.ExampleIdConsumer(
-                    self._partition_id, follower_data_queue
-                )
+            self._producer_process = data_block_producer.DataBlockProducer(
+                self._peer_client, self._rank_id, self._raw_data_dir,
+                options_args.raw_data_options, options_args.example_joiner_options
+                , self._partition_id, follower_data_queue, self._mode,
+                self._data_block_dir, self._data_source_name
+            )
+            self._consumer_process = example_id_consumer.ExampleIdConsumer(
+                self._partition_id, follower_data_queue
+            )
 
     @rank_id_wrap
     @partition_id_wrap
