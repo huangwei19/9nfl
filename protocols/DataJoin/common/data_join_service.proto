@@ -130,9 +130,7 @@ message SyncPartitionRequest {
   // DataSourceMeta data_source_meta = 1;
   int64 rank_id = 1;
   int64 partition_id = 2;
-  // serialization of SyncContent
   bytes content_bytes = 3;
-  // if compressed is set true, we use the gzip compress sync content
   bool compressed = 4;
 }
 
@@ -148,11 +146,9 @@ message FinishPartitionResponse {
 }
 
 service DataJoinService {
-  rpc StartPartition(StartPartitionRequest)
-      returns (StartPartitionResponse) {}
+  rpc StartPartition(StartPartitionRequest) returns (StartPartitionResponse) {}
   rpc SyncPartition(SyncPartitionRequest) returns (Status) {}
-  rpc FinishPartition(FinishPartitionRequest)
-      returns (FinishPartitionResponse) {}
+  rpc FinishPartition(FinishPartitionRequest) returns (FinishPartitionResponse) {}
 }
 
 message LastDumpedExampleIdMeta {
@@ -171,7 +167,6 @@ message DumpedExampleIdAnchor {
 
 message RawDataOptions {
   string raw_data_iter = 1;
-  // only support three compressed, ''(UnCompressed), ZLIB, GZIP
   string compressed_type = 2;
 }
 

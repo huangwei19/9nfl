@@ -14,12 +14,7 @@
 # coding: utf-8
 
 import operator
-import logging
-from contextlib import contextmanager
-import traceback
-import tensorflow.compat.v1 as tf
 from DataJoin.db.db_models import DB, DataBlockMeta, DataSourceMeta, DataSource, Coordinator
-from DataJoin.config import Data_Block_Suffix, Data_Block_Meta_Suffix
 
 
 def query_data_block_meta(**kwargs):
@@ -51,19 +46,6 @@ def query_data_block_meta(**kwargs):
         return [data_block_meta for data_block_meta in data_block_metas]
 
 
-@contextmanager
-def tf_record_iterator_factory(data_path):
-    tf_iterator = None
-    try:
-        tf_iterator = tf.io.tf_record_iterator(data_path)
-        yield tf_iterator
-    except Exception as e:
-        logging.error("build tf_record_iterator Failed file_path:{0}".format(data_path))
-        traceback.print_exc(str(e))
-    if tf_iterator is not None:
-        del tf_iterator
-
-
 def query_data_source_meta(**kwargs):
     with DB.connection_context():
         filters = []
@@ -78,19 +60,6 @@ def query_data_source_meta(**kwargs):
         return [data_source_meta for data_source_meta in data_source_metas]
 
 
-def partition_id_wrap(partition_id):
-    return 'partition_{:04}'.format(partition_id)
-
-
-def data_block_meta_file_name_wrap(data_source_name,
-                                   partition_id,
-                                   data_block_index):
-    return '{}.{}.{:08}{}'.format(
-        data_source_name, partition_id_wrap(partition_id),
-        data_block_index, Data_Block_Meta_Suffix
-    )
-
-
 def query_data_source(**kwargs):
     with DB.connection_context():
         filters = []
@@ -103,15 +72,3 @@ def query_data_source(**kwargs):
         else:
             data_sources = DataSource.select()
         return [data_source for data_source in data_sources]
-
-
-def block_id_wrap(data_source_name, meta):
-    return '{}.{}.{:08}.{}-{}'.format(
-        data_source_name, partition_id_wrap(meta.partition_id),
-        meta.data_block_index, meta.start_time, meta.end_time
-    )
-
-
-def data_block_file_name_wrap(data_source_name, meta):
-    block_id = block_id_wrap(data_source_name, meta)
-    return '{}{}'.format(block_id, Data_Block_Suffix)

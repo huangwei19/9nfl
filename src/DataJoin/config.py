@@ -27,7 +27,7 @@ Invalid_ExampleId = ''
 Invalid_EventTime = -8223372020784275321
 
 HTTP_SERVICE_HOST = '0.0.0.0'
-HTTP_SERVICE_PORT = 9380
+HTTP_SERVICE_PORT = 6380
 
 DATABASE = {
     'name': '',
@@ -47,10 +47,11 @@ REDIS = {
 db_index = 0
 
 PROXY_SERVICE_HOST = "localhost"
-PROXY_SERVICE_PORT = 9400
-DATA_CENTER_PORT = 50052
+PROXY_SERVICE_PORT = 3700
+DATA_CENTER_PORT = 5800
 sync_example_id_nums = 2048
 removed_items_nums_from_buffer = 1024
+data_block_index_threshold = 1 << 53
 
 
 class ModeType(Enum):
