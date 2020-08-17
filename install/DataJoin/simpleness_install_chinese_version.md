@@ -1,53 +1,38 @@
-[doc]
-一. 单机版安装指导:
+### 单机版安装指导
 
-1. 下载
-从开源地址下载源码
-`git clone xxx`
-# xxx替换成开源git开源地址
+#### 依赖
+python 3.6以上
    
-2. 设置环境变量
-把开源代码主目录 9nfl_opensource 拷贝到 /app 下(你可以把/app替换成你自己的根目录文件夹);
-如果根目录文件夹 /app不存在，需要执行命令：mkdir /app
-`copy -r 9nfl_opensource /app`
+#### 设置环境变量
 
-切换当前用户到root权限：
-`su root`
-
-如果你的python3.6是通过anaconda安装的，执行下面的命令设置临时环境变量：
-`echo "/app/9nfl_opensource/src" >  /usr/local/anaconda3/lib/python3.6/site-packages/tmp.pth`
-
-否则执行以下命令设置临时环境变量：
-`echo "/app/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth` 
-
-设置完临时环境变量以后，切换为当前用户权限，例如:
- `su ads_9ncloud`
- #ads_9ncloud需要替换成你得当前用户权限
+拷贝`9nfl_opensource`到工作目录(比如 `/app`)下
+```bash
+mkdir -p /app
+copy -r 9nfl_opensource /app
+echo "/app/9nfl_opensource/src" > `python -c "import os;print(os.path.dirname(os.__file__))"`/site-packages/tmp.pth
+```
  
- 
-3. 安装相关依赖包
+#### 安装相关依赖包
 
-`cd /app/9nfl_opensource/src/DataJoin/`
-`pip install -r requirements.txt`
+```bash
+cd /app/9nfl_opensource/
+pip install -r requirements.txt
+```
 
-4. 编译
+#### 编译pb
+```
+cd /app/9nfl_opensource
+python3 -m grpc_tools.protoc  -I protocols
+   --python_out=src/DataJoin/common
+   --grpc_python_out=src/DataJoin/common
+   protocols/DataJoin/common/*.proto
+```
 
-拷贝protobuf文件到/app/9nfl_opensource/src/目录下：
-
-`copy -r /app/9nfl_opensource/protocols /app/9nfl_opensource/src/`
-
-下载tensorflow源码，并把tensorflow源码拷贝到/app/9nfl_opensource/src/thirdparty/tensorflow目录下
-
-拷贝完以后，切换到/app/9nfl_opensource/src目录下：
-`cd /app/9nfl_opensource/src`
-
-在当前目录下，执行以下命令编译protobuf文件：
-`python -m grpc_tools.protoc -I protocols -Ithirdparty/tensorflow --python_out=. --grpc_python_out=. protocols/DataJoin/common/*.proto`
-
-5. Leader侧设置环境变量
+#### Leader侧设置环境变量
 
 在一台机器开两个终端，一端为leader侧，一端为follower侧
-在leader侧设置环境变量：
+在leader侧设置环境变量
+```bash
 export ROLE=leader
 export PARTITION_ID=0
 export DATA_SOURCE_NAME=test_data_join
@@ -63,14 +48,18 @@ export REMOTE_IP="follower_ip:5001"
 export RANK_UUID=DataJoinWorker-0
 export RAW_DATA_ITER=TF_RECORD_ITERATOR
 export EXAMPLE_JOINER=MEMORY_JOINER
+```
 
-启动leader侧服务：
-`cd /app/9nfl_opensource/src/DataJoin/`
-`sh start_server join`
+启动leader侧服务
+```bash
+cd /app/9nfl_opensource/src/DataJoin/
+sh start_server join
+```
 
-6. Follower侧设置环境变量
+#### Follower侧设置环境变量
 
 在follower侧设置环境变量：
+```
 export ROLE=follower
 export PARTITION_ID=0
 export DATA_SOURCE_NAME=test_data_join
@@ -86,9 +75,12 @@ export REMOTE_IP="leader_ip:6001"
 export RANK_UUID=DataJoinWorker-0
 export RAW_DATA_ITER=TF_RECORD_ITERATOR
 export EXAMPLE_JOINER=MEMORY_JOINER
+```
 
 启动follower侧服务：
-`cd /app/9nfl_opensource/src/DataJoin/`
-`sh start_server join`
+```
+cd /app/9nfl_opensource/src/DataJoin/
+sh start_server join
+```
 
 
