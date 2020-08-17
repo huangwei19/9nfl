@@ -1,4 +1,7 @@
-### 单机版安装指导
+单机版安装指导
+----------------
+
+[English](simpleness_install.md)
 
 #### 依赖
 python 3.6以上

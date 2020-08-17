@@ -1,9 +1,11 @@
-### Stand-alone Deployment Guide
+Stand-alone Deployment Guide
+----------
+[中文版](simpleness_install_chinese_version.md)
 
-1. Prerequisite
+#### Prerequisite
 python 3.6+
    
-2. Set Environment
+#### Set Environment
 copy or move 9nfl_opensource into `/app` (you can change the root dir `/app` into yours directory);
 ```bash
 mkdir -p /app
@@ -11,13 +13,13 @@ copy -r 9nfl_opensource /app
 echo "/app/9nfl_opensource/src" > `python -c "import os;print(os.path.dirname(os.__file__))"`/site-packages/tmp.pth
 ```
  
-3. Install Requirements
+#### Install Requirements
 ```bash
 cd /app/9nfl_opensource/src/DataJoin/
 pip install -r requirements.txt
 ```
 
-4. Compile pb
+#### Compile pb
 ```bash
 cd /app/9nfl_opensource
 python3 -m grpc_tools.protoc  -I protocols
@@ -26,7 +28,7 @@ python3 -m grpc_tools.protoc  -I protocols
    protocols/DataJoin/common/*.proto
 ```
 
-5. Set Leader Environment
+#### Set Leader Environment
 
 ```bash
 export ROLE=leader
@@ -47,7 +49,7 @@ cd /app/9nfl_opensource/src/DataJoin/
 sh start_server join
 ```
 
-6. Set Follower Environment
+#### Set Follower Environment
 
 ```bash
 export ROLE=follower
