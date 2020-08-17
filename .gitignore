@@ -1,0 +1,6 @@
+example/mnist_data/leader_train*
+example/mnist_data/follower_train*
+example/mnist_data/leader_test*
+example/mnist_data/follower_test*
+example/mnist_data/*.npy
+*__pycache__*

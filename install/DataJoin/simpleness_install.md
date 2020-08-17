@@ -22,10 +22,8 @@ pip install -r requirements.txt
 #### Compile pb
 ```bash
 cd /app/9nfl_opensource
-python3 -m grpc_tools.protoc  -I protocols
-   --python_out=src/DataJoin/common
-   --grpc_python_out=src/DataJoin/common
-   protocols/DataJoin/common/*.proto
+python -m grpc_tools.protoc  -I protocols --python_out=src/
+--grpc_python_out=src/ protocols/DataJoin/common/*.proto
 ```
 
 #### Set Leader Environment
@@ -46,7 +44,7 @@ export RAW_DATA_ITER=TF_RECORD_ITERATOR
 export EXAMPLE_JOINER=MEMORY_JOINER
 
 cd /app/9nfl_opensource/src/DataJoin/
-sh start_server join
+sh start_server.sh join
 ```
 
 #### Set Follower Environment
@@ -66,7 +64,7 @@ export RAW_DATA_ITER=TF_RECORD_ITERATOR
 export EXAMPLE_JOINER=MEMORY_JOINER
 
 cd /app/9nfl_opensource/src/DataJoin/
-sh start_server join
+sh start_server.sh join
 ```
 
 

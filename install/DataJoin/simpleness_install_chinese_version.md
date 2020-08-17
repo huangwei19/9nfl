@@ -23,12 +23,10 @@ pip install -r requirements.txt
 ```
 
 #### 编译pb
+输出在`/app/9nfl_opensource/src/DataJoin/common`
 ```
 cd /app/9nfl_opensource
-python3 -m grpc_tools.protoc  -I protocols
-   --python_out=src/DataJoin/common
-   --grpc_python_out=src/DataJoin/common
-   protocols/DataJoin/common/*.proto
+python -m grpc_tools.protoc  -I protocols --python_out=src/ --grpc_python_out=src/ protocols/DataJoin/common/*.proto
 ```
 
 #### Leader侧设置环境变量
@@ -56,7 +54,7 @@ export EXAMPLE_JOINER=MEMORY_JOINER
 启动leader侧服务
 ```bash
 cd /app/9nfl_opensource/src/DataJoin/
-sh start_server join
+sh start_server.sh join
 ```
 
 #### Follower侧设置环境变量
@@ -83,7 +81,7 @@ export EXAMPLE_JOINER=MEMORY_JOINER
 启动follower侧服务：
 ```
 cd /app/9nfl_opensource/src/DataJoin/
-sh start_server join
+sh start_server.sh join
 ```
 
 
