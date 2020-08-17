@@ -2,5 +2,8 @@ example/mnist_data/leader_train*
 example/mnist_data/follower_train*
 example/mnist_data/leader_test*
 example/mnist_data/follower_test*
+example/mnist_data/data_block*
 example/mnist_data/*.npy
+*_pb2.py
+*_pb2_grpc.py
 *__pycache__*

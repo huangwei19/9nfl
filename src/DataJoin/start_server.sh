@@ -93,9 +93,16 @@ start_http_server() {
 
 data_join_server_start() {
     mkdir_data_join_log_dir
-    nohup python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE --example_joiner=$EXAMPLE_JOINER $EAGER_MODE >> "${data_join_log_dir}/console.log" 2>>"${data_join_log_dir}/error.log" &
+    nohup python $CURRENT_DIR/data_join/data_join_server.py $REMOTE_IP $INDEX \
+    $PARTITION_ID $DATA_SOURCE_NAME $DATA_BLOCK_DIR $RAW_DATA_DIR $ROLE -m=$MODE \
+    -p=$PORT0 --raw_data_iter=$RAW_DATA_ITER --compressed_type=$COMPRESSED_TYPE \
+    --example_joiner=$EXAMPLE_JOINER $EAGER_MODE >>"${data_join_log_dir}/console_${ROLE}.log" \
+    2>>"${data_join_log_dir}/error_${ROLE}.log" &
     if [[ $? -eq 0 ]]; then
         echo "data join service start successfully"
+        echo "log dir: ${data_join_log_dir}"
+        echo "input dir: ${RAW_DATA_DIR}"
+        echo "output dir: ${DATA_BLOCK_DIR}"
     else
         echo "data join service start failed"
     fi
