@@ -157,7 +157,7 @@ def repartition_and_sort(dataset, n_partition=10):
 
 
 def save_local(ori_data, save_dir, n_partition=10,
-    drop_rate=-1):
+    drop_rate=-1, need_meta=True):
     """
     partition and sort by example id
     save as tfrecord
@@ -166,27 +166,37 @@ def save_local(ori_data, save_dir, n_partition=10,
     if tf.io.gfile.exists(save_dir):
         tf.io.gfile.rmtree(save_dir)
     tf.io.gfile.makedirs(save_dir)
+    
+    if need_meta:
+        save_meta_dir = save_dir + "_meta"
+        if tf.io.gfile.exists(save_meta_dir):
+            tf.io.gfile.rmtree(save_meta_dir)
+        tf.io.gfile.makedirs(save_meta_dir)
 
     data = repartition_and_sort(ori_data, n_partition)
     for i in range(n_partition):
         count = 0
         fpath = os.path.join(save_dir, '%05d.tfrecord' % i)
-        meta_fpath = os.path.join(save_dir, '%05d.meta' % i)
+        meta_fpath = os.path.join(save_meta_dir, '%05d.meta' % i)
         writer = tf.python_io.TFRecordWriter(fpath)
-        meta_writer = open(meta_fpath, 'w')
+        if need_meta:
+            meta_writer = open(meta_fpath, 'w')
         for eid, record in data[i]:
             if drop_rate > 0:
                 r = random.random()
                 if r > drop_rate:
-                    writer.write(record)
-                    meta_writer.write('%s\n' % eid)
                     count += 1
+                    writer.write(record)
+                    if need_meta:
+                        meta_writer.write('%s\n' % eid)
             else:
-                writer.write(record)
-                meta_writer.write('%s\n' % eid)
                 count += 1
+                writer.write(record)
+                if need_meta:
+                    meta_writer.write('%s\n' % eid)
         writer.close()
-        meta_writer.close()
+        if need_meta:
+            meta_writer.close()
         logging.info("Write %s done. %d records" % (fpath, count))
 
 
@@ -221,15 +231,16 @@ def main(args):
 
     n_partition = args.partition_num
     drop_rate = args.drop_rate
+    need_meta = args.need_meta == 1
     
     save_local(get_pb_dataset(train_eids, train_xl, train_y),
-        l_train_path, n_partition, drop_rate) 
+        l_train_path, n_partition, drop_rate, need_meta) 
     save_local(get_pb_dataset(train_eids, train_xf),
-        f_train_path, n_partition, drop_rate) 
+        f_train_path, n_partition, drop_rate, need_meta) 
     save_local(get_pb_dataset(test_eids, test_xl, test_y),
-        l_test_path, n_partition, drop_rate) 
+        l_test_path, n_partition, drop_rate, need_meta) 
     save_local(get_pb_dataset(test_eids, test_xf),
-        f_test_path, n_partition, drop_rate) 
+        f_test_path, n_partition, drop_rate, need_meta) 
 
 
 if __name__ == "__main__":
@@ -242,6 +253,8 @@ if __name__ == "__main__":
         help="partition num")
     parser.add_argument("-r", "--drop_rate", type=float, default=0.0,
         help="probability of dropping a record")
+    parser.add_argument("-m", "--need_meta", type=int, default=1,
+        help="write tfrecord meta")
     args = parser.parse_args()
 
     if args.download == 1: 
