@@ -111,7 +111,7 @@ data_join_server_start() {
 
 local_data_center_server_start() {
     mkdir_data_center_log_dir
-    nohup python $CURRENT_DIR/data_center/local_data_center_server.py -d=$DATA_NUM_EPOCH $LEADER_DATA_BLOCK_DIR $FOLLOWER_DATA_BLOCK_DIR >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
+    nohup python $CURRENT_DIR/data_center/local_data_center_server.py -d=$DATA_NUM_EPOCH $LEADER_DATA_BLOCK_DIR $FOLLOWER_DATA_BLOCK_DIR $DATA_CENTER_PORT >> "${data_center_log_dir}/console.log" 2>>"${data_center_log_dir}/error.log" &
     if [[ $? -eq 0 ]]; then
         echo "local data center service start successfully"
     else

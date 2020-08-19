@@ -127,16 +127,18 @@ class StartDataCenterServer(object):
         parser = argparse.ArgumentParser()
         parser.add_argument('--data_num_epoch', '-d', type=int, default=1,
                             help='data num epoch for local data center service')
-        parser.add_argument('leader_data_block_dir', type=str,
+        parser.add_argument('leader_data_block_dir', type=str, default="",
                             help='leader data block dir of local data center service')
-        parser.add_argument('follower_data_block_dir', type=str,
+        parser.add_argument('follower_data_block_dir', type=str, default="",
                             help='follower data block dir of local data center service')
+        parser.add_argument('--data_center_port', type=int,
+                            help='data center server port ')
         args = parser.parse_args()
         data_num_epoch = args.data_num_epoch
         leader_data_block_dir = args.leader_data_block_dir
         follower_data_block_dir = args.follower_data_block_dir
         data_center_host = get_host_ip()
-        data_center_port = DATA_CENTER_PORT
+        data_center_port = args.data_center_port
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         data_center_service_pb2_grpc.add_DataBlockQueryServiceServicer_to_server(
             DataBlockQueryService(data_num_epoch, leader_data_block_dir, follower_data_block_dir), server)

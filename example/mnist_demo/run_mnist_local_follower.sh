@@ -13,32 +13,21 @@
 # limitations under the License.
 WORK_DIR=$(cd `dirname $0`;pwd)
 MNIST_DIR=`readlink -f "${WORK_DIR}"`
+BASE_DIR=`readlink -f "${WORK_DIR}/../.."`
 
 DATA_DIR=$1
-PYTHON=$2
 
 if [ -z ${DATA_DIR} ];then
-    DATA_DIR='../mnist_data'
-fi
-
-if [ -z $PYTHON ];then
-    PYTHON=python
+    DATA_DIR=`readlink -f "../mnist_data"`
 fi
 
 local_host="`hostname --fqdn`"
-LOCAL_IP=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
+LOCAL_IP=`python -c"import socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect(('8.8.8.8', 80));print(s.getsockname()[0])"`
 
 CHECK_EXAMPLEID=1
-DATA_MODE="local"
 
-L_TRAIN="${DATA_DIR}/leader_train"
-F_TRAIN="${DATA_DIR}/follower_train"
-L_TEST="${DATA_DIR}/leader_test"
-F_TEST="${DATA_DIR}/follower_test"
-
-
-L_DC_ADDR="${LOCAL_IP}:40003"
-F_DC_ADDR="${LOCAL_IP}:40005"
+L_DC_ADDR="${LOCAL_IP}:50052"
+F_DC_ADDR="${LOCAL_IP}:50053"
 
 L_TRAIN_ADDR="${LOCAL_IP}:40001"
 F_TRAIN_ADDR="${LOCAL_IP}:40002"
@@ -47,23 +36,22 @@ if [ ! -d ${MNIST_DIR}/logs ];then
     mkdir ${MNIST_DIR}/logs
 fi
 
-export  _FILE_GET_CMD="./local_get.sh"
+dc_follower(){
+export FOLLOWER_DATA_BLOCK_DIR="${DATA_DIR}/data_block_follower"
+export LEADER_DATA_BLOCK_DIR="None"
+export DATA_CENTER_PORT="50053"
+export DATA_NUM_EPOCH=1
+export MODE=local    
+cd ${BASE_DIR}/src/DataJoin
+sh start_server.sh center
+cd -
+}
 
 train(){
+export  _FILE_GET_CMD="./local_get.sh"
 set -x
-$PYTHON ${MNIST_DIR}/dc_leader.py -p ${L_TRAIN} -m ${DATA_MODE}> ${MNIST_DIR}/logs/dc_leader.log 2>&1 &
-$PYTHON ${MNIST_DIR}/dc_follower.py -p ${F_TRAIN} -m ${DATA_MODE}> ${MNIST_DIR}/logs/dc_follower.log 2>&1 &
 
-$PYTHON  ${MNIST_DIR}/mnist_leader.py --local_addr="${L_TRAIN_ADDR}" \
---peer_addr="${F_TRAIN_ADDR}" --dc_addr="${L_DC_ADDR}" \
---rpc_service_type=1 \
---local_debug=1 \
---check_exampleid=$CHECK_EXAMPLEID \
---model_dir="./models/leader_model" \
---export_dir="./models/leader_export_savemodel" \
-> ${MNIST_DIR}/logs/leader.log 2>&1 &
-
-$PYTHON  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
+python  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
 --peer_addr="${L_TRAIN_ADDR}" --dc_addr="${F_DC_ADDR}" \
 --rpc_service_type=1 \
 --local_debug=1 \
@@ -71,11 +59,13 @@ $PYTHON  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
 --model_dir="./models/follower_model" \
 --export_dir="./models/follower_export_savemodel" \
 > ${MNIST_DIR}/logs/follower.log 2>&1 &
+set +x
 
 }
 
-rm -rf models/*
-bash kill.sh
+#rm -rf models/*
+#bash kill.sh
+dc_follower
 train
 
 
