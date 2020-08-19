@@ -131,7 +131,7 @@ class StartDataCenterServer(object):
                             help='leader data block dir of local data center service')
         parser.add_argument('follower_data_block_dir', type=str, default="",
                             help='follower data block dir of local data center service')
-        parser.add_argument('--data_center_port', type=int,
+        parser.add_argument('data_center_port', type=int,
                             help='data center server port ')
         args = parser.parse_args()
         data_num_epoch = args.data_num_epoch
