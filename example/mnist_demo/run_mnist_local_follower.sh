@@ -49,7 +49,6 @@ cd -
 
 train(){
 export  _FILE_GET_CMD="./local_get.sh"
-set -x
 
 python  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
 --peer_addr="${L_TRAIN_ADDR}" --dc_addr="${F_DC_ADDR}" \
@@ -59,8 +58,7 @@ python  ${MNIST_DIR}/mnist_follower.py --local_addr="${F_TRAIN_ADDR}" \
 --model_dir="./models/follower_model" \
 --export_dir="./models/follower_export_savemodel" \
 > ${MNIST_DIR}/logs/follower.log 2>&1 &
-set +x
-
+echo "log: ${MNIST_DIR}/logs/follower.log"
 }
 
 #rm -rf models/*

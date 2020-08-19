@@ -49,7 +49,6 @@ cd -
 
 train(){
 export  _FILE_GET_CMD="./local_get.sh"
-set -x
 python  ${MNIST_DIR}/mnist_leader.py --local_addr="${L_TRAIN_ADDR}" \
 --peer_addr="${F_TRAIN_ADDR}" --dc_addr="${L_DC_ADDR}" \
 --rpc_service_type=1 \
@@ -58,7 +57,7 @@ python  ${MNIST_DIR}/mnist_leader.py --local_addr="${L_TRAIN_ADDR}" \
 --model_dir="./models/leader_model" \
 --export_dir="./models/leader_export_savemodel" \
 > ${MNIST_DIR}/logs/leader.log 2>&1 &
-set +x
+echo "log: ${MNIST_DIR}/logs/leader.log"
 
 }
 
