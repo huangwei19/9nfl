@@ -1,49 +1,30 @@
-[doc]
-一. Stand-alone Deployment Guide:
-
-1. DownLoad 
-Download package from open_source git address :xxx
-`git clone xxx`
-#please replace xxx with open source git address
-
-2. Set Environment
-copy or move 9nfl_opensource into /app (you can change the root dir /app into yours directory);
-if root dir /app does not exists,please mkdir /app
-`copy -r 9nfl_opensource /app`
-`su root`
-
-if python3.6 is installed by anaconda3
-`echo "/app/9nfl_opensource/src" >  /usr/local/anaconda3/lib/python3.6/site-packages/tmp.pth`
-if python3.6 is not installed  by anaconda3
-`echo "/app/9nfl_opensource/src" > /usr/local/lib64/python3.6/site-packages/tmp.pth` 
-
-please change user role from root into your current user role ,for example:
- `su ads_9ncloud`
-
-3. Install Requirements
-`cd /app/9nfl_opensource/src/DataJoin/`
-`pip install -r requirements.txt`
-
-4. make build
-
-`copy -r /app/9nfl_opensource/protocols /app/9nfl_opensource/src/`
-
-`cd /app/9nfl_opensource/src/`
-
-`python -m grpc_tools.protoc -I protocols -Ithirdparty/tensorflow \
-        --python_out=. \
-        --grpc_python_out=. \
-        protocols/DataJoin/common/*.proto`
+Stand-alone Deployment Guide
+-----------------
         
-5. Start Data_Center Server
+### Start Data_Center Server
 
-set Data_Center Env:
+set Leader_Data_Center Env:
 
+```bash
 export LEADER_DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_leader
-export FOLLOWER_DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_follower
+export DATA_CENTER_PORT="50052"
 export DATA_NUM_EPOCH=1
 export MODE=local
+```
 
-start Data_Center server：
-`cd /app/9nfl_opensource/src/DataJoin`
-`sh start_server.sh center`
+
+set Follower_Data_Center Env:
+
+```bash
+export FOLLOWER_DATA_BLOCK_DIR=/app/9nfl_opensource/src/DataJoin/data_block_follower
+export DATA_CENTER_PORT="50053"
+export DATA_NUM_EPOCH=1
+export MODE=local
+```
+
+start Data_Center server
+
+```bash
+cd /app/9nfl_opensource/src/DataJoin
+sh start_server.sh center
+```
