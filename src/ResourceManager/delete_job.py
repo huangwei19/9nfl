@@ -28,7 +28,7 @@ def delete():
     """delete the job"""
     args = get_args()
     if args.role not in ['0', '1']:
-        print 'role should be 1:leader or 0:follower'
+        print('role should be 1:leader or 0:follower')
         sys.exit(-1)
     name_space = 'fl-follower'
     if args.role == '1':
@@ -40,7 +40,7 @@ def delete():
     retval_delsvc = os.system('kubectl delete svc -l instanceId=%s -n %s' \
         % (args.task_id, name_space))
     if retval_deljob != 0 or retval_delrc != 0 or retval_delsvc != 0:
-        print 'delete job error, pelease check th kubectl!'
+        print('delete job error, pelease check th kubectl!')
         sys.exit(-1)
 
 if __name__ == '__main__':

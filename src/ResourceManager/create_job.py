@@ -16,7 +16,11 @@
 import os
 import sys
 import argparse
-import ConfigParser
+try:
+    import ConfigParser
+except Exception as e:
+    import configparser as ConfigParser
+
 import shutil
 from jinja2 import FileSystemLoader, Environment
 BASEDIR = os.path.dirname(os.path.abspath(__file__))
@@ -68,6 +72,7 @@ def create_context(args, config):
     ctx['coordinator_port'] = config.get('coordinator', 'Port')
     ctx['proxy_ip'] = config.get('proxy', 'IP')
     ctx['proxy_port'] = config.get('proxy', 'Port')
+    print(str(args))
     if args.role == '1':
         ctx['trainer_image'] = config.get('image', 'leader_trainer_image')
         ctx['dc_image'] = config.get('image', 'leader_datacenter_image')
@@ -88,10 +93,10 @@ def create():
     args = get_args()
     config = get_config()
     if args.role not in ['0', '1']:
-        print 'role should be 1:leader or 0:follower'
+        print('role should be 1:leader or 0:follower')
         sys.exit(-1)
     if args.worker_num < 1:
-        print 'You need at least one worker!'
+        print('You need at least one worker!')
         sys.exit(-1)
     ctx = create_context(args, config)
 
@@ -108,7 +113,7 @@ def create():
         file_descriptor.write(train_yaml_str)
     retval = os.system('kubectl apply -f %s' % tmp_dir)
     if retval != 0:
-        print 'create tfjob error,exit code: %s' % str(retval)
+        print('create tfjob error,exit code: %s' % str(retval))
         sys.exit(-3)
     shutil.rmtree(tmp_dir)
 
