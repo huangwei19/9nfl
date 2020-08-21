@@ -33,8 +33,12 @@ function _M.new(self)
         ngx.log(ngx.ERR, err)
         return err
     end
-    ngx.log(ngx.INFO, "select redis addr: ", host)
-    local ok, err = red:connect(host, 6379)
+    local port = ngx.var.redis_port
+    if port  == nil then
+        port = 6379
+    end
+    ngx.log(ngx.INFO, "select redis addr: ", host, port)
+    local ok, err = red:connect(host, port)
     if not ok then
         ngx.log(ngx.ERR, "failed to connect: ", err)
         return err

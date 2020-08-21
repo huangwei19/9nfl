@@ -16,7 +16,10 @@
 import sys
 import argparse
 import json
-from commands import getstatusoutput as sys_execute
+try:
+    from commands import getstatusoutput as sys_execute
+except Exception as e:
+    from subprocess import getstatusoutput as sys_execute
 
 def get_args():
     """get command arguments"""
@@ -36,12 +39,12 @@ def check():
         status, output = sys_execute('kubectl get tfjob -l instanceId=%s -n %s -o json' \
         % (args.task_id, name_space))
         if status != 0:
-            print 'Error: %s' % output
+            print('Error: %s' % output)
             sys.exit(3)
         json_dt = json.loads(output)
         sys.exit(retcode[json_dt['items'][0]['status']['conditions'][-1]['type']])
     except Exception as e_str:
-        print 'Exception: %s' % str(e_str)
+        print('Exception: %s' % str(e_str))
         sys.exit(3)
 
 if __name__ == '__main__':
