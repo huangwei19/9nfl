@@ -1,4 +1,4 @@
-# Compile dependencies
+# 依赖
 
 | External dependencies  | Version           | Description              |
 | ---------------------- | ----------------- | :----------------------- |
@@ -6,21 +6,25 @@
 | nginx                  | openresty version |                          |
 | redis                  | 6.0.3             |                          |
 
-# Compile
+# 编译
 
-- Download and install openresty  [download](https://openresty.org/download/openresty-1.17.8.1rc1.tar.gz)
-- Compilation parameters http_v2_module (./configure --with-http_v2_module)
-- gmake && gmake install
-- Move the bin file 
+```bash
+wget https://openresty.org/download/openresty-1.17.8.1rc1.tar.gz
+tar -xf openresty-1.17.8.1rc1.tar.gz
 
-# Attention
+cd openresty-1.17.8.1rc1
+# make sure '~/bin/blade' does not exist
+./configure --with-http_v2_module 
+gmake && gmake install
+mkdir bin && cp openresty-1.17.8.1rc1/build/nginx-1.17.8/objs/nginx bin/ 
+```
 
-- fl_proxy_online/config/fl_proxy.conf
-  - set $redis_url --Fill in the specific redis ip
-  - grpc_pass --Fill in the specific ip and port
-- config/nginx.conf
-  - lua_package_path --Local openresty installation path
-- redis
-  - Need to support external access
+# 修改配置
+
+1. config/fl_proxy.conf
+  - `$redis_url`和`$redis_port`配置为proxy和coordinator共享的redis服务的host和port
+  - `grpc_pass`配置为对端proxy的监听地址
+2. config/nginx.conf
+  - `lua_package_path`加入本地openresty的安装路径
 
 
