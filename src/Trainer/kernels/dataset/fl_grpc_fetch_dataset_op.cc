@@ -136,6 +136,7 @@ class FlGrpcFetchDatasetOp::Dataset : public DatasetBase {
             }
 
             if (response.status_code() == StatusCode::ERROR_ABORTED) {
+              LOG(ERROR) << "DC response internal error, Aborted ...";
               return errors::InvalidArgument(
                   "DC response internal error, Aborted ...");
             }
