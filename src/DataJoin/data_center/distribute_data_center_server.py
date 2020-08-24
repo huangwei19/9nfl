@@ -20,8 +20,7 @@ from concurrent import futures
 import time
 import json
 from DataJoin.utils.api import wrap_data_transfer_api
-import logging
-from DataJoin.data_center.counter import Counter
+from DataJoin.data_center.counter import count
 from DataJoin.data_center.data_block_manager import DataBlockMetaManage, ReidsHandle
 import traceback
 import sys
@@ -80,8 +79,7 @@ class DataBlockQueryService(data_center_service_pb2_grpc.DataBlockQueryServiceSe
                     json_body["end_time"] = self.train_data_end
                 if self.data_source_name:
                     json_body["data_source_name"] = self.data_source_name
-                t = Counter()
-                num = t.run()
+                num = count()
                 logging.info('execute query data block meta current num :%s' % num)
                 logging.info('data num epoch :%s' % self.data_num_epoch)
                 redis_handle = ReidsHandle()
@@ -190,4 +188,7 @@ class StartDataCenterServer(object):
 
 
 if __name__ == '__main__':
+    import logging
+    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().setLevel(logging.INFO)
     StartDataCenterServer.run_server()
