@@ -116,7 +116,8 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
       mutex_lock l(mu_);
       do {
         if (current_file_.empty()) {
-          GetNextFileInternal(ctx, &current_file_, end_of_sequence);
+          TF_RETURN_IF_ERROR(
+              GetNextFileInternal(ctx, &current_file_, end_of_sequence));
           if (*end_of_sequence) {
             input_impl_.reset();
             return Status::OK();
@@ -152,7 +153,8 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
                     << ", move to next file";
           ResetStreamsLockedWithCleanup(current_file_);
           current_file_.clear();
-          GetNextFileInternal(ctx, &current_file_, end_of_sequence);
+          TF_RETURN_IF_ERROR(
+              GetNextFileInternal(ctx, &current_file_, end_of_sequence));
 
           if (*end_of_sequence) {
             input_impl_.reset();
@@ -211,6 +213,9 @@ class FlTextLineDatasetOp::Dataset : public DatasetBase {
 
     Status SetupStreamsLocked(Env* env, const std::string& fname) {
       LOG(INFO) << "Setup File Stream for: [" << fname << "]";
+      if(fname.empty()) {
+          return errors::InvalidArgument("input file name invalid.");
+      }
       TF_RETURN_IF_ERROR(env->NewRandomAccessFile(fname, &file_));
       input_stream_ =
           absl::make_unique<io::RandomAccessInputStream>(file_.get(), false);
