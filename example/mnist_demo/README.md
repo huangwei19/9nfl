@@ -81,6 +81,9 @@ redis默认使用6379端口
 coordinator默认监听6666端口, 日志在src/Coordinator/logs
 
 4. Kubernetes准备
+创建datacenter镜像(参见[deploy/data_center/images](../../deploy/data_center/images)), 
+leader训练镜像和follower训练镜像(参见[DockerFile](../../DockerFile))
+
 配置conf/ResourceManager/k8s.conf
 
 修改proxy配置(默认8002端口), coordinator配置(默认6666端口), 镜像信息，模型目录
