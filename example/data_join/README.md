@@ -4,7 +4,7 @@
 准备好要求交的数据, 参见[mnist_data](../mnist_data/README.md)
 
 ### 单机版
-环境准备参见[数据求交单机版安装指导](install/DataJoin/simpleness_install_chinese_version.md)
+环境准备参见[docs/DataJoin/simpleness_install_chinese_version.md](../../docs/DataJoin/simpleness_install_chinese_version.md)
 
 启动数据求交的leader和follower
 ```bash 
@@ -48,7 +48,8 @@ bash data_join_follower.sh
 
   **注意** src/DataJoin/config.py里的`PROXY_SERVICE_HOST`与*proxy*模块无关, 填"localhost"即可
 
-  制作data join的镜像, 参见`deploy/data_join/images`
+  制作data join的镜像,
+  参见`deploy/data_join/images`和[docs/DataJoin/distributer_install_chinese_version.md](../../docs/DataJoin/distributer_install_chinese_version.md)
 
 3. 提交任务
 

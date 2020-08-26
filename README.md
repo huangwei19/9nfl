@@ -2,13 +2,12 @@
 
 
 
-[TOC]
-
 ## 概述
 
 数据是人工智能的基石，打破数据孤岛，实现数据共享是加速人工智能高速发展的必要条件。联邦学习，作为数据安全计算的业界前沿技术方案，在保护数据隐私的同时深度连接各个合作方，达到技术赋能、共创共赢的目标。
 
-![1596533745945](E:\markdown\图爿\1596533745945.png)
+![p1](docs/imgs/p1.png)
+![p2](docs/imgs/p2.png)
 
 ## 1 整体架构
 
@@ -18,7 +17,7 @@
   - 数据求交模块
   - 训练器模块
 
-![1596538811208](E:\markdown\图爿\1596538811208.png)
+![architecture.png](docs/imgs/architecture.png)
 
 ## 2 整体调度与转发模块
 
@@ -50,11 +49,15 @@
 
 
 
-## 6 安装部署
+## 6 Mnist Demo
+
+以mnist为例，提供数据求交和模型训练的demo
+
 支持单机版与分布式版本的部署方式
 
-- 单机版的链接
-- 分布式版本的链接
+- [数据准备](example/mnist_data/README.md)
+- [数据求交](example/data_join/README.md)
+- [模型训练](example/mnist_demo/README.md)
 
 
 
