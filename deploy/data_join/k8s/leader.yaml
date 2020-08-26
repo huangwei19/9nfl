@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: TASK_NAME
-        image: your_data_join_mirror
+        image: IMAGE_PATH
         resources:
           requests:
             cpu: 4
