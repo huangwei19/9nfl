@@ -63,6 +63,7 @@ grep loss logs/leader.log
   - leader机和follower机python环境依赖jinjia2, 且需要能访问redis和Kubernetes集群.
 
 2. proxy
+
 在leader机和follower机部署proxy
 
 编译和部署proxy参见[src/Proxy/README.md](../../src/Proxy/README.md)
@@ -81,7 +82,9 @@ redis默认使用6379端口
 coordinator默认监听6666端口, 日志在src/Coordinator/logs
 
 4. Kubernetes准备
+
 创建datacenter镜像(参见[deploy/data_center/images](../../deploy/data_center/images)), 
+
 leader训练镜像和follower训练镜像(参见[DockerFile](../../DockerFile))
 
 配置conf/ResourceManager/k8s.conf
