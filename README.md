@@ -6,9 +6,9 @@
 
 数据是人工智能的基石，打破数据孤岛，实现数据共享是加速人工智能高速发展的必要条件。联邦学习，作为数据安全计算的业界前沿技术方案，在保护数据隐私的同时深度连接各个合作方，达到技术赋能、共创共赢的目标。
 
-<img src="docs/imgs/p1.png" height = "500" alt="p1" />
+<img src="docs/imgs/p1.png" height = "350" alt="p1" />
 
-<img src="docs/imgs/p2.png" height = "500" alt="p2" />
+<img src="docs/imgs/p2.png" height = "350" alt="p2" />
 
 ## 1 整体架构
 
