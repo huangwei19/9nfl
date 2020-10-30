@@ -138,7 +138,7 @@ bool HiRedisExecutor::Init(
 }
 
 bool HiRedisExecutor::CheckReply(redisReply *reply) {
-  if (!IsString(*reply) || !reply->str) {
+  if (!IsStatus(*reply) || !reply->str) {
     return false;
   }
   return strcmp(reply->str, "OK") == 0;
